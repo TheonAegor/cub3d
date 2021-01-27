@@ -4,8 +4,11 @@
 int main(void)
 {
 	void *mlx;
+	void *mlx_win;
 	
 	mlx = mlx_init();
+	mlx_win = mlx_new_window(mlx, 100, 100, "hello world!");
+	mlx_loop(mlx);
 /*
 	const size_t win_w = 10;	
 	const size_t win_h = 10;	
