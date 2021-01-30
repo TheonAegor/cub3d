@@ -6,18 +6,27 @@
 /*   By: taegor <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/21 18:08:46 by taegor            #+#    #+#             */
-/*   Updated: 2020/11/21 18:08:47 by taegor           ###   ########.fr       */
+/*   Updated: 2021/01/30 17:03:09 by taegor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIBFT_H
 # define LIBFT_H
+
+#  ifndef BUFFER_SIZE
+#   define BUFFER_SIZE 10
+
+#  endif
+
 # include <stdlib.h>
 # include <stdio.h>
 # include <string.h>
 # include <unistd.h>
 # include <ctype.h>
 # include <stdarg.h>
+# include <sys/types.h>
+# include <sys/stat.h>
+# include <fcntl.h>
 
 typedef struct		s_list
 {
@@ -80,5 +89,13 @@ void				ft_lstclear(t_list **lst, void (*del)(void*));
 void				ft_lstiter(t_list *lst, void (*f)(void *));
 t_list				*ft_lstmap(t_list *lst, void *(*f)(void *),
 		void (*del)(void *));
+size_t				ftstrlcpy(char *dst, const char *src, size_t size);
+int					get_next_line(int fd, char **line);
+char				*ftstrdup(const char *s);
+char				*ftstrjoin(char *s1, char *s2);
+int					ftstrlen(char *s);
+char				*ftsubstr(char *s, unsigned int start, size_t len);
+void				*ftcalloc(size_t nmemb, size_t size);
+char				*ftstrchr(char *s, int c);
 
 #endif

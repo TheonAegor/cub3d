@@ -1,1 +1,1 @@
-make && ./res
+make && ./res map.cub
