@@ -6,7 +6,7 @@
 /*   By: taegor <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/20 13:46:42 by taegor            #+#    #+#             */
-/*   Updated: 2021/01/30 17:15:19 by taegor           ###   ########.fr       */
+/*   Updated: 2021/01/30 19:54:15 by taegor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,5 +24,6 @@ void		ft_lstadd_back(t_list **lst, t_list *new)
 	tmp = *lst;
 	while (tmp->next)
 		tmp = tmp->next;
+//	printf("in lstaddback\n");
 	tmp->next = new;
 }

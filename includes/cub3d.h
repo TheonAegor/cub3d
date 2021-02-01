@@ -9,9 +9,9 @@ typedef struct	s_data
 {
 	void		*img;
 	char		*addr;
-	int			bits_per_pixel;
-	int			line_length;
-	int			endian;
+	int			bpp;
+	int			llen;
+	int			en;
 }				t_data;
 
 typedef struct	s_vars
@@ -28,6 +28,7 @@ typedef struct	s_point
 
 typedef struct	s_all
 {
+	char		**map;
 	t_point		point;
 	t_vars		vars;
 	t_data		data;
@@ -36,6 +37,6 @@ typedef struct	s_all
 int		key_hook(int keycode, t_vars *vars);
 int		close_win(int keycode, t_vars *vars);
 int		mouse_hook(int button, int x, int y, t_vars *vars);
-int		show_map(char **map);
+int		show_map(t_all *all);
 
 #endif

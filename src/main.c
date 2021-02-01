@@ -43,8 +43,11 @@ int		make_map(t_list **head, size_t size, t_all *all)
 	}
 	i = 0;
 //	printf("here\n");
-	while (map[i++])
+	while (map[i])
+	{
 		all->map[i] = map[i]; 
+		i++;
+	}
 	return (1);
 }
 
