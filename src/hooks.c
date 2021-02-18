@@ -8,6 +8,10 @@ int		close_win(int keycode, t_vars *vars)
 
 int		key_hook(int keycode, t_vars *vars)
 {
+	if (keycode == 65362)
+	{
+		;
+	}
 	printf("keycode is %d\n", keycode);
 }
 

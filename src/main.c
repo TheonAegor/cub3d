@@ -12,6 +12,8 @@ void printt(char **strs)
 	}
 }
 
+//создаем односвязный список и вставляем в него каждую строку карты
+//передаем список в функцию make_map
 int		read_map(int fd, t_all *all)
 {
 	char *line;
@@ -26,6 +28,8 @@ int		read_map(int fd, t_all *all)
 	make_map(&head, ft_lstsize(head), all);
 }
 
+//в двемерный массив вставляем строки
+//а потом в двумерный массив структуры вставляем строки
 int		make_map(t_list **head, size_t size, t_all *all)
 {
 	char **map;
