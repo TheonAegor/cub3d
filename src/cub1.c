@@ -79,16 +79,9 @@ int		show_map(t_all *all)
 	all->vars.win = mlx_new_window(all->vars.mlx, 640, 480, "test");
 	all->img.img = mlx_new_image(all->vars.mlx, 640, 480);
 	all->img.addr = mlx_get_data_addr(all->img.img, &all->img.bpp, &all->img.llen, &all->img.en);
+
 	draw_screen_scale(all, &point, &all->img);
-//	draw_map_scale(all, &point, &all->img);
-//	my_mlx_pp(&img, point.x, point.y, 0xFFFFFF); 
-//	mlx_put_image_to_window(all->vars.mlx, all->vars.win, all->img.img,0, 0);	
-//	mlx_key_hook(all->vars.win, key_hook, &all->vars);
-/*
-	clear_img(&all->img, 640, 480);
-    mlx_put_image_to_window(all->vars.mlx, all->vars.win, all->img.img,0, 0); 
-*/
-//	clear_win(&all, 640, 480);
+	clear_win(&all, 200, 200);
 //	mlx_hook(all->vars.win, 2, (1L << 0), &key_press, &all);
 	mlx_loop(all->vars.mlx);
 }
