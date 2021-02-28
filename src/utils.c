@@ -97,7 +97,7 @@ int		key_press(int key, t_all *all)
 {
 	distributor(key, all);
 	
-//	printf("Key:%i, img.addr=%d\n", key, all->img.addr);
+	printf("Key:%i, img.addr=%d\n", key, all->img.addr);
 /*
 	if (key = W)
 	{

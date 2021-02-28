@@ -93,12 +93,14 @@ void	distributor(int key, t_all *all)
 //	printf("img->addr:%i\n", all->img.addr);
 	if (key == W)
 		all->plr.y--;
-	else if (key == A)
+	if (key == A)
 		all->plr.x--;
-	else if (key == S)
+	if (key == S)
 		all->plr.y++;
-	else if (key == D)
+	if (key == D)
 		all->plr.x++;
+	if (key == 65307)
+		exit(0);
 	time_s = clock();
 	clear_img2(&all->img, WIDTH, HEIGHT);
 	printf("time=%d\n", clock()-time_s);
