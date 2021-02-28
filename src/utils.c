@@ -62,7 +62,7 @@ void	draw_plr_scale(t_data *img, int x, int y, int color)
 	int scale_y;
 	int scale_x;
 
-	printf("x = %d, y= %d, SCALE = %d, col = %d\n", x, y, SCALE, color);
+//	printf("x = %d, y= %d, SCALE = %d, col = %d\n", x, y, SCALE, color);
 	scale_y = y + SCALE;
 	scale_x = x + SCALE;
 	while (y < scale_y)
@@ -80,6 +80,7 @@ void	draw_plr_scale(t_data *img, int x, int y, int color)
 
 int		draw_screen_scale(t_all *all, t_point *point, t_data *img)
 {
+	printf("here\n");
 	draw_map_scale(all, point, img);
 /*
 -------------Нарисовать игрока отдельно------------------------
@@ -88,8 +89,9 @@ int		draw_screen_scale(t_all *all, t_point *point, t_data *img)
 /*
 -------------Отправить картинку на экран-----------------------
 */
-	release_ray(all);
-//	draw_line(all);
+//	printf("here\n");
+//	release_ray(all);
+//	first_quarter(all);
 	mlx_put_image_to_window(all->vars.mlx, all->vars.win, all->img.img,0, 0);
 }
 

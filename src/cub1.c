@@ -79,8 +79,8 @@ int		draw_map_scale(t_all *all, t_point *point, t_data *img)
 		i++;
 //		printf("here\n");
 	}
-	printf("heren2\n");
-	printf("x = %d, y= %d, SCALE = %d, col = %d\n", all->plr.x, all->plr.y, SCALE);
+//	printf("heren2\n");
+//	printf("x = %d, y= %d, SCALE = %d, col = %d\n", all->plr.x, all->plr.y, SCALE);
 //	draw_plr_scale(img, all->plr.x, all->plr.y, 30);
 }
 
@@ -92,8 +92,10 @@ int		show_map(t_all *all)
 	all->point.x = 100;
 //	printf("hereee\n");
 	all->point.y = 100;
+//	all->plr.angle = 90;
 	point.x = 100;
 	point.y = 100;
+	printf("%d,%d\n", all->plr.x, all->plr.y);	
 	all->vars.mlx = mlx_init();
 	all->vars.win = mlx_new_window(all->vars.mlx, WIDTH, HEIGHT, "test");
 	all->img.img = mlx_new_image(all->vars.mlx, WIDTH, HEIGHT);

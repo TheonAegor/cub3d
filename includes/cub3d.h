@@ -4,10 +4,11 @@
 # include "libft.h"
 # include <mlx.h>
 # include <math.h>
-# define PI 3.14
+# define PI 3.14159265359
 # define START 100
 # define WIDTH 1024
 # define HEIGHT 720
+# define MAX_RAY 300 
 # define W 119
 # define A 97 
 # define S 115 
@@ -36,6 +37,7 @@ typedef struct	s_point
 {
 	int			x;
 	int			y;
+	int			angle;
 }				t_point;	
 
 typedef struct	s_all
@@ -66,7 +68,10 @@ void    clear_img2(t_data *img, int w, int h);
 void    distributor(int key, t_all *all);
 void    go_up(t_data *img, t_all *all);
 int		release_ray(t_all *all);
-float	draw_line(t_all *all);
+float	first_quarter(t_all *all);
+float	second_quarter(t_all *all);
+float	third_quarter(t_all *all);
+float	forth_quarter(t_all *all);
 
 
 

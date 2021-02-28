@@ -21,11 +21,12 @@ int		read_map(int fd, t_all *all)
 
 	while (get_next_line(fd, &line))
 	{
-//		printf ("here\n");
 		ft_lstadd_back(&head, ft_lstnew(line));	
+//		printf("%s\n", head);
 	}	
 	ft_lstadd_back(&head, ft_lstnew(line));	
 	make_map(&head, ft_lstsize(head), all);
+//	printf ("here\n");
 }
 
 //в двемерный массив вставляем строки
@@ -42,13 +43,15 @@ int		make_map(t_list **head, size_t size, t_all *all)
 	map = ft_calloc(sizeof(char*), size + 1);
 	while(tmp)
 	{
+//		printf("%s\n", tmp);
 		map[i++] = tmp->content;
 		tmp = tmp->next;
 	}
+	map[i] = NULL;
 	i = 0;
-//	printf("here\n");
 	while (map[i])
 	{
+//	printf("map[i]= %s\n", map[i]);
 		all->map[i] = map[i]; 
 		i++;
 	}
@@ -61,8 +64,8 @@ int main(int argc, char *argv[])
 	t_all all;
 
 	fd = open(argv[1], O_RDONLY);
-	read_map(fd, &all); 
 //	printf ("here\n");
+	read_map(fd, &all); 
 	show_map(&all);
 	return (1);
 }
