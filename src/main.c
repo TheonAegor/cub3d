@@ -40,21 +40,23 @@ int		make_map(t_list **head, size_t size, t_all *all)
 	i = 0;
 //	printf ("here\n");
 	tmp = *head;
-	map = ft_calloc(sizeof(char*), size + 1);
+	all->map = ft_calloc(sizeof(char*), size + 1);
 	while(tmp)
 	{
 //		printf("%s\n", tmp);
-		map[i++] = tmp->content;
+		all->map[i++] = tmp->content;
 		tmp = tmp->next;
 	}
-	map[i] = NULL;
+	all->map[i] = NULL;
+/*
 	i = 0;
 	while (map[i])
 	{
-//	printf("map[i]= %s\n", map[i]);
 		all->map[i] = map[i]; 
+		//printf("map[i]= %s\n", all->map[i]);
 		i++;
 	}
+*/
 	return (1);
 }
 
@@ -63,9 +65,10 @@ int main(int argc, char *argv[])
 	int fd;
 	t_all all;
 
+	all.map = ft_calloc(sizeof(char *), 100);
 	fd = open(argv[1], O_RDONLY);
-//	printf ("here\n");
 	read_map(fd, &all); 
 	show_map(&all);
+//	printf ("here\n");
 	return (1);
 }

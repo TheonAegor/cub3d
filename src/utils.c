@@ -80,8 +80,8 @@ void	draw_plr_scale(t_data *img, int x, int y, int color)
 
 int		draw_screen_scale(t_all *all, t_point *point, t_data *img)
 {
-	printf("here\n");
 	draw_map_scale(all, point, img);
+	printf("draw_screen\n");
 /*
 -------------Нарисовать игрока отдельно------------------------
 */

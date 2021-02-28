@@ -70,6 +70,7 @@ int		draw_map_scale(t_all *all, t_point *point, t_data *img)
 			{
 				all->plr.x = point->x;
 				all->plr.y = point->y;
+				all->plr.angle = 90;
 				my_mlx_pp_shift(point, 0);
 //				my_mlx_pp_scale(img, point, 255, SCALE);
 			}
@@ -79,6 +80,7 @@ int		draw_map_scale(t_all *all, t_point *point, t_data *img)
 		i++;
 //		printf("here\n");
 	}
+	printf("map_scale\n");
 //	printf("heren2\n");
 //	printf("x = %d, y= %d, SCALE = %d, col = %d\n", all->plr.x, all->plr.y, SCALE);
 //	draw_plr_scale(img, all->plr.x, all->plr.y, 30);
