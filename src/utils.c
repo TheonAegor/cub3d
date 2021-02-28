@@ -62,7 +62,7 @@ void	draw_plr_scale(t_data *img, int x, int y, int color)
 	int scale_y;
 	int scale_x;
 
-//	printf("x = %d, y= %d, SCALE = %d, col = %d\n", x, y, SCALE, color);
+	printf("x = %d, y= %d, SCALE = %d, col = %d\n", x, y, SCALE, color);
 	scale_y = y + SCALE;
 	scale_x = x + SCALE;
 	while (y < scale_y)
@@ -75,7 +75,7 @@ void	draw_plr_scale(t_data *img, int x, int y, int color)
 		x = x - SCALE;
 		y++;
 	}
-//	printf("hereplr\n");
+
 }
 
 int		draw_screen_scale(t_all *all, t_point *point, t_data *img)
@@ -89,12 +89,8 @@ int		draw_screen_scale(t_all *all, t_point *point, t_data *img)
 -------------Отправить картинку на экран-----------------------
 */
 	release_ray(all);
+//	draw_line(all);
 	mlx_put_image_to_window(all->vars.mlx, all->vars.win, all->img.img,0, 0);
-//	sleep(1);
-//	mlx_key_hook(all->vars.win, &key_press, &all);
-//	mlx_hook(all->vars.win, 2, (1L << 0), key_press, all);
-//	clear_img2(img, 640, 480);
-//	mlx_put_image_to_window(all->vars.mlx, all->vars.win, all->img.img,0, 0);
 }
 
 int		key_press(int key, t_all *all)

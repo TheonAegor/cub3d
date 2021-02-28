@@ -1,5 +1,33 @@
 #include "cub3d.h"
 
+float	angle_to_rad(float degree)
+{
+
+	return (degree / (180 / PI));
+}
+
+float		draw_line(t_all *all)
+{
+	int x;
+	int y;
+	int ang;
+
+	x = 100;
+	y = 100;
+	ang = 45;
+	while (x < (x + SCALE) * cos(angle_to_rad(ang)) )
+	{
+		printf("%f\n", cos(angle_to_rad(ang)));
+		y = 10;
+		while(y < (y + SCALE) * sin(angle_to_rad(ang))) 
+		{
+			if (x/y == tan(PI/4))
+				my_mlx_pixel_put(&all->img, x, y, 0xff0000);
+			y++;
+		}
+	}
+}
+
 int		release_ray(t_all *all)
 {
 	int x;
