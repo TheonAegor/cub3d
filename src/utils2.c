@@ -2,9 +2,15 @@
 
 float		angle_to_rad(float degree)
 {
-	return (degree / (180 / PI));
+	float res;
+
+//	printf("degree=%f\n", degree);
+	res = degree * (PI / 180);
+//	printf("res=%f\n", res);
+	return (res);
 }
 
+/*
 void		angle_dist(t_all *all)
 {
 	printf("angl: %d\n", all->plr.angle);
@@ -26,12 +32,12 @@ float		forth_quarter(t_all *all)
 	x = 0;
 	y = 0;
 	tang = roundf((tan(angle_to_rad(all->plr.angle)))* 100) / 100;
-/*
+
 	printf("cos = %f\n", cos(angle_to_rad(all->plr.angle)));
 	printf("sin = %f\n", sin(angle_to_rad(all->plr.angle)));
 	printf("tang = %f\n", tang);
 //	printf("tan = %f\n", tang);
-*/
+
 	while (x > (MAX_RAY) * cos(angle_to_rad(all->plr.angle)) )
 	{
 //		printf("inside x\n");
@@ -62,12 +68,10 @@ float		third_quarter(t_all *all)
 	y = 0;
 	ang = 340;
 	tang = roundf((tan(angle_to_rad(all->plr.angle)))* 100) / 100;
-/*
 	printf("cos = %f\n", cos(angle_to_rad(all->plr.angle)));
 	printf("sin = %f\n", sin(angle_to_rad(all->plr.angle)));
 	printf("tang = %f\n", tang);
 //	printf("tan = %f\n", tang);
-*/
 	while (x < (MAX_RAY) * cos(angle_to_rad(all->plr.angle)) )
 	{
 //		printf("inside x\n");
@@ -94,13 +98,11 @@ float		first_quarter(t_all *all)
 	x = 0;
 	y = 0;
 	tang = roundf((tan(angle_to_rad(all->plr.angle)))* 100) / 100;
-/*
 	printf("cos = %f\n", cos(angle_to_rad(all->plr.angle)));
 	printf("sin = %f\n", sin(angle_to_rad(all->plr.angle)));
 	printf("tang = %f\n", tang);
 	printf("angle = %f\n", all->plr.angle);
 	printf("tan = %f\n", tang);
-*/
 	while (x > (MAX_RAY) * cos(angle_to_rad(all->plr.angle)) )
 	{
 //		printf("inside x\n");
@@ -110,7 +112,7 @@ float		first_quarter(t_all *all)
 //			printf("inside y\n");
 			if (fabs(roundf(y/x * 10) / 10) == fabs(tang))
 			{
-				my_mlx_pixel_put(&all->img, x + all->plr.x, y + all->plr.y, 0xff0000);
+				my_mlx_pixel_put(&all->img, x + all->plr.x + SCALE/2, y + all->plr.y + SCALE/2, 0xff0000);
 				break;
 			}
 			y = y - 0.1;
@@ -129,11 +131,9 @@ float		second_quarter(t_all *all)
 	y = 0;
 	ang = 360;
 	tang = roundf((tan(angle_to_rad(all->plr.angle)))* 100) / 100;
-/*
 	printf("cos = %f\n", cos(angle_to_rad(all->plr.angle)));
 	printf("sin = %f\n", sin(angle_to_rad(all->plr.angle)));
 //	printf("tan = %f\n", tang);
-*/
 	while (x < (MAX_RAY) * cos(angle_to_rad(all->plr.angle)) )
 	{
 		y = 0;
@@ -169,6 +169,7 @@ int		release_ray(t_all *all)
 		y--;
 	}
 }
+*/
 
 int		draw_only_map_scale(t_all *all, t_point *point, t_data *img)
 {
@@ -208,22 +209,36 @@ void	distributor(int key, t_all *all)
 //	printf("in dist%d\n", all->plr.angle);
 //	printf("img->addr:%i\n", all->img.addr);
 	if (key == W)
-		all->plr.y--;
+	{
+		all->plr.y -= roundf(sin(angle_to_rad(all->plr.angle)) * 4 * 100) / 100;
+		all->plr.x -= roundf(cos(angle_to_rad(all->plr.angle)) * 4 * 100) / 100;
+//		printf("x=%d,y=%d, dir=%f, sin=%f\n", all->plr.x, all->plr.y, all->plr.angle, sin(angle_to_rad(all->plr.angle)));
+	}
 	if (key == A)
-		all->plr.x--;
+	{
+		all->plr.angle -= 5;
+		printf("angl=%f\n", all->plr.angle);
+	}
 	if (key == S)
-		all->plr.y++;
+	{
+		all->plr.y += roundf(sin(angle_to_rad(all->plr.angle)) * 4 * 100) / 100;
+		all->plr.x += roundf(cos(angle_to_rad(all->plr.angle)) * 4 * 100) / 100;
+//		printf("x=%d,y=%d, dir = %f, sin(y)=%f\n", all->plr.x, all->plr.y, all->plr.angle, sin(angle_to_rad(all->plr.angle)) * 4);
+	}
 	if (key == D)
-		all->plr.x++;
+	{
+		all->plr.angle += 5;
+		printf("angl=%f\n", all->plr.angle);
+	}
 	if (key == 65307)
 		exit(0);
-	time_s = clock();
 	clear_img2(&all->img, WIDTH, HEIGHT);
 //	printf("time=%d\n", clock()-time_s);
 	draw_only_map_scale(all, &point, &all->img);
-	angle_dist(all);
+	draw_plr(&all->img, all->plr.x, all->plr.y, all->plr.angle);
+//	angle_dist(all);
 //	release_ray(all);
-	draw_plr_scale(&all->img, all->plr.x, all->plr.y, PLR);
+//	draw_plr_scale(&all->img, all->plr.x, all->plr.y, PLR);
 //	forth_quarter(all);
 	mlx_put_image_to_window(all->vars.mlx, all->vars.win, all->img.img,0, 0);
 }

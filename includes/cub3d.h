@@ -4,7 +4,7 @@
 # include "libft.h"
 # include <mlx.h>
 # include <math.h>
-# define PI 3.14
+# define PI 3.14159265359
 # define MAX_RAY 100 
 # define START 100
 # define WIDTH 1024
@@ -19,7 +19,7 @@
 # define PLR 255 
 
 typedef struct	s_data
-{
+{	
 	void		*img;
 	char		*addr;
 	int			bpp;
@@ -37,7 +37,7 @@ typedef struct	s_point
 {
 	int			x;
 	int			y;
-	int			angle;
+	float		angle;
 }				t_point;	
 
 typedef struct	s_all
@@ -59,7 +59,7 @@ void	my_mlx_pixel_put(t_data *img, int x, int y, int color);
 int     my_mlx_pp_scale(t_data *data, t_point *point, int color);
 int     my_mlx_pp_shift(t_point *point, int flag);
 void    draw_plr_scale(t_data *img, int x, int y, int color);
-void    draw_plr(t_data *img, int x, int y);
+void    draw_plr(t_data *img, int x, int y, float angle);
 int     key_press(int key, t_all *all);
 int     draw_screen_scale(t_all *all, t_point *point, t_data *img);
 int     draw_map_scale(t_all *all, t_point *point, t_data *img);
@@ -73,6 +73,7 @@ float	first_quarter(t_all *all);
 float	second_quarter(t_all *all);
 float	third_quarter(t_all *all);
 float	forth_quarter(t_all *all);
+float	angle_to_rad(float degree);
 
 
 

@@ -52,9 +52,27 @@ void		my_mlx_pixel_put(t_data *img, int x, int y, int color)
 	*(unsigned int*)dst = color;
 }
 
-void	draw_plr(t_data *img, int x, int y)
+void	draw_plr(t_data *img, int x, int y, float angle)
 {
-	my_mlx_pixel_put(img, x, y, 255);
+	char *dst;
+
+//	my_mlx_pixel_put(img, x, y, 255);
+	while ((y >= 0 && y <= HEIGHT) && (x >= 0 && x <= WIDTH))
+	{
+//		printf("draw_plr||sin=%f,cos=%f\n", sin(angle_to_rad(angle)), cos(angle_to_rad(angle)));
+		printf("dst=%u\n", *(unsigned int*)dst);
+		dst = img->addr + (y * img->llen + x * (img->bpp / 8));
+		if (*(unsigned int*)dst == WALL)
+			return ;
+//		printf("angl int draw_plr=%f\n", angle);
+//		printf("rad=%f, cos=%f\n", angle_to_rad(angle), cos(angle_to_rad(angle)));
+		my_mlx_pixel_put(img, x, y, 0xff0000);
+		x += roundf(cos(angle_to_rad(angle)) * 100) / 100;
+		y += roundf(sin(angle_to_rad(angle)) * 100) / 100;
+//		printf("x=%d,y=%d, angle=%f\n", x,y, angle);
+		sleep(1);
+	}
+
 }
 
 void	draw_plr_scale(t_data *img, int x, int y, int color)
@@ -81,11 +99,12 @@ void	draw_plr_scale(t_data *img, int x, int y, int color)
 int		draw_screen_scale(t_all *all, t_point *point, t_data *img)
 {
 	draw_map_scale(all, point, img);
-	printf("draw_screen\n");
+//	printf("x=%d,y=%d, dir=%f, sin=%f\n", all->plr.x, all->plr.y, all->plr.angle, sin(angle_to_rad(all->plr.angle)));
+//	printf("draw_screen\n");
 /*
 -------------Нарисовать игрока отдельно------------------------
 */
-	draw_plr_scale(img, all->plr.x, all->plr.y, 255);
+	draw_plr(img, all->plr.x, all->plr.y, all->plr.angle);
 /*
 -------------Отправить картинку на экран-----------------------
 */
@@ -99,7 +118,7 @@ int		key_press(int key, t_all *all)
 {
 	distributor(key, all);
 	
-	printf("Key:%i, img.addr=%d\n", key, all->img.addr);
+//	printf("Key:%i, img.addr=%d\n", key, all->img.addr);
 /*
 	if (key = W)
 	{
