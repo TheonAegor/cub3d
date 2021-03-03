@@ -6,16 +6,16 @@
 # include <math.h>
 # define PI 3.14159265359
 # define MAX_RAY 100 
-# define START 0
-# define WIDTH 1024
-# define HEIGHT 720
+# define START 5
+# define WIDTH 1000
+# define HEIGHT 1000
 # define W 119
 # define A 97 
 # define S 115 
 # define D 100 
-# define SCALE 20 
+# define SCALE 100 
 # define BLACK 0x000000 
-# define WALL 0xffffff 
+# define WALL 0xFFFFFF 
 # define PLR 255 
 
 typedef struct	s_data
@@ -49,6 +49,12 @@ typedef struct	s_all
 	t_point		plr;
 }				t_all;
 
+typedef struct s_point_int
+{
+	int x;
+	int y;
+}				t_point_int;
+
 int		key_hook(int keycode, t_vars *vars);
 int		close_win(int keycode, t_vars *vars);
 int		mouse_hook(int button, int x, int y, t_vars *vars);
@@ -65,6 +71,7 @@ int     key_press(int key, t_all *all);
 int     draw_screen_scale(t_all *all, t_point *point, t_data *img);
 int     draw_map_scale(t_all *all, t_point *point, t_data *img);
 int     draw_only_map_scale(t_all *all, t_point *point, t_data *img);
+int		draw_line_cubes(t_all *all, t_data *img);
 void    clear_img2(t_data *img, int w, int h);
 void    distributor(int key, t_all *all);
 float	angle_to_rad(float degree);

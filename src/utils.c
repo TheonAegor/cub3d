@@ -39,14 +39,15 @@ void	draw_plr(t_data *img, float x, float y, float angle)
 	char *dst;
 
 //	my_mlx_pixel_put(img, x, y, 255);
-	while ((y >= 0 && y <= HEIGHT) && (x >= 0 && x <= WIDTH))
+	while (((int)y >= 0 && (int)y <= HEIGHT) && ((int)x >= 0 && (int)x <= WIDTH))
 	{
 //		printf("draw_plr||sin=%f,cos=%f\n", sin(angle_to_rad(angle)), cos(angle_to_rad(angle)));
 //		printf("dst=%u\n", *(unsigned int*)dst);
 //		printf("angl int draw_plr=%f\n", angle);
 //		printf("rad=%f, cos=%f\n", angle_to_rad(angle), cos(angle_to_rad(angle)));
-		dst = img->addr + ((int)y * img->llen + (int)x * (img->bpp / 8));
-		if ((((int)x - START)%20==0 || ((int)y-START)%20 ==0) && *(unsigned int*)dst == WALL)
+		dst = img->addr + ((int)y * img->llen + (int)x * img->bpp / 8);
+//		printf("(%d;%d), %%=%d\n", (int)x, (int)y, ((int)x - START) % SCALE);
+		if ((((((int)x - START) % SCALE) == 0) || ((((int)y - START) % SCALE) == 0)) && *(unsigned int*)dst == WALL)
 			return ;
 		pix_put_plr(img, x + 10/2, y + 10/2, 0xff0000);
 		x -= cos(angle_to_rad(angle));

@@ -1,5 +1,57 @@
 #include "cub3d.h"
 
+void	draw_cub(t_data *img, t_point *p, int color)
+{
+	int xx;
+	int yy;
+
+	xx = p->x;
+	yy = p->y;
+	while (p->y < yy + SCALE)
+	{
+		my_mlx_pixel_put(img, p->x, p->y, color);		
+		p->y++;
+	}
+	p->y -= SCALE;
+	while (p->x < xx + SCALE)
+	{
+		my_mlx_pixel_put(img, p->x, p->y, color);
+		p->x++;	
+	}
+	p->x -= SCALE;
+	p->x += SCALE;
+//	p->y += SCALE;
+}
+
+int		draw_line_cubes(t_all *all, t_data *img)
+{
+	t_point p;
+	int i;
+	int j;
+
+	p.y = START;
+	p.x = START;
+	printf("p.y=%f\n", p.y);
+	printf("p.x=%f\n", p.x);
+	i = 0;
+	j = 0;
+	while (all->map[i])
+	{
+		j = 0;
+		p.x = START;
+		while(all->map[i][j])
+		{
+			draw_cub(img, &p, 0x808080);
+			j++;
+//			p.y++;
+		}
+		my_mlx_pp_shift(&p, 1);
+//		printf("y=%d\n", p.y);
+		i++;
+	}
+//	printf("i=%d\n", i);
+}
+
 int     draw_only_map_scale(t_all *all, t_point *point, t_data *img)                                          
 {         
     int i;
@@ -7,9 +59,10 @@ int     draw_only_map_scale(t_all *all, t_point *point, t_data *img)
           
     i = 0;
     j = 0;             
+    point->y = START;
     while (all->map[i])
     {                  
-        point->x = START;       
+        point->x = START;
         j = 0;                
         while (all->map[i][j])        
         {                                             
@@ -20,7 +73,9 @@ int     draw_only_map_scale(t_all *all, t_point *point, t_data *img)
             else if (all->map[i][j] == 'N')
                 my_mlx_pp_shift(point, 0);
             j++;
-        }                         
+			point->x++;
+        }        
+		point->y++;
         my_mlx_pp_shift(point, 1);
         i++;
     }
@@ -47,11 +102,11 @@ int		my_mlx_pp_scale(t_data *data, t_point *point, int color)
 
 	i = 0;
 	dst = (char **)malloc(sizeof(char *) * (WIDTH * HEIGHT));
-	scale_y = point->y + SCALE;
-	scale_x = point->x + SCALE;
-	while (point->y < scale_y)
+	scale_y = (int)point->y + SCALE;
+	scale_x = (int)point->x + SCALE;
+	while ((int)point->y < scale_y)
 	{
-		while (point->x < scale_x)
+		while ((int)point->x < scale_x)
 		{
 			dst[i] = data->addr + ((int)point->y * data->llen + (int)point->x * (data->bpp / 8));
 			i++;
@@ -69,6 +124,7 @@ int		my_mlx_pp_scale(t_data *data, t_point *point, int color)
 int		my_mlx_pp_shift(t_point *point, int flag)
 {
 	flag == 0 ? (point->x += SCALE) : (point->y += SCALE);
+	printf("yyy=%f\n", point->y);
 	return (1);
 }
 
@@ -78,6 +134,7 @@ int		draw_map_scale(t_all *all, t_point *point, t_data *img)
 	int i;
 	int j;	
 
+	point->y = START;
 	i = 0;
 	j = 0;
 	while (all->map[i])
