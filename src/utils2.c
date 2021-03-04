@@ -40,9 +40,9 @@ void	distributor(int key, t_all *all)
 		all->plr.x -= cos(angle_to_rad(all->plr.angle)) * 4;
 
 		printf("x=%f,y=%f, dir = %f, sin(y)=%f, cos(x)=%f\n", all->plr.x, all->plr.y, all->plr.angle, round(sin(angle_to_rad(all->plr.angle))) * 4, round(cos(angle_to_rad(all->plr.angle))) * 4);
-		printf("x=%d,y=%d\n", (int)all->plr.x, (int)all->plr.y);
+//		printf("x=%d,y=%d\n", (int)all->plr.x, (int)all->plr.y);
 	}
-	if (key == A)
+sif (key == A)
 	{
 		all->plr.angle -= 5;
 		printf("angl=%f\n", all->plr.angle);
@@ -53,7 +53,7 @@ void	distributor(int key, t_all *all)
 		all->plr.x += cos(angle_to_rad(all->plr.angle));
 
 		printf("x=%f,y=%f, dir = %f, sin(y)=%f, cos(x)=%f\n", all->plr.x, all->plr.y, all->plr.angle, round(sin(angle_to_rad(all->plr.angle))) * 4, round(cos(angle_to_rad(all->plr.angle))) * 4);
-		printf("x=%d,y=%d\n", (int)all->plr.x, (int)all->plr.y);
+//		printf("x=%d,y=%d\n", (int)all->plr.x, (int)all->plr.y);
 	}
 	if (key == D)
 	{
@@ -64,8 +64,6 @@ void	distributor(int key, t_all *all)
 		exit(0);
 	clear_img2(&all->img, WIDTH, HEIGHT);
 	draw_only_map_scale(all, &point, &all->img);
-//	draw_line_cubes(all, &all->img);
-//	draw_plr(&all->img, all->plr.x, all->plr.y, all->plr.angle);
 //	draw_plr_scale(&all->img, all->plr.x, all->plr.y, PLR);
 	draw_plr(&all->img, all->plr.x, all->plr.y, all->plr.angle);
 	mlx_put_image_to_window(all->vars.mlx, all->vars.win, all->img.img,0, 0);

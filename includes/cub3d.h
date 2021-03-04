@@ -6,7 +6,7 @@
 # include <math.h>
 # define PI 3.14159265359
 # define MAX_RAY 100 
-# define START 5
+# define START 30
 # define WIDTH 1000
 # define HEIGHT 1000
 # define W 119
@@ -40,6 +40,12 @@ typedef struct	s_point
 	float		angle;
 }				t_point;	
 
+typedef struct s_p
+{
+	int	x;
+	int y;
+}				t_p;
+
 typedef struct	s_all
 {
 	char		**map;
@@ -64,7 +70,7 @@ int		clear_win(t_all *all, int w, int l);
 void	my_mlx_pixel_put(t_data *img, int x, int y, int color);
 void	pix_put_plr(t_data *img, float x, float y, int color);
 int     my_mlx_pp_scale(t_data *data, t_point *point, int color);
-int     my_mlx_pp_shift(t_point *point, int flag);
+int     my_mlx_pp_shift(int *x, int *y, int flag);
 void    draw_plr_scale(t_data *img, float x, float y, int color);
 void    draw_plr(t_data *img, float x, float y, float angle);
 int     key_press(int key, t_all *all);

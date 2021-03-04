@@ -1,5 +1,49 @@
 #include "cub3d.h"
 
+draw_the_line(t_data *img, float line_h, float base_ang, float angle, t_vars *vars)
+{
+	int x;
+	int scale_x;
+	int y;
+
+	x = base_ang - angle;
+	if (x <= 0)
+		x = angle + (base_ang - angle);	
+	y = 0;
+	scale_x = x + 8;
+	while (x < scale_x)
+	{
+		while (y < line_h)
+			my_mlx_pixel_put(img, x, y++, 0xff0000);
+		x++;
+	}
+	mlx_put_image_to_window(vars->mlx, vars->win, img->img,0, 0); 
+	
+	
+}
+
+void draw3D(float distt, float base_ang, float angle)
+{
+	t_vars vars;
+	t_data img;
+	float line_h;
+
+	vars.mlx = mlx_init();
+	vars.win = mlx_new_window(vars.mlx, WIDTH, HEIGHT, "game");
+	img.img = mlx_new_image(vars.mlx, WIDTH, HEIGHT);
+	img.addr = mlx_get_data_addr(img.img, &img.bpp, &img.llen, &img.en);
+	line_h = (SCALE*HEIGHT)/distt;
+	if (line_h > HEIGHT)
+		line_h = HEIGHT;
+	draw_the_line(&img, line_h, base_ang, angle, &vars);
+	mlx_loop
+		
+}
+
+int		dist(float x, float y, float xx, float yy)
+{
+	return (hypotf(fabs(x - xx), fabs(y -yy)));
+}
 void		my_mlx_pixel_put(t_data *img, int x, int y, int color)
 {
 	char *dst;
@@ -37,23 +81,35 @@ int		draw_screen_scale(t_all *all, t_point *point, t_data *img)
 void	draw_plr(t_data *img, float x, float y, float angle)
 {
 	char *dst;
+	int	ang_rng_top;
+	int ang_rng_low;
+	float xx;
+	float yy;
+	int distt;
 
+	ang_rng_top = angle + 30;
+	ang_rng_low = angle - 30;
+	xx = x;
+	yy = y;
 //	my_mlx_pixel_put(img, x, y, 255);
-	while (((int)y >= 0 && (int)y <= HEIGHT) && ((int)x >= 0 && (int)x <= WIDTH))
-	{
-//		printf("draw_plr||sin=%f,cos=%f\n", sin(angle_to_rad(angle)), cos(angle_to_rad(angle)));
-//		printf("dst=%u\n", *(unsigned int*)dst);
-//		printf("angl int draw_plr=%f\n", angle);
-//		printf("rad=%f, cos=%f\n", angle_to_rad(angle), cos(angle_to_rad(angle)));
-		dst = img->addr + ((int)y * img->llen + (int)x * img->bpp / 8);
-//		printf("(%d;%d), %%=%d\n", (int)x, (int)y, ((int)x - START) % SCALE);
-		if ((((((int)x - START) % SCALE) == 0) || ((((int)y - START) % SCALE) == 0)) && *(unsigned int*)dst == WALL)
-			return ;
-		pix_put_plr(img, x + 10/2, y + 10/2, 0xff0000);
-		x -= cos(angle_to_rad(angle));
-		y -= sin(angle_to_rad(angle));
-//		printf("x=%d,y=%d, angle=%f\n", x,y, angle);
-//		sleep(1);
+	while (ang_rng_low < ang_rng_top)
+	{	
+		x = xx;
+		y = yy;
+		while (((int)y >= 0 && (int)y <= HEIGHT) && ((int)x >= 0 && (int)x <= WIDTH))
+		{
+			dst = img->addr + ((int)y * img->llen + (int)x * img->bpp / 8);
+			if (*(unsigned int*)dst == WALL)
+			{
+				distt = dist(x, y, xx, yy);
+				draw3D(distt, ang_rng_low, angle);
+				break ;
+			}
+			pix_put_plr(img, x, y, 0xff0000);
+			x -= cos(angle_to_rad(ang_rng_low));
+			y -= sin(angle_to_rad(ang_rng_low));
+		}
+		ang_rng_low += 0.5;
 	}
 /*
 */
