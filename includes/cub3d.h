@@ -6,14 +6,16 @@
 # include <math.h>
 # define PI 3.14159265359
 # define MAX_RAY 100 
-# define START 30
-# define WIDTH 1000
-# define HEIGHT 1000
+# define START 0
+# define VIEW 60
+# define DIRECTION 180
+# define WIDTH 1280
+# define HEIGHT 1024
 # define W 119
 # define A 97 
 # define S 115 
 # define D 100 
-# define SCALE 100 
+# define SCALE 100
 # define BLACK 0x000000 
 # define WALL 0xFFFFFF 
 # define PLR 255 
@@ -42,9 +44,18 @@ typedef struct	s_point
 
 typedef struct s_p
 {
+
 	int	x;
 	int y;
 }				t_p;
+
+typedef struct	s_game
+{
+	t_vars		vars;
+	t_data		img;
+	int			distt;
+	float		line_h;
+}				t_game;
 
 typedef struct	s_all
 {
@@ -53,6 +64,7 @@ typedef struct	s_all
 	t_vars		vars;
 	t_data		img;
 	t_point		plr;
+	t_game		game;
 }				t_all;
 
 typedef struct s_point_int
@@ -72,7 +84,7 @@ void	pix_put_plr(t_data *img, float x, float y, int color);
 int     my_mlx_pp_scale(t_data *data, t_point *point, int color);
 int     my_mlx_pp_shift(int *x, int *y, int flag);
 void    draw_plr_scale(t_data *img, float x, float y, int color);
-void    draw_plr(t_data *img, float x, float y, float angle);
+void    draw_plr(t_data *img, float x, float y, float angle, t_all *all);
 int     key_press(int key, t_all *all);
 int     draw_screen_scale(t_all *all, t_point *point, t_data *img);
 int     draw_map_scale(t_all *all, t_point *point, t_data *img);
@@ -81,6 +93,9 @@ int		draw_line_cubes(t_all *all, t_data *img);
 void    clear_img2(t_data *img, int w, int h);
 void    distributor(int key, t_all *all);
 float	angle_to_rad(float degree);
+void	draw_the_line(t_data *img, int *iter, float angle, float line_h, t_all *all);
+void	draw3D(t_all *all);
+int		dist(float x, float y, float xx, float yy);
 
 
 

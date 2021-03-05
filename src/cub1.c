@@ -143,7 +143,7 @@ int		draw_map_scale(t_all *all, t_point *point, t_data *img)
 			{
 				all->plr.x = point->x;
 				all->plr.y = point->y;
-				all->plr.angle = 90;
+				all->plr.angle = DIRECTION;
 				my_mlx_pp_scale(img, point, BLACK);
 			}
 			j++;
@@ -171,8 +171,9 @@ int		show_map(t_all *all)
 	all->vars.win = mlx_new_window(all->vars.mlx, WIDTH, HEIGHT, "test");
 	all->img.img = mlx_new_image(all->vars.mlx, WIDTH, HEIGHT);
 	all->img.addr = mlx_get_data_addr(all->img.img, &all->img.bpp, &all->img.llen, &all->img.en);
-
+//	draw3D(all);
 	draw_screen_scale(all, &point, &all->img);
 	mlx_hook(all->vars.win, 2, (1L << 0), &key_press, all);
+//	mlx_loop(all->game.vars.mlx);
 	mlx_loop(all->vars.mlx);
 }

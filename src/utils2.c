@@ -22,6 +22,8 @@ void	clear_img2(t_data *img, int w, int l)
 float		angle_to_rad(float degree)
 {
 	float res;
+	while (degree > 360)
+		degree -= 360;
 
 	res = degree * (PI / 180);
 	return (res);
@@ -42,10 +44,10 @@ void	distributor(int key, t_all *all)
 		printf("x=%f,y=%f, dir = %f, sin(y)=%f, cos(x)=%f\n", all->plr.x, all->plr.y, all->plr.angle, round(sin(angle_to_rad(all->plr.angle))) * 4, round(cos(angle_to_rad(all->plr.angle))) * 4);
 //		printf("x=%d,y=%d\n", (int)all->plr.x, (int)all->plr.y);
 	}
-sif (key == A)
+	if (key == A)
 	{
 		all->plr.angle -= 5;
-		printf("angl=%f\n", all->plr.angle);
+	printf("angl=%f\n", all->plr.angle);
 	}
 	if (key == S)
 	{
@@ -65,6 +67,6 @@ sif (key == A)
 	clear_img2(&all->img, WIDTH, HEIGHT);
 	draw_only_map_scale(all, &point, &all->img);
 //	draw_plr_scale(&all->img, all->plr.x, all->plr.y, PLR);
-	draw_plr(&all->img, all->plr.x, all->plr.y, all->plr.angle);
+	draw_plr(&all->img, all->plr.x, all->plr.y, all->plr.angle, all);
 	mlx_put_image_to_window(all->vars.mlx, all->vars.win, all->img.img,0, 0);
 }
