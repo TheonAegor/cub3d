@@ -62,7 +62,7 @@ void	distributor(int key, t_all *all)
 		all->plr.angle += 5;
 		printf("angl=%f\n", all->plr.angle);
 	}
-	if (key == 65307)
+	if (key == 53)
 		exit(0);
 	clear_img2(&all->img, WIDTH, HEIGHT);
 	draw_only_map_scale(all, &point, &all->img);

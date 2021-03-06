@@ -43,48 +43,39 @@ void	draw_plr(t_data *img, float x, float y, float angle, t_all *all)
 	float yy;
 	int distt;
 	float line_h;
+	float line_h_end;
 	int iter;
 
 	ang_rng_top = angle + VIEW/2;
 	ang_rng_low = angle - VIEW/2;
 	xx = x;
 	yy = y;
-//	draw3D(all);
-//	my_mlx_pixel_put(img, x, y, 255);
+	line_h = 0;
+	line_h_end = 1000;
 	iter = 0;
+
 	while (ang_rng_low < ang_rng_top)
-	{	
-		x = xx;
-		y = yy;
-		while (((int)y >= 0 && (int)y <= HEIGHT) && ((int)x >= 0 && (int)x <= WIDTH))
+	{
+		xx = x;
+		yy = y;
+		while (xx < WIDTH && yy < WIDTH)
 		{
-			dst = img->addr + ((int)y * img->llen + (int)x * img->bpp / 8);
-			if (*(unsigned int*)dst == WALL)
+			dst = img->addr + ((int)yy * img->llen + (int)xx * img->bpp / 8);
+			if (all->map[(int)(floor(yy/SCALE))][(int)(floor(xx/SCALE))] == '1')
 			{
-/*
-*/
-				distt = dist(x, y, xx, yy);
-//				printf("after distt, %d\n", SCALE * HEIGHT);
-				if (distt <= 0)
-					distt = 1;
-				line_h = (int)((SCALE * 700) / distt);
-//				printf("after line_h\n");
-				if (line_h > HEIGHT)
-					line_h = HEIGHT;
-				printf("line_h=%f\n", line_h);
-				draw_the_line(&all->img, &iter, angle, line_h, all);
+				printf("xx=%f, yy=%f", xx, yy);
+				distt = HEIGHT / dist(x, y, xx, yy);
+				printf("%d\n", distt);
+				draw_the_line(img, &iter, angle, distt, all);
+				iter++;
 				break ;
 			}
-			pix_put_plr(img, x, y, 0xff0000);
-			x -= cos(angle_to_rad(ang_rng_low));
-			y -= sin(angle_to_rad(ang_rng_low));
+			pix_put_plr(img, xx, yy, 0xff0000);
+			xx -= cos(angle_to_rad(ang_rng_low));
+			yy -= sin(angle_to_rad(ang_rng_low));
 		}
-		ang_rng_low += 1;
-		printf("iter=%d\n", iter);
+		ang_rng_low += 0.5;
 	}
-	printf("here\n");
-//	mlx_hook(all->game.vars.win, 2, (1L << 0), &key_press, all);
-//	mlx_loop(all->game.vars.mlx);
 /*
 */
 
@@ -114,6 +105,7 @@ void	draw_plr_scale(t_data *img, float x, float y, int color)
 
 int		key_press(int key, t_all *all)
 {
+	printf("%d\n", key);
 	distributor(key, all);
 	return (key);
 }

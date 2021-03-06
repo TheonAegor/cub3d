@@ -25,7 +25,7 @@ void draw_the_line(t_data *img, int *iter, float angle, float line_h, t_all *all
 */
 	while (x < scale_x)
 	{
-		y = 150;
+		y = 0;
 		while (y < (int)line_h)
 			my_mlx_pixel_put(img, x, y++, 0xff0000);
 		x++;

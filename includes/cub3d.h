@@ -11,11 +11,11 @@
 # define DIRECTION 180
 # define WIDTH 1280
 # define HEIGHT 1024
-# define W 119
-# define A 97 
-# define S 115 
-# define D 100 
-# define SCALE 100
+# define W 13
+# define A 0 
+# define S 1
+# define D 2 
+# define SCALE 40
 # define BLACK 0x000000 
 # define WALL 0xFFFFFF 
 # define PLR 255 
@@ -65,6 +65,7 @@ typedef struct	s_all
 	t_data		img;
 	t_point		plr;
 	t_game		game;
+	float 		lint_h;
 }				t_all;
 
 typedef struct s_point_int
