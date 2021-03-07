@@ -17,13 +17,12 @@ $(name): $(obj)
 	make -C mlx_mac/
 	cp libft/libft.h ./includes/	
 	cp libft/libft.a ./
-	$(cc) -o $(name) $^ libft.a libmlx_mac.a -framework OpenGL -framework Appkit  
-#$(option) $^ libmlx_Linux.a libft.a -lXext -lX11 -lm -lz 
+	$(cc) -o $(name) $(option) $^ libmlx_Linux.a libft.a -lXext -lX11 -lm -lz 
 
 #$(cc) $(option) -o $(name) $(src) -L. -lft
 
 %.o:  src/%.c
-	$(cc) $(option) -c $< -o $@
+	$(cc) $(option) -O3 -c $< -o $@
 
 clean:
 	make clean -C libft

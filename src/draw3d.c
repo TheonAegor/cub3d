@@ -1,6 +1,6 @@
 #include "cub3d.h"
 
-void draw_the_line(t_data *img, int *iter, float angle, float line_h, t_all *all)
+void draw_the_line(t_data *img, int *iter, float line_h, t_all *all, int color)
 {
 	int x;
 	int scale_x;
@@ -11,8 +11,9 @@ void draw_the_line(t_data *img, int *iter, float angle, float line_h, t_all *all
 		x = (int)(angle + (base_ang - angle));
 	printf("x int draw_the_line=%d\n", x);	
 */
-	x = *iter;
-	scale_x = x + 100;
+	x = *iter + WIDTH/2;
+	scale_x = x + WIDTH/2/120;
+	*iter += scale_x - x;
 /*
 	while (x < scale_x)
 	{
@@ -25,12 +26,20 @@ void draw_the_line(t_data *img, int *iter, float angle, float line_h, t_all *all
 */
 	while (x < scale_x)
 	{
-		y = 0;
-		while (y < (int)line_h)
-			my_mlx_pixel_put(img, x, y++, 0xff0000);
+		int tmp;
+
+		y = HEIGHT / 2;
+		tmp = y + (int)line_h/2;
+		while (y < tmp)
+		{
+			my_mlx_pixel_put(img, x, y++, color);
+		}
+		y = HEIGHT / 2;
+		tmp = y - (int)line_h/2;
+		while (y > tmp)
+			my_mlx_pixel_put(img, x, y--, color);
 		x++;
 	}
-	*iter = x;
 //	printf("iter=%d\n", *iter);
 //	mlx_put_image_to_window(all->vars.mlx, all->vars.win, all->img.img,0, 0); 
 }
@@ -52,7 +61,7 @@ void draw3D(t_all *all)
 		
 }
 
-int		dist(float x, float y, float xx, float yy)
+float	dist(float x, float y, float xx, float yy)
 {
 	return (hypotf(fabs(x - xx), fabs(y -yy)));
 }

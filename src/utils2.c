@@ -62,11 +62,11 @@ void	distributor(int key, t_all *all)
 		all->plr.angle += 5;
 		printf("angl=%f\n", all->plr.angle);
 	}
-	if (key == 53)
+	if (key == 65307)//53)
 		exit(0);
 	clear_img2(&all->img, WIDTH, HEIGHT);
 	draw_only_map_scale(all, &point, &all->img);
 //	draw_plr_scale(&all->img, all->plr.x, all->plr.y, PLR);
-	draw_plr(&all->img, all->plr.x, all->plr.y, all->plr.angle, all);
+	draw_plr2(&all->img, all->plr.x, all->plr.y, all->plr.angle, all);
 	mlx_put_image_to_window(all->vars.mlx, all->vars.win, all->img.img,0, 0);
 }

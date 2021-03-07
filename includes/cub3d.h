@@ -9,13 +9,13 @@
 # define START 0
 # define VIEW 60
 # define DIRECTION 180
-# define WIDTH 1280
+# define WIDTH 2000 
 # define HEIGHT 1024
-# define W 13
-# define A 0 
-# define S 1
-# define D 2 
-# define SCALE 40
+# define W 119//13
+# define A 97//0 
+# define S 115//1
+# define D 100//2 
+# define SCALE WIDTH/8/2
 # define BLACK 0x000000 
 # define WALL 0xFFFFFF 
 # define PLR 255 
@@ -86,6 +86,7 @@ int     my_mlx_pp_scale(t_data *data, t_point *point, int color);
 int     my_mlx_pp_shift(int *x, int *y, int flag);
 void    draw_plr_scale(t_data *img, float x, float y, int color);
 void    draw_plr(t_data *img, float x, float y, float angle, t_all *all);
+void    draw_plr2(t_data *img, float x, float y, float angle, t_all *all);
 int     key_press(int key, t_all *all);
 int     draw_screen_scale(t_all *all, t_point *point, t_data *img);
 int     draw_map_scale(t_all *all, t_point *point, t_data *img);
@@ -94,9 +95,9 @@ int		draw_line_cubes(t_all *all, t_data *img);
 void    clear_img2(t_data *img, int w, int h);
 void    distributor(int key, t_all *all);
 float	angle_to_rad(float degree);
-void	draw_the_line(t_data *img, int *iter, float angle, float line_h, t_all *all);
+void	draw_the_line(t_data *img, int *iter, float line_h, t_all *all, int color);
 void	draw3D(t_all *all);
-int		dist(float x, float y, float xx, float yy);
+float	dist(float x, float y, float xx, float yy);
 
 
 
