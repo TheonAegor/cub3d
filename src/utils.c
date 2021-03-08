@@ -39,8 +39,48 @@ int		draw_screen_scale(t_all *all, t_point *point, t_data *img)
 void	draw_plr2(t_data *img, double px, double py, float pa, t_all *all)
 {
 	int mx, my, x;
+	int i;
+	int y;
 
-	x = 0;
+	i = 0;
+/*
+	buffer = ft_calloc(sizeof(unsig*), HEIGHT);
+	while (i < HEIGHT)
+	{
+		buffer = ft_calloc(sizeof(float), WIDTH);
+		i++;
+	}
+	i = 0;
+	texture = ft_calloc(sizeof(float*),8);
+	while (i < 8)
+	{
+		texture[i] = ft_calloc(sizeof(float),WIDTH*HEIGHT);
+		i++;
+	}
+	while (x < TW)
+	{
+		y = 0;
+		while (y < TH)
+		{
+		    int xorcolor = (x * 256 / TW) ^ (y * 256 / TH);
+		    //int xcolor = x * 256 / TW;
+		    int ycolor = y * 256 / TH;
+		    int xycolor = y * 128 / TH + x * 128 / TW;
+		    texture[0][TW * y + x] = 65536 * 254 * (x != y && x != TW - y); //flat red texture with black cross
+		    texture[1][TW * y + x] = xycolor + 256 * xycolor + 65536 * xycolor; //sloped greyscale
+		    texture[2][TW * y + x] = 256 * xycolor + 65536 * xycolor; //sloped yellow gradient
+		    texture[3][TW * y + x] = xorcolor + 256 * xorcolor + 65536 * xorcolor; //xor greyscale
+		    texture[4][TW * y + x] = 256 * xorcolor; //xor green
+		    texture[5][TW * y + x] = 65536 * 192 * (x % 16 && y % 16); //red bricks
+		    texture[6][TW * y + x] = 65536 * ycolor; //red gradient
+			texture[7][TW * y + x] = 128 + 256 * 128 + 65536 * 128; //flat grey texture
+			y++;
+		}
+		x++;
+	}
+*/
+		x = 0;
+		y = 0;
 		while (x < WIDTH)
 		{
 			double camerax = 2 * x/(double)WIDTH - 1;/**/
@@ -96,7 +136,7 @@ void	draw_plr2(t_data *img, double px, double py, float pa, t_all *all)
 					my += sy;
 					side = 1;
 				}
-				if (all->map[mx][my] == '1' )
+				if (all->map[mx][my] >= '1' )
 					hit = 1;
 			}
 			if (side == 0)
@@ -112,12 +152,73 @@ void	draw_plr2(t_data *img, double px, double py, float pa, t_all *all)
 			if (de >= HEIGHT)
 				de = HEIGHT - 1;
 //			printf("ds=%d, de = %d\n", ds, de);
-			printf("dx=%f, dx=%f, plx=%f, ply=%f\n", all->dx, all->dy, all->planex, all->planey);
+//			printf("dx=%f, dx=%f, plx=%f, ply=%f\n", all->dx, all->dy, all->planex, all->planey);
+/*
 			int color = 0xff0000;
 			if (side == 1)
 				color = 0x660000;
 			draw_lines(img, ds, de, x, color);
+*/
+			int tn = all->map[mx][my] - 48 - 1;
+	//		printf("tn=%d\n", tn);
+
+			double wallX;
+			if (side ==0)
+				wallX = all->plr.y + pwd * rdy;
+			else
+				wallX = all->plr.x + pwd * rdx;
+			wallX -= floor((wallX));
+
+			int texX = (int)(wallX * (double)(TW));
+			if(side == 0 && rdx > 0) 
+				texX = TW - texX - 1;
+			if(side == 1 && rdy < 0) 
+				texX = TW - texX - 1;	
+			double step = 1.0 * TH/lh;
+			double texPos = (ds - HEIGHT/2 + lh /2) * step;
+			y = ds;
+			while ( y < de)
+			{
+				int texY = (int)texPos & (TH - 1);
+				texPos += step;
+				unsigned color = all->texture[tn][TH * texY + texX];
+				if (side == 1) 
+					color = (color >> 1) & 8355711;
+				all->buffer[y][x] = color;
+		//		if (buffer[y][x] != 0)
+		//			printf("(%d,%d):%u\n",x,y, buffer[y][x]);
+				y++;
+			}
 			x += 1;
+		}
+//		printf("hererer\n");
+/*
+		y = 0;
+		while (y < HEIGHT)
+		{
+			x = 0;
+			while (x < WIDTH)
+			{
+		        my_mlx_pixel_put(img, x, y, buffer[y][x]);
+				x++;
+//				printf("x=%u, y = %u\n", x, y);
+		//		printf("%u\n", buffer[y][x]);
+			}
+			y++;
+		}
+*/
+//		printf("here before\n");
+		draw_buffer(&all->img, all);
+		y = 0;
+		while (y < HEIGHT)
+		{
+			x = 0;
+			while(x < WIDTH)
+			{
+				all->buffer[y][x] = 0;
+				x++;
+			}
+			y++;
 		}
 }
 /*

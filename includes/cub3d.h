@@ -9,11 +9,13 @@
 # define PI3 3*PI2
 # define MAX_RAY 100 
 # define MS 0.1 
+# define TW 64 
+# define TH 64 
 # define START 0
 # define VIEW 60
 # define DIRECTION PI 
-# define WIDTH 1000
-# define HEIGHT 1000
+# define WIDTH 2000
+# define HEIGHT 1024
 # define W 119//13
 # define A 97//0 
 # define S 115//1
@@ -71,6 +73,8 @@ typedef struct	s_all
 	double		dy;
 	double		planex;
 	double		planey;
+	unsigned	texture[8][TW*TH];
+	unsigned	buffer[HEIGHT][WIDTH];	
 	float 		lint_h;
 }				t_all;
 
@@ -107,6 +111,6 @@ void	draw3D(t_all *all);
 float	dist(float x, float y, float xx, float yy);
 void draw_the_line2(t_data *img, double px, double py, float rx, float ry);
 void	draw_lines(t_data *img, int ds, int de, int x, int color);
-
+void draw_buffer(t_data *img,t_all *all);
 
 #endif

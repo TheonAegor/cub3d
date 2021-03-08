@@ -79,7 +79,7 @@ void	distributor(int key, t_all *all)
 		double opx = all->planex;
 		all->planex = all->planex * cos(MS*0.5) - all->planey * sin(MS*0.5);
 		all->planey = opx * sin(MS*0.5) + all->planey * cos(MS*0.5);
-		printf("key = D;dx=%f, dx=%f, plx=%f, ply=%f\n", all->dx, all->dy, all->planex, all->planey);
+//		printf("key = D;dx=%f, dx=%f, plx=%f, ply=%f\n", all->dx, all->dy, all->planex, all->planey);
 	}
 	if (key == 65307)//53)
 		exit(0);
@@ -87,5 +87,6 @@ void	distributor(int key, t_all *all)
 //	draw_only_map_scale(all, &point, &all->img);
 //	draw_plr_scale(&all->img, all->plr.x, all->plr.y, PLR);
 	draw_plr2(&all->img, all->plr.x, all->plr.y, all->plr.angle, all);
+//	printf("heeeeere\n");
 	mlx_put_image_to_window(all->vars.mlx, all->vars.win, all->img.img,0, 0);
 }
