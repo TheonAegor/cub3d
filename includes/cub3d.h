@@ -5,17 +5,20 @@
 # include <mlx.h>
 # include <math.h>
 # define PI 3.14159265359
+# define PI2 PI/2
+# define PI3 3*PI2
 # define MAX_RAY 100 
+# define MS 0.1 
 # define START 0
 # define VIEW 60
-# define DIRECTION 180
-# define WIDTH 2000 
-# define HEIGHT 1024
+# define DIRECTION PI 
+# define WIDTH 1000
+# define HEIGHT 1000
 # define W 119//13
 # define A 97//0 
 # define S 115//1
 # define D 100//2 
-# define SCALE WIDTH/8/2
+# define SCALE 64
 # define BLACK 0x000000 
 # define WALL 0xFFFFFF 
 # define PLR 255 
@@ -37,8 +40,8 @@ typedef struct	s_vars
 
 typedef struct	s_point
 {
-	float			x;
-	float			y;
+	double			x;
+	double			y;
 	float		angle;
 }				t_point;	
 
@@ -64,7 +67,10 @@ typedef struct	s_all
 	t_vars		vars;
 	t_data		img;
 	t_point		plr;
-	t_game		game;
+	double		dx;
+	double		dy;
+	double		planex;
+	double		planey;
 	float 		lint_h;
 }				t_all;
 
@@ -86,10 +92,11 @@ int     my_mlx_pp_scale(t_data *data, t_point *point, int color);
 int     my_mlx_pp_shift(int *x, int *y, int flag);
 void    draw_plr_scale(t_data *img, float x, float y, int color);
 void    draw_plr(t_data *img, float x, float y, float angle, t_all *all);
-void    draw_plr2(t_data *img, float x, float y, float angle, t_all *all);
+void    draw_plr2(t_data *img, double x, double y, float angle, t_all *all);
 int     key_press(int key, t_all *all);
 int     draw_screen_scale(t_all *all, t_point *point, t_data *img);
 int     draw_map_scale(t_all *all, t_point *point, t_data *img);
+void     find_plr(t_all *all);
 int     draw_only_map_scale(t_all *all, t_point *point, t_data *img);
 int		draw_line_cubes(t_all *all, t_data *img);
 void    clear_img2(t_data *img, int w, int h);
@@ -98,7 +105,8 @@ float	angle_to_rad(float degree);
 void	draw_the_line(t_data *img, int *iter, float line_h, t_all *all, int color);
 void	draw3D(t_all *all);
 float	dist(float x, float y, float xx, float yy);
-
+void draw_the_line2(t_data *img, double px, double py, float rx, float ry);
+void	draw_lines(t_data *img, int ds, int de, int x, int color);
 
 
 #endif

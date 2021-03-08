@@ -38,34 +38,53 @@ void	distributor(int key, t_all *all)
 	point.y = START;
 	if (key == W)
 	{
-		all->plr.y -= sin(angle_to_rad(all->plr.angle)) * 4;
-		all->plr.x -= cos(angle_to_rad(all->plr.angle)) * 4;
-
-		printf("x=%f,y=%f, dir = %f, sin(y)=%f, cos(x)=%f\n", all->plr.x, all->plr.y, all->plr.angle, round(sin(angle_to_rad(all->plr.angle))) * 4, round(cos(angle_to_rad(all->plr.angle))) * 4);
-//		printf("x=%d,y=%d\n", (int)all->plr.x, (int)all->plr.y);
-	}
-	if (key == A)
-	{
-		all->plr.angle -= 5;
-	printf("angl=%f\n", all->plr.angle);
+		if (all->map[(int)(all->plr.x + all->dx*MS)][(int)all->plr.y] == '0')
+			all->plr.x += all->dx * MS;
+		if (all->map[(int)(all->plr.x)][(int)(all->plr.y +all->dy*MS)])
+			all->plr.y += all->dy * MS;
+/*
+		if (all->map[(int)all->plr.y][(int)(all->plr.x + all->dx*MS)] == '0')
+			all->plr.x += all->dx * MS;
+		if (all->map[(int)(all->plr.y +all->dx*MS)][(int)(all->plr.x)])
+			all->plr.y += all->dy * MS;
+*/
 	}
 	if (key == S)
 	{
-		all->plr.y += sin(angle_to_rad(all->plr.angle));
-		all->plr.x += cos(angle_to_rad(all->plr.angle));
-
-		printf("x=%f,y=%f, dir = %f, sin(y)=%f, cos(x)=%f\n", all->plr.x, all->plr.y, all->plr.angle, round(sin(angle_to_rad(all->plr.angle))) * 4, round(cos(angle_to_rad(all->plr.angle))) * 4);
-//		printf("x=%d,y=%d\n", (int)all->plr.x, (int)all->plr.y);
+		if (all->map[(int)(all->plr.x - all->dx*MS)][(int)all->plr.y]== '0')
+			all->plr.x -= all->dx * MS;
+		if (all->map[(int)(all->plr.x)][(int)(all->plr.y - all->dy*MS)])
+			all->plr.y -= all->dy * MS;
+/*
+		if (all->map[(int)all->plr.y][(int)(all->plr.x - all->dx*MS)] == '0')
+			all->plr.x -= all->dx * MS;
+		if (all->map[(int)(all->plr.y - all->dx*MS)][(int)(all->plr.x)])
+			all->plr.y -= all->dy * MS;
+*/
 	}
 	if (key == D)
 	{
-		all->plr.angle += 5;
-		printf("angl=%f\n", all->plr.angle);
+		double odx = all->dx;
+		all->dx = all->dx * cos(-MS*0.5) - all->dy * sin(-MS*0.5);
+		all->dy = odx * sin(-MS*0.5) + all->dy * cos(-MS*0.5);
+		double opx = all->planex;
+		all->planex = all->planex * cos(-MS*0.5) - all->planey * sin(-MS*0.5);
+		all->planey = opx * sin(-MS*0.5) + all->planey * cos(-MS*0.5);
+    }
+	if (key == A)
+	{
+		double odx = all->dx;
+		all->dx = all->dx * cos(MS*0.5) - all->dy * sin(MS*0.5);
+		all->dy = odx * sin(MS*0.5) + all->dy * cos(MS*0.5);
+		double opx = all->planex;
+		all->planex = all->planex * cos(MS*0.5) - all->planey * sin(MS*0.5);
+		all->planey = opx * sin(MS*0.5) + all->planey * cos(MS*0.5);
+		printf("key = D;dx=%f, dx=%f, plx=%f, ply=%f\n", all->dx, all->dy, all->planex, all->planey);
 	}
 	if (key == 65307)//53)
 		exit(0);
 	clear_img2(&all->img, WIDTH, HEIGHT);
-	draw_only_map_scale(all, &point, &all->img);
+//	draw_only_map_scale(all, &point, &all->img);
 //	draw_plr_scale(&all->img, all->plr.x, all->plr.y, PLR);
 	draw_plr2(&all->img, all->plr.x, all->plr.y, all->plr.angle, all);
 	mlx_put_image_to_window(all->vars.mlx, all->vars.win, all->img.img,0, 0);

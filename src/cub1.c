@@ -1,4 +1,31 @@
 #include "cub3d.h"
+/*
+*/
+void	find_plr(t_all *all)
+{
+	int i;
+	int j;
+
+	i = 0;
+    all->dx = -1;
+   	all->dy = 0;
+	all->planex = 0;
+    all->planey = 0.66;
+	while (all->map[i])
+	{
+		j = 0;
+		while(all->map[i][j])
+		{
+			if (all->map[i][j] == 'N')
+			{
+				all->plr.y = (double)i;		
+				all->plr.x = (double)j;
+			}
+			j++;
+		}
+		i++;
+	}
+}
 
 void	draw_cub(t_data *img, t_p *p, int color)
 {

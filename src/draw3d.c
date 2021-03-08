@@ -1,5 +1,69 @@
 #include "cub3d.h"
 
+void draw_lines(t_data *img, int ds, int de, int x, int color)
+{
+	while (ds < de)
+	{
+		my_mlx_pixel_put(img, x, ds, color);
+		ds++;
+	}
+}
+/*
+void draw_the_line2(t_data *img, float px, float py, float rx, float ry)
+
+{
+	float tang;
+
+	tang = fabs((py-ry)/(px - rx));
+//	printf("tang=%f\n", tang);
+//	printf("p(%f;%f):r(%f;%f)\n", px,py,rx,ry);
+	if (py > ry)
+	{
+		if (px > rx)
+		{
+			while((int)px != (int)rx && ((int)px >= 0 && (int)py > 0))
+			{
+				my_mlx_pixel_put(img, (int)px, (int)py, 0xff0000);
+				py -= tang;
+				px--;
+				printf("p(%f;%f):r(%f;%f)\n", px,py,rx,ry);
+			}
+		}
+		else
+		{
+			while((int)px != (int)rx && ((int)px >= 0 && (int)py > 0))
+			{
+				my_mlx_pixel_put(img, (int)px, (int)py, 0xff0000);
+				py -= -tang;
+				px++;
+//				printf("p(%f;%f):r(%f;%f)\n", px,py,rx,ry);
+			}
+		}
+	}
+	else 
+	{
+		if (px > rx)
+		{
+			while((int)px != (int)rx && ((int)px >= 0 && (int)py >= 0))
+			{
+				my_mlx_pixel_put(img, (int)px, (int)py, 0xff0000);
+				py -= tang;
+				px--;
+			}
+		}
+		else
+		{
+			while((int)px != (int)rx && ((int)px >= 0 && (int)py >= 0) )
+			{
+				my_mlx_pixel_put(img, (int)px, (int)py, 0xff0000);
+				py -= -tang;
+				px++;
+			}
+		}
+	}
+}
+*/
+
 void draw_the_line(t_data *img, int *iter, float line_h, t_all *all, int color)
 {
 	int x;
@@ -12,7 +76,7 @@ void draw_the_line(t_data *img, int *iter, float line_h, t_all *all, int color)
 	printf("x int draw_the_line=%d\n", x);	
 */
 	x = *iter + WIDTH/2;
-	scale_x = x + WIDTH/2/120;
+	scale_x = x +WIDTH/2/12;
 	*iter += scale_x - x;
 /*
 	while (x < scale_x)
@@ -42,23 +106,6 @@ void draw_the_line(t_data *img, int *iter, float line_h, t_all *all, int color)
 	}
 //	printf("iter=%d\n", *iter);
 //	mlx_put_image_to_window(all->vars.mlx, all->vars.win, all->img.img,0, 0); 
-}
-
-void draw3D(t_all *all)
-{
-
-	all->game.vars.mlx = mlx_init();
-	all->game.vars.win = mlx_new_window(all->game.vars.mlx, WIDTH, HEIGHT, "game");
-	all->game.img.img = mlx_new_image(all->game.vars.mlx, WIDTH, HEIGHT);
-	all->game.img.addr = mlx_get_data_addr(all->game.img.img, &all->game.img.bpp, &all->game.img.llen, &all->game.img.en);
-/*
-	all->game.line_h = (SCALE*HEIGHT)/distt;
-	if (all->game.line_h > HEIGHT)
-		all->game.line_h = HEIGHT;
-	draw_the_line(&all->game.img, lall->game.ine_h, base_ang, angle, &vars);
-//	mlx_loop(all->game.vars.mlx);
-*/
-		
 }
 
 float	dist(float x, float y, float xx, float yy)
