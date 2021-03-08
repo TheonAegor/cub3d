@@ -1,6 +1,13 @@
 #include "cub3d.h"
 /*
 */
+unsigned int    my_mlx_get_color(t_image_e data, int x, int y)
+{
+        char    *dst;
+
+        dst = data.addr + (y * data.llen + x * (data.bpp / 8));
+        return (*(unsigned int *)dst);
+}
 
 void	find_plr(t_all *all)
 {
@@ -15,7 +22,49 @@ void	find_plr(t_all *all)
 	all->planex = 0;	
     all->planey = 0.66;
 	x = 0;
-//	printf("gere\n");
+/*
+	all->image_e.filename = (char**)malloc(sizeof(char*)*8);
+*/
+	while (i < 8)
+	{
+		all->image_e.filename[i] = malloc(sizeof(char)*100);
+		i++;
+	}
+	/*
+	*/
+//	(all->image_e).filename[0][0] = 'g';
+	(all->image_e).filename[0] = "eagle.png";
+	all->image_e.filename[1] = "pics/redbrick.png";
+	all->image_e.filename[2] = "pics/purplestone.png";
+	all->image_e.filename[3] = "pics/greystone.png";
+	all->image_e.filename[4] = "pics/bluestone.png";
+	all->image_e.filename[5] = "pics/mossy.png";
+	all->image_e.filename[6] = "pics/wood.png";
+	all->image_e.filename[7] = "pics/colorstone.png";
+	i = 0;
+	while (i < 8)
+	{
+		printf("%p\n", all->vars.mlx);
+		printf("filename:%p\n", all->image_e.filename[i]);
+		printf("%p\n", mlx_xpm_file_to_image(all->vars.mlx, "./eagle.png", &all->image_e.img_w, &all->image_e.img_h));
+		all->image_e.img = mlx_xpm_file_to_image(all->vars.mlx, all->image_e.filename[i], &all->image_e.img_w, &all->image_e.img_h);
+		printf("%p\n", all->image_e.img);
+		all->image_e.addr = mlx_get_data_addr(all->image_e.img, &all->image_e.bpp, &all->image_e.llen, &all->image_e.end);
+		printf("gere22\n");
+		x = 0;
+		while (x < TW)
+		{
+			y = 0;
+			while (y < TH)
+			{
+				all->texture[i][TW * y +x] = my_mlx_get_color(all->image_e, x, y);
+				y++;
+			}
+			x++;
+		}
+	}
+
+/*
 	while (x < TW)
     {
         y = 0;
@@ -38,7 +87,7 @@ void	find_plr(t_all *all)
         }
         x++;
     }
-
+*/
 	while (all->map[i])
 	{
 		j = 0;
@@ -73,59 +122,6 @@ void draw_buffer(t_data *img, t_all *all)
 		}
 		x++;
 	}
-}
-
-void	draw_cub(t_data *img, t_p *p, int color)
-{
-	int xx;
-	int yy;
-
-	xx = p->x;
-	yy = p->y;
-	while (p->y < yy + SCALE)
-	{
-		my_mlx_pixel_put(img, p->x, p->y, color);		
-		p->y++;
-	}
-	p->y -= SCALE;
-	while (p->x < xx + SCALE)
-	{
-		my_mlx_pixel_put(img, p->x, p->y, color);
-		p->x++;	
-	}
-	p->x -= SCALE;
-	p->x += SCALE;
-//	p->y += SCALE;
-}
-
-int		draw_line_cubes(t_all *all, t_data *img)
-{
-	t_p p;
-	int i;
-	int j;
-
-	p.y = START;
-	p.x = START;
-//	printf("p.y=%f\n", p.y);
-//	printf("p.x=%f\n", p.x);
-	i = 0;
-	j = 0;
-	while (all->map[i])
-	{
-		j = 0;
-		p.x = START;
-		while(all->map[i][j])
-		{
-			draw_cub(img, &p, 0x808080);
-			j++;
-//			p.y++;
-		}
-		p.y += SCALE;
-//		my_mlx_pp_shift(&p.x, &p.y, 1);
-	//	printf("y=%d\n", p.y);
-		i++;
-	}
-//	printf("i=%d\n", i);
 }
 
 int     draw_only_map_scale(t_all *all, t_point *point, t_data *img)                                          

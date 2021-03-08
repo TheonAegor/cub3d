@@ -24,6 +24,7 @@
 # define BLACK 0x000000 
 # define WALL 0xFFFFFF 
 # define PLR 255 
+# define NS 19
 
 typedef struct	s_data
 {	
@@ -47,20 +48,25 @@ typedef struct	s_point
 	float		angle;
 }				t_point;	
 
-typedef struct s_p
+typedef struct	s_sprite
 {
+	double			x;
+	double			y;
+	int				texture;
+}				t_sprite;
 
-	int	x;
-	int y;
-}				t_p;
-
-typedef struct	s_game
+typedef struct s_image_e
 {
-	t_vars		vars;
-	t_data		img;
-	int			distt;
-	float		line_h;
-}				t_game;
+	void		*img;
+	char		*path;
+	char		*addr;
+	int			img_w;
+	int			img_h;
+	int			bpp;
+	int			llen;
+	int			end;
+	char		*filename[100];
+}				t_image_e;
 
 typedef struct	s_all
 {
@@ -69,10 +75,14 @@ typedef struct	s_all
 	t_vars		vars;
 	t_data		img;
 	t_point		plr;
+	t_image_e	image_e;
 	double		dx;
 	double		dy;
 	double		planex;
 	double		planey;
+	double		zbuf[WIDTH];
+	int			so[NS];//sprite Order
+	double		sd[NS];//sprite Distanse
 	unsigned	texture[8][TW*TH];
 	unsigned	buffer[HEIGHT][WIDTH];	
 	float 		lint_h;
