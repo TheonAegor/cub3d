@@ -24,31 +24,26 @@ void	find_plr(t_all *all)
 	x = 0;
 /*
 	all->image_e.filename = (char**)malloc(sizeof(char*)*8);
-*/
 	while (i < 8)
 	{
 		all->image_e.filename[i] = malloc(sizeof(char)*100);
 		i++;
 	}
-	/*
-	*/
-//	(all->image_e).filename[0][0] = 'g';
-	(all->image_e).filename[0] = "eagle.png";
-	all->image_e.filename[1] = "pics/redbrick.png";
-	all->image_e.filename[2] = "pics/purplestone.png";
-	all->image_e.filename[3] = "pics/greystone.png";
-	all->image_e.filename[4] = "pics/bluestone.png";
-	all->image_e.filename[5] = "pics/mossy.png";
-	all->image_e.filename[6] = "pics/wood.png";
-	all->image_e.filename[7] = "pics/colorstone.png";
+	(all->image_e).filename[0][0] = 'g';
+*/
+	all->image_e.filename[0] = "pics/eagle.xpm";
+	all->image_e.filename[1] = "pics/purplestone.xpm";
+	all->image_e.filename[2] = "pics/bluestone.xpm";
+	all->image_e.filename[3] = "pics/floor_1.xpm";
+	all->image_e.filename[4] = "pics/pillar.xpm";
 	i = 0;
-	while (i < 8)
+	while (i < 5)
 	{
-		printf("%p\n", all->vars.mlx);
-		printf("filename:%p\n", all->image_e.filename[i]);
-		printf("%p\n", mlx_xpm_file_to_image(all->vars.mlx, "./eagle.png", &all->image_e.img_w, &all->image_e.img_h));
+//		printf("%p\n", all->vars.mlx);
+//		printf("filename:%p\n", all->image_e.filename[i]);
+//		printf("%p\n", mlx_xpm_file_to_image(all->vars.mlx, "./eagle.png", &all->image_e.img_w, &all->image_e.img_h));
 		all->image_e.img = mlx_xpm_file_to_image(all->vars.mlx, all->image_e.filename[i], &all->image_e.img_w, &all->image_e.img_h);
-		printf("%p\n", all->image_e.img);
+//		printf("%p\n", all->image_e.img);
 		all->image_e.addr = mlx_get_data_addr(all->image_e.img, &all->image_e.bpp, &all->image_e.llen, &all->image_e.end);
 		printf("gere22\n");
 		x = 0;
@@ -62,8 +57,8 @@ void	find_plr(t_all *all)
 			}
 			x++;
 		}
+		i++;
 	}
-
 /*
 	while (x < TW)
     {
@@ -88,6 +83,8 @@ void	find_plr(t_all *all)
         x++;
     }
 */
+	i = 0;
+//	printf("gotcha\n");
 	while (all->map[i])
 	{
 		j = 0;
@@ -97,11 +94,13 @@ void	find_plr(t_all *all)
 			{
 				all->plr.x = (double)j;
 				all->plr.y = (double)i;
+//				printf("%f:%f)\n",all->plr.x,all->plr.y);
 			}
 			j++;
 		}
 		i++;
 	}
+//	printf("jsfl\n");
 }
 
 void draw_buffer(t_data *img, t_all *all)

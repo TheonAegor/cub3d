@@ -28,6 +28,7 @@ int		draw_screen_scale(t_all *all, t_point *point, t_data *img)
 {
 //	draw_map_scale(all, point, img);
 //	draw_map(all, point, img);
+//	printf("here\n");
 	find_plr(all);
 /*
 -------------Нарисовать игрока отдельно------------------------
@@ -124,6 +125,7 @@ void	draw_plr2(t_data *img, double px, double py, float pa, t_all *all)
 			}
 			while ( hit == 0)
 			{
+//				printf("sdx = %f, sdy = %f\n, sy = %d, sx = %d\n, my = %d, mx = %d\n", sdx, sdy, sy, sx, my, mx);
 				if(sdx < sdy)
 				{
 					sdx += ddx;
@@ -177,6 +179,7 @@ void	draw_plr2(t_data *img, double px, double py, float pa, t_all *all)
 			double step = 1.0 * TH/lh;
 			double texPos = (ds - HEIGHT/2 + lh /2) * step;
 			y = ds;
+//			printf("ololo\n");
 			while ( y < de)
 			{
 				int texY = (int)texPos & (TH - 1);
@@ -391,7 +394,7 @@ void	draw_plr_scale(t_data *img, float x, float y, int color)
 
 int		key_press(int key, t_all *all)
 {
-	printf("%d\n", key);
+//	printf("%d\n", key);
 	distributor(key, all);
 	return (key);
 }

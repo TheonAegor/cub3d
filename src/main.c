@@ -58,8 +58,8 @@ int main(int argc, char *argv[])
 //	int i;
 
 	fd = open(argv[1], O_RDONLY);
-	read_map(fd, &all); 
 	all.map = ft_calloc(sizeof(char *), 100);
+	read_map(fd, &all); 
 /*
 	all.image_e.filename = (char**)malloc(sizeof(char*)*256);
 	i = 0;
