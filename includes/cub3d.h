@@ -25,6 +25,15 @@
 # define WALL 0xFFFFFF 
 # define PLR 255 
 # define NS 19
+# define VMV 0.0
+# define VDIV 1 
+# define UDIV 1 
+
+typedef struct s_sprites
+{
+	double	first;
+	int		second;
+}				t_sprites;
 
 typedef struct	s_data
 {	
@@ -46,7 +55,7 @@ typedef struct	s_point
 	double			x;
 	double			y;
 	float		angle;
-}				t_point;	
+}				t_point;
 
 typedef struct	s_sprite
 {
@@ -76,6 +85,7 @@ typedef struct	s_all
 	t_data		img;
 	t_point		plr;
 	t_image_e	image_e;
+	t_sprite	sprite[NS];
 	double		dx;
 	double		dy;
 	double		planex;
@@ -122,5 +132,6 @@ float	dist(float x, float y, float xx, float yy);
 void draw_the_line2(t_data *img, double px, double py, float rx, float ry);
 void	draw_lines(t_data *img, int ds, int de, int x, int color);
 void draw_buffer(t_data *img,t_all *all);
+void sort_sprites(int *so, double *ds, t_all *all);
 
 #endif

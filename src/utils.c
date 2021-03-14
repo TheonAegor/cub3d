@@ -44,42 +44,6 @@ void	draw_plr2(t_data *img, double px, double py, float pa, t_all *all)
 	int y;
 
 	i = 0;
-/*
-	buffer = ft_calloc(sizeof(unsig*), HEIGHT);
-	while (i < HEIGHT)
-	{
-		buffer = ft_calloc(sizeof(float), WIDTH);
-		i++;
-	}
-	i = 0;
-	texture = ft_calloc(sizeof(float*),8);
-	while (i < 8)
-	{
-		texture[i] = ft_calloc(sizeof(float),WIDTH*HEIGHT);
-		i++;
-	}
-	while (x < TW)
-	{
-		y = 0;
-		while (y < TH)
-		{
-		    int xorcolor = (x * 256 / TW) ^ (y * 256 / TH);
-		    //int xcolor = x * 256 / TW;
-		    int ycolor = y * 256 / TH;
-		    int xycolor = y * 128 / TH + x * 128 / TW;
-		    texture[0][TW * y + x] = 65536 * 254 * (x != y && x != TW - y); //flat red texture with black cross
-		    texture[1][TW * y + x] = xycolor + 256 * xycolor + 65536 * xycolor; //sloped greyscale
-		    texture[2][TW * y + x] = 256 * xycolor + 65536 * xycolor; //sloped yellow gradient
-		    texture[3][TW * y + x] = xorcolor + 256 * xorcolor + 65536 * xorcolor; //xor greyscale
-		    texture[4][TW * y + x] = 256 * xorcolor; //xor green
-		    texture[5][TW * y + x] = 65536 * 192 * (x % 16 && y % 16); //red bricks
-		    texture[6][TW * y + x] = 65536 * ycolor; //red gradient
-			texture[7][TW * y + x] = 128 + 256 * 128 + 65536 * 128; //flat grey texture
-			y++;
-		}
-		x++;
-	}
-*/
 		x = 0;
 		y = 0;
 		while (x < WIDTH)
@@ -125,7 +89,6 @@ void	draw_plr2(t_data *img, double px, double py, float pa, t_all *all)
 			}
 			while ( hit == 0)
 			{
-//				printf("sdx = %f, sdy = %f\n, sy = %d, sx = %d\n, my = %d, mx = %d\n", sdx, sdy, sy, sx, my, mx);
 				if(sdx < sdy)
 				{
 					sdx += ddx;
@@ -179,7 +142,6 @@ void	draw_plr2(t_data *img, double px, double py, float pa, t_all *all)
 			double step = 1.0 * TH/lh;
 			double texPos = (ds - HEIGHT/2 + lh /2) * step;
 			y = ds;
-//			printf("ololo\n");
 			while ( y < de)
 			{
 				int texY = (int)texPos & (TH - 1);
@@ -192,6 +154,7 @@ void	draw_plr2(t_data *img, double px, double py, float pa, t_all *all)
 		//			printf("(%d,%d):%u\n",x,y, buffer[y][x]);
 				y++;
 			}
+			all->zbuf[x] = pwd;
 			x += 1;
 		}
 //		printf("hererer\n");
@@ -211,6 +174,89 @@ void	draw_plr2(t_data *img, double px, double py, float pa, t_all *all)
 		}
 */
 //		printf("here before\n");
+/*
+ * draw_buffer(&all->img, all);
+		y = 0;
+		while (y < HEIGHT)
+		{
+			x = 0;
+			while(x < WIDTH)
+			{
+				all->buffer[y][x] = 0;
+				x++;
+			}
+			y++;
+		}
+*/
+/*---SPRITE casting
+ *---
+*/
+//		printf("plr(%f:%f)\nsd(%f,%d)\n", all->plr.x, all->plr.y, all->sd[i], all->so[i]);
+		i = 0;
+		while (i < NS)
+		{
+			all->so[i] = i;
+			all->sd[i] = ((all->plr.x - all->sprite[i].x) * (all->plr.x - all->sprite[i].x) + (all->plr.y - all->sprite[i].y) * (all->plr.y - all->sprite[i].y));
+//			printf("plr(%f:%f)\nsd(%f,%d)\n", all->plr.x, all->plr.y, all->sd[i], all->so[i]);
+			i++;
+		}
+		sort_sprites(all->so, all->sd, all);
+//		printf("after_sort\n");
+		i = 0;
+		while (i < NS)
+		{
+			double sprite_x = all->sprite[all->so[i]].x - all->plr.x;
+			double sprite_y = all->sprite[all->so[i]].y - all->plr.y;
+			double inv_det = 1.0 / (all->planex * all->dy - all->dx * all->planey);
+			double transform_x = inv_det * (all->dy * sprite_x - all->dx * sprite_y);
+			double transform_y = inv_det * (-all->planey * sprite_x + all->planex * sprite_y);
+			int sprite_screen_x = (int)((WIDTH/2)*(1 + transform_x / transform_y));
+			int vmove_screen = (int)(VMV / transform_y);
+			int spr_h = abs((int)(HEIGHT / transform_y)) / VDIV;
+			int drawsy = -spr_h / 2 + HEIGHT / 2 + vmove_screen;
+			if (drawsy < 0)
+				drawsy = 0;
+			int drawey = spr_h / 2 + HEIGHT / 2 + vmove_screen;
+			if (drawey >= HEIGHT)
+				drawey = HEIGHT - 1;
+			int spr_w = abs((int)(HEIGHT / (transform_y))) / UDIV;
+			int drawsx = -spr_w / 2 + sprite_screen_x;
+			if (drawsx < 0) 
+				drawsx = 0;
+			int drawex = spr_w / 2 + sprite_screen_x;
+			if (drawex >= WIDTH)
+				drawex = WIDTH - 1;
+			int stripe = drawsx;
+//			printf("stripe=%d, drawex = %d\n",stripe, drawex);
+//			printf("before while stripe\n");
+//				printf("sd[1]%f\n", all->sd[0]);
+			while (stripe < drawex)
+			{
+//				printf("sd[1]%f\n", all->sd[0]);
+				int texX = (int)(256 * (stripe - (-spr_w / 2 + sprite_screen_x)) * TW / spr_w) / 256;
+//				printf("transform_y = %f, zbuf[%d] %f, \n",transform_y, stripe, all->zbuf[stripe]);
+				if (transform_y > 0 && stripe > 0 && stripe < WIDTH && transform_y < all->zbuf[stripe])
+				{
+					int y = drawsy;
+//					printf("y = %d\n", y);
+					while (y < drawey)
+					{
+						int d = (y) * 256 - HEIGHT * 128 + spr_h * 128;
+//						printf("spr_h = %d, d = %d\n", spr_h, d);
+						int texY = ((d * TH) / spr_h) / 256;
+						unsigned color = all->texture[all->sprite[all->so[i]].texture][TW * texY + texX];
+//						printf("stripe=%d\n",stripe);
+						if ((color & 0x00FFFFFF) != 0)
+						   	all->buffer[y][stripe] = color;
+						y++;
+					}
+				}
+				stripe++;
+			}
+			i++;
+		}
+/*
+*/
 		draw_buffer(&all->img, all);
 		y = 0;
 		while (y < HEIGHT)
@@ -223,173 +269,6 @@ void	draw_plr2(t_data *img, double px, double py, float pa, t_all *all)
 			}
 			y++;
 		}
-}
-/*
-void	draw_plr2(t_data *img, float px, float py, float pa, t_all *all)
-{
-	float ra,rx,ry,xo,yo,aTan,nTan;
-	int r,mx,my,mp,dof;
-
-	ra = pa;
-	r = 0;
-	aTan = 0;
-	nTan = 0;
-//	printf("tan(PI)%f\n", tan(PI));
-	while (r<1)
-	{
-		dof = 0;	
-		if (ra != PI || ra != 0)
-		{
-			aTan = 1/tan(ra);
-			nTan = -tan(ra);
-		}
-		printf("aTan=%f\n", aTan);
-		if (ra < PI)
-		{
-			ry = (((int)py>>6)<<6)-0.001;
-			rx = (py-py)*aTan+px;
-			yo = -(SCALE * 1); 
-			xo = -yo*aTan;
-			printf("r(%f;%f):o(%f;%f)\n", rx,ry,xo,yo);
-		}
-		if (ra > PI)
-		{
-			ry = (((int)py>>6)<<6)+(SCALE * 1);
-			rx = -(py-ry)*aTan+px;
-			yo = (SCALE * 1); 
-			xo = -yo*aTan;
-		}
-		printf("nTan=%f\n", nTan);
-		if (ra > PI2 && ra < PI3)
-		{
-			rx = (((int)px>>6)<<6)-0.001;
-			ry = (px-rx)*nTan+py;
-			xo = -(SCALE * 1); 
-			yo = -xo*nTan;
-			printf("r(%f;%f):o(%f;%f)\n", rx,ry,xo,yo);
-		}
-		if (ra < PI2 || ra > PI3)
-		{
-			rx = (((int)px>>6)<<6)+(SCALE * 1);
-			ry = (px-rx)*nTan+py;
-			xo = (SCALE * 1); 
-			yo = -xo*nTan;
-		}
-		if (ra == 0 || ra == PI)
-		{
-			rx=px;
-			ry=py;
-			dof=8;
-		}
-		while (dof < 8)
-		{
-			if (rx > WIDTH)
-				rx = SCALE;
-			if (rx < 0)
-				rx = 0;
-			mx = (int)(rx)>>6;
-			my = (int)(ry)>>6;
-			printf("rx=%f, ry=%f\n", rx, ry);
-			printf("mx=%d, my=%d\n", mx, my);
-			if (all->map[my][mx] == '1')
-				dof = 8;
-			else
-			{
-				rx += xo;
-				ry += yo;
-				dof++;
-			}
-		}
-//		printf("mx=%d, my=%d\n", mx, my);
-//		printf("px=%f, py=%f,rx=%f, ry=%f\n",px, py, rx, ry);
-		draw_the_line2(img, px, py, rx, ry);
-		r++;
-	}
-}
-
-
-void	draw_plr(t_data *img, float x, float y, float angle, t_all *all)
-{
-	char *dst;
-	float ang_rng_top;
-	float ang_rng_low;
-	float xx;
-	float yy;
-	float distt;
-	float line_h;
-	float line_h_end;
-	int iter;
-	int ang_dif;
-
-	ang_rng_top = angle + VIEW/2;
-	ang_rng_low = angle - VIEW/2;
-	xx = x;
-	yy = y;
-	line_h = 0;
-	line_h_end = 1000;
-	iter = 0;
-	while (ang_rng_low < ang_rng_top)
-	{
-		xx = x;
-		yy = y;
-		while (xx < WIDTH/2 && yy < WIDTH/2)
-		{
-//			printf("y=%f,scale=%d, =%f\n",yy, SCALE, yy / (SCALE * 1));
-			if (all->map[(int)(floor(yy/(SCALE * 1)))][(int)(floor(xx/(SCALE * 1)))] == '1')
-			{
-//				printf("xx=%f, yy=%f", xx, yy);
-				ang_dif = abs(ang_rng_low - angle);
-//				printf("dif=%d, an=%f, low=%f, cos%f\n", ang_dif, angle, ang_rng_low, cos(angle_to_rad(ang_dif)));
-				distt = (SCALE*HEIGHT)/(dist(x, y, xx, yy)*cos(angle_to_rad(ang_dif)))/3;
-				if (distt > HEIGHT)
-					distt = HEIGHT;
-				if (((int)yy % (SCALE * 1) == 0))
-					draw_the_line(img, &iter, distt, all, 0xff0000);
-				else 
-					draw_the_line(img, &iter, distt, all, 0x660000);
-//				distt = distt*cos(angle_to_rad(ang_dif));
-	//			printf("%d\n", distt);
-				if  ((((int)ceil(yy) % (SCALE * 1) == 0) || ((int)yy % (SCALE * 1) == 0)) && (((int)ceil(xx) % (SCALE * 1) != 0) && ((int)xx % (SCALE * 1) != 0)))
-				else if ((((int)ceil(yy) % (SCALE * 1) != 0) && ((int)yy % (SCALE * 1) != 0)) && (((int)ceil(xx) % (SCALE * 1) == 0) || ((int)xx % (SCALE * 1) == 0)))
-				{
-//					printf("yy=%f, yy=%d\n,", yy, (int)ceil(yy));
-					draw_the_line(img, &iter, distt, all, 0x660000);
-				}
-//				printf("iter=%d\n", iter);
-				break ;
-			}
-//			printf("here\n");
-			dst = img->addr + ((int)yy * img->llen + (int)xx * img->bpp / 8);
-			pix_put_plr(img, xx, yy, 0xff0000);
-			xx -= cos(angle_to_rad(ang_rng_low));
-			yy -= sin(angle_to_rad(ang_rng_low));
-		}
-		ang_rng_low += 0.5;
-	}
-
-}
-*/
-
-void	draw_plr_scale(t_data *img, float x, float y, int color)
-{
-	int scale_y;
-	int scale_x;
-
-//	printf("x = %f, y= %f, SCALE = %d, col = %d\n", x, y, SCALE, color);
-	scale_y = y + 10;
-	scale_x = x + 10;
-//	printf("scl_x=%d, scl_y=%d\n", scale_x, scale_y);
-	while ((int)y < scale_y)
-	{
-		while ((int)x < scale_x)
-		{
-			pix_put_plr(img, x, y, color);
-			x++;
-		}
-		x = x - 10;
-		y++;
-	}
-
 }
 
 int		key_press(int key, t_all *all)

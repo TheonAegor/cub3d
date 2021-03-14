@@ -100,8 +100,96 @@ void	find_plr(t_all *all)
 		}
 		i++;
 	}
+t_sprite sprite[NS] = 
+{
+  {20.5, 11.5, 4}, //green light in front of playerstart
+  //green lights in every room
+  {18.5,4.5, 4},
+  {10.0,4.5, 4},
+  {10.0,12.5,4},
+  {5, 9, 4},
+  {3.5, 20.5,4},
+  {3.5, 14.4,4},
+  {14.5,20.5,4},
+
+  //row of pillars in front of wall: fisheye test
+  {18.5, 10.5, 3},
+  {18.5, 11.5, 3},
+  {18.5, 12.5, 3},
+
+  //some barrels around the map
+  {21.5, 1.5, 3},
+  {15.5, 1.5, 3},
+  {16.0, 1.8, 5},
+  {16.2, 1.2, 3},
+  {3.5,  2.5, 3},
+  {9.5, 6, 3},
+  {10.0, 15.1,5},
+  {10.5, 15.8,3},
+};
+i = 0;
+while (i < NS)
+{
+	all->sprite[i] = sprite[i];
+	i++;
+}
+printf("plr: %f,%f\n", all->plr.x, all->plr.y);
+i = 0;
+while (i < NS)
+{
+	printf("%d: %f,%f\n",i, all->sprite[i].x, all->sprite[i].y);
+	i++;
+};
+
+
 //	printf("jsfl\n");
 }
+
+void sort_sprites(int *so, double *sd, t_all *all)
+{
+	int i = 0;	
+	int j = 0;
+	int tmp_order;
+	double tmp_dist;
+	t_sprites sprites[NS];
+
+	while (i < NS)
+	{
+		sprites[i].first = sd[i]; 			
+		sprites[i].second = so[i];
+		printf("%f::%d\n", sprites[i].first,  sprites[i].second);			
+		i++;
+	}
+	while (j < NS / 2 + 1)
+	{
+		i = 0;
+  		while (i < NS - 1)
+  		{
+  			if (sprites[i].first < sprites[i + 1].first)
+  			{
+//				printf("i:%f\ti+1:%f\n", sprites[i].first, sprites[i + 1].first);
+				tmp_dist = sprites[i].first;
+				tmp_order = sprites[i].second;
+  				sprites[i].first = sprites[i + 1].first;
+  				sprites[i].second = sprites[i + 1].second;
+				sprites[i + 1].first = tmp_dist;
+				sprites[i + 1].second = tmp_order;
+  			}
+  			i++;
+  		}
+		j++;
+	}
+	i = 0;
+	while (i < NS)
+	{
+		all->sd[i] = sprites[i].first;
+		all->so[i] = sprites[i].second;
+		i++;
+	}
+	printf("sd[l:%f,%d],sd[mid[f:%f,%d], sd[f:%f, %d]\n", all->sd[18],all->so[18], all->sd[9],all->so[9], all->sd[0],all->so[0]);
+	/*
+*/
+}	
 
 void draw_buffer(t_data *img, t_all *all)
 {
