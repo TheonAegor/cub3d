@@ -28,6 +28,8 @@
 # define VMV 0.0
 # define VDIV 1 
 # define UDIV 1 
+# define NTEX 13 
+
 
 typedef struct s_sprites
 {
@@ -74,7 +76,7 @@ typedef struct s_image_e
 	int			bpp;
 	int			llen;
 	int			end;
-	char		*filename[100];
+	char		*filename[NTEX];
 }				t_image_e;
 
 typedef struct	s_all
@@ -86,6 +88,12 @@ typedef struct	s_all
 	t_point		plr;
 	t_image_e	image_e;
 	t_sprite	sprite[NS];
+	int			w;
+	int			h;
+	char		*no;
+	char		*we;
+	char		*sou;
+	char		*ea;
 	double		dx;
 	double		dy;
 	double		planex;
@@ -93,7 +101,7 @@ typedef struct	s_all
 	double		zbuf[WIDTH];
 	int			so[NS];//sprite Order
 	double		sd[NS];//sprite Distanse
-	unsigned	texture[8][TW*TH];
+	unsigned	texture[NTEX][TW*TH];
 	unsigned	buffer[HEIGHT][WIDTH];	
 	float 		lint_h;
 }				t_all;
@@ -133,5 +141,8 @@ void draw_the_line2(t_data *img, double px, double py, float rx, float ry);
 void	draw_lines(t_data *img, int ds, int de, int x, int color);
 void draw_buffer(t_data *img,t_all *all);
 void sort_sprites(int *so, double *ds, t_all *all);
+int		parse_map(t_all *all);
+int		parse_r(char *res, int *w, int *l);
+int		parse_side(char *path_no, char **side);
 
 #endif

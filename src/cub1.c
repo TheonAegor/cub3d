@@ -21,6 +21,8 @@ void	find_plr(t_all *all)
    	all->dy = 0;
 	all->planex = 0;	
     all->planey = 0.66;
+	all->w = 0;
+	all->h = 0;
 	x = 0;
 /*
 	all->image_e.filename = (char**)malloc(sizeof(char*)*8);
@@ -32,12 +34,20 @@ void	find_plr(t_all *all)
 	(all->image_e).filename[0][0] = 'g';
 */
 	all->image_e.filename[0] = "pics/eagle.xpm";
-	all->image_e.filename[1] = "pics/purplestone.xpm";
+	all->image_e.filename[1] = "pics/wall_1.xpm";
 	all->image_e.filename[2] = "pics/bluestone.xpm";
-	all->image_e.filename[3] = "pics/floor_1.xpm";
-	all->image_e.filename[4] = "pics/pillar.xpm";
+	all->image_e.filename[3] = "pics/wall_2.xpm";
+	all->image_e.filename[4] = "pics/wall_3.xpm";
+	all->image_e.filename[5] = "pics/wall_4.xpm";
+	all->image_e.filename[6] = "pics/wood.xpm";
+	all->image_e.filename[7] = "pics/greystone.xpm";
+	all->image_e.filename[8] = "pics/purplestone.xpm";
+	all->image_e.filename[9] = "pics/redbrick.xpm";
+	all->image_e.filename[10] = "pics/sprite_2.xpm";
+	all->image_e.filename[11] = "pics/sprite_1.xpm";
+	all->image_e.filename[12] = "pics/pillar.xpm";
 	i = 0;
-	while (i < 5)
+	while (i < 13)
 	{
 //		printf("%p\n", all->vars.mlx);
 //		printf("filename:%p\n", all->image_e.filename[i]);
@@ -45,7 +55,7 @@ void	find_plr(t_all *all)
 		all->image_e.img = mlx_xpm_file_to_image(all->vars.mlx, all->image_e.filename[i], &all->image_e.img_w, &all->image_e.img_h);
 //		printf("%p\n", all->image_e.img);
 		all->image_e.addr = mlx_get_data_addr(all->image_e.img, &all->image_e.bpp, &all->image_e.llen, &all->image_e.end);
-		printf("gere22\n");
+//		printf("gere22\n");
 		x = 0;
 		while (x < TW)
 		{
@@ -59,30 +69,6 @@ void	find_plr(t_all *all)
 		}
 		i++;
 	}
-/*
-	while (x < TW)
-    {
-        y = 0;
-        while (y < TH)
-        {
-			//printf("%d,%d\n", x, y);
-            int xorcolor = (x * 256 / TW) ^ (y * 256 / TH);
-            //int xcolor = x * 256 / TW;
-            int ycolor = y * 256 / TH;
-			int xycolor = y * 128 / TH + x * 128 / TW;
-			all->texture[0][TW * y + x] = 65536 * 254 * (x != y && x != TW - y); //flat red texture with black cross
-            all->texture[1][TW * y + x] = xycolor + 256 * xycolor + 65536 * xycolor; //sloped greyscale
-            all->texture[2][TW * y + x] = 256 * xycolor + 65536 * xycolor; //sloped yellow gradient
-            all->texture[3][TW * y + x] = xorcolor + 256 * xorcolor + 65536 * xorcolor; //xor greyscale
-            all->texture[4][TW * y + x] = 256 * xorcolor; //xor green
-			all->texture[5][TW * y + x] = 65536 * 192 * (x % 16 && y % 16); //red bricks
-			all->texture[6][TW * y + x] = 65536 * ycolor; //red gradient
-			all->texture[7][TW * y + x] = 128 + 256 * 128 + 65536 * 128; //flat grey texture
-            y++;
-        }
-        x++;
-    }
-*/
 	i = 0;
 //	printf("gotcha\n");
 	while (all->map[i])
@@ -102,30 +88,30 @@ void	find_plr(t_all *all)
 	}
 t_sprite sprite[NS] = 
 {
-  {20.5, 11.5, 4}, //green light in front of playerstart
+  {3.5, 7.5, 10}, //green light in front of playerstart
   //green lights in every room
-  {18.5,4.5, 4},
-  {10.0,4.5, 4},
-  {10.0,12.5,4},
-  {5, 9, 4},
-  {3.5, 20.5,4},
-  {3.5, 14.4,4},
-  {14.5,20.5,4},
+  {3.5,18.5, 10},
+  {1.5,4.5, 12},
+  {3.5,4.5, 12},
+  {3.5,1.5,  12},
+  {1.5,1.5,  12},
+  {6.5,12.5,  12},
+  {6.5,15.5, 12},
 
   //row of pillars in front of wall: fisheye test
-  {18.5, 10.5, 3},
-  {18.5, 11.5, 3},
-  {18.5, 12.5, 3},
+  {14, 3, 12},
+  {15, 3, 12},
+  {12.5, 2.5, 12},
 
   //some barrels around the map
-  {21.5, 1.5, 3},
-  {15.5, 1.5, 3},
-  {16.0, 1.8, 5},
-  {16.2, 1.2, 3},
-  {3.5,  2.5, 3},
-  {9.5, 6, 3},
-  {10.0, 15.1,5},
-  {10.5, 15.8,3},
+  {2.5, 1.5, 10},
+  {2.5, 4.5, 10},
+  {1.5, 7.5, 10},
+  {1.5, 9.5, 10},
+  {1.5, 16.5, 10},
+  {1.5, 17.5, 10},
+  {1.5, 11.5,10},
+  {3, 15.8,10},
 };
 i = 0;
 while (i < NS)
@@ -135,14 +121,6 @@ while (i < NS)
 }
 printf("plr: %f,%f\n", all->plr.x, all->plr.y);
 i = 0;
-while (i < NS)
-{
-	printf("%d: %f,%f\n",i, all->sprite[i].x, all->sprite[i].y);
-	i++;
-};
-
-
-//	printf("jsfl\n");
 }
 
 void sort_sprites(int *so, double *sd, t_all *all)
@@ -157,7 +135,7 @@ void sort_sprites(int *so, double *sd, t_all *all)
 	{
 		sprites[i].first = sd[i]; 			
 		sprites[i].second = so[i];
-		printf("%f::%d\n", sprites[i].first,  sprites[i].second);			
+//		printf("%f::%d\n", sprites[i].first,  sprites[i].second);			
 		i++;
 	}
 	while (j < NS / 2 + 1)
@@ -186,7 +164,7 @@ void sort_sprites(int *so, double *sd, t_all *all)
 		all->so[i] = sprites[i].second;
 		i++;
 	}
-	printf("sd[l:%f,%d],sd[mid[f:%f,%d], sd[f:%f, %d]\n", all->sd[18],all->so[18], all->sd[9],all->so[9], all->sd[0],all->so[0]);
+//	printf("sd[l:%f,%d],sd[mid[f:%f,%d], sd[f:%f, %d]\n", all->sd[18],all->so[18], all->sd[9],all->so[9], all->sd[0],all->so[0]);
 	/*
 */
 }	
@@ -320,6 +298,8 @@ int		show_map(t_all *all)
 	t_data		img;
 	t_point		point;
 
+	if (parse_map(all) < 0)
+		return (-1);
 	all->point.x = 100;
 	all->point.y = 100;
 	point.x = 100;
@@ -330,7 +310,8 @@ int		show_map(t_all *all)
 	all->img.img = mlx_new_image(all->vars.mlx, WIDTH, HEIGHT);
 	all->img.addr = mlx_get_data_addr(all->img.img, &all->img.bpp, &all->img.llen, &all->img.en);
 //	draw3D(all);
-	draw_screen_scale(all, &point, &all->img);
+	if(!(draw_screen_scale(all, &point, &all->img)))
+		return (-1);
 	mlx_hook(all->vars.win, 2, (1L << 0), &key_press, all);
 //	mlx_loop(all->game.vars.mlx);
 	mlx_loop(all->vars.mlx);

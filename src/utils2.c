@@ -42,6 +42,7 @@ void	distributor(int key, t_all *all)
 			all->plr.x += all->dx * MS;
 		if (all->map[(int)(all->plr.x)][(int)(all->plr.y +all->dy*MS)])
 			all->plr.y += all->dy * MS;
+//		printf("W\n"); this is not the matter
 /*
 		if (all->map[(int)all->plr.y][(int)(all->plr.x + all->dx*MS)] == '0')
 			all->plr.x += all->dx * MS;
