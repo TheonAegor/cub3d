@@ -112,16 +112,16 @@ void	draw_plr2(t_data *img, double px, double py, float pa, t_all *all)
 //			printf("rdy=%f, rdx = %f\n", rdy, rdx);
 			mx = (int)all->plr.x;
 			my = (int)all->plr.y;
-			if( all->map[my][mx] == 'N')
-				all->map[my][mx] = '0';
 
 			double sdy;
 			double sdx; //side dist y
 
 			double ddx = (rdy == 0) ? 0 : ((rdx == 0) ? 1 : fabs(1 / rdx));
 			double ddy = (rdx == 0) ? 0 : ((rdy == 0) ? 1 : fabs(1 / rdy)); //delta dist y
+/*
 			printf("rdy=%f, rdx = %f\n", rdy, rdx);
 			printf("ddx= %f, ddy=%f\n", ddx, ddy);
+*/
 			double pwd;
 
 			int sx; //step x
@@ -156,24 +156,24 @@ void	draw_plr2(t_data *img, double px, double py, float pa, t_all *all)
 					sdx += ddx;
 					mx += sx;
 					side = 0;
-					printf("here1\n");
+//					printf("here1\n");
 				}
 				else 
 				{
 					sdy += ddy;
 					my += sy;
 					side = 1;
-					printf("here2\n");
+//					printf("here2\n");
 				}
 				printf("mx= %d, my =%d\n", mx, my);
 				if ((all->map[my][mx] >= '1' && all->map[my][mx] <= '9') || all->map[my][mx] == 32)
 				{
 					hit = 1;
-					printf("here3\n");
+//					printf("here3\n");
 				}
-				printf("inside hit\n");
+//				printf("inside hit\n");
 			}
-			printf("outside\n");
+//			printf("outside\n");
 			if (side == 0)
 		/*-------y distance------*/
 				pwd = (mx - all->plr.x + (1 - sx)/ 2) / rdx;
@@ -212,6 +212,15 @@ void	draw_plr2(t_data *img, double px, double py, float pa, t_all *all)
 				texX = TW - texX - 1;	
 			double step = 1.0 * TH/lh;
 			double texPos = (ds - HEIGHT/2 + lh /2) * step;
+			/*
+			y = 1;
+			while (y < ds)
+			{
+				unsigned color = 0x00ff00;
+				all->buffer[y][x] = color;
+				y++;
+			}
+			*/
 			y = ds;
 			while ( y < de)
 			{
@@ -221,44 +230,11 @@ void	draw_plr2(t_data *img, double px, double py, float pa, t_all *all)
 				if (side == 1) 
 					color = (color >> 1) & 8355711;
 				all->buffer[y][x] = color;
-		//		if (buffer[y][x] != 0)
-		//			printf("(%d,%d):%u\n",x,y, buffer[y][x]);
 				y++;
 			}
 			all->zbuf[x] = pwd;
 			x += 1;
 		}
-//		printf("hererer\n");
-/*
-		y = 0;
-		while (y < HEIGHT)
-		{
-			x = 0;
-			while (x < WIDTH)
-			{
-		        my_mlx_pixel_put(img, x, y, buffer[y][x]);
-				x++;
-//				printf("x=%u, y = %u\n", x, y);
-		//		printf("%u\n", buffer[y][x]);
-			}
-			y++;
-		}
-*/
-//		printf("here before\n");
-/*
- * draw_buffer(&all->img, all);
-		y = 0;
-		while (y < HEIGHT)
-		{
-			x = 0;
-			while(x < WIDTH)
-			{
-				all->buffer[y][x] = 0;
-				x++;
-			}
-			y++;
-		}
-*/
 /*----------------------SPRITE casting-----------------------
  *---
 */

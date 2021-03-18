@@ -80,8 +80,10 @@ void	find_plr(t_all *all)
 			{
 				all->plr.x = (double)j;
 				all->plr.y = (double)i;
-//				printf("%f:%f)\n",all->plr.x,all->plr.y);
+				printf("%f:%f)\n",all->plr.x,all->plr.y);
 			}
+/*			if (all->map[i][j] < '0' || all->map[i][j] > '9')
+				all->map[i][j] = '0'; */
 			j++;
 		}
 		i++;
