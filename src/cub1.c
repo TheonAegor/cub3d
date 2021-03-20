@@ -82,8 +82,8 @@ void	find_plr(t_all *all)
 				all->plr.y = (double)i;
 				printf("%f:%f)\n",all->plr.x,all->plr.y);
 			}
-/*			if (all->map[i][j] < '0' || all->map[i][j] > '9')
-				all->map[i][j] = '0'; */
+			if ((all->map[i][j] < '0' || all->map[i][j] > '9') || all->map[i][j] == 32)
+				all->map[i][j] = '0'; /**/
 			j++;
 		}
 		i++;
@@ -259,41 +259,6 @@ int		my_mlx_pp_scale(t_data *data, t_point *point, int color)
 }
 
 //рисуем карту в изображении
-int		draw_map_scale(t_all *all, t_point *point, t_data *img)
-{
-	int i;
-	int j;	
-
-	point->y = START;
-	i = 0;
-	j = 0;
-	while (all->map[i])
-	{
-		point->x = START;
-		j = 0;
-		while (all->map[i][j])
-		{
-			if (all->map[i][j] == '1')
-				my_mlx_pp_scale(img, point, 0xFFFFFF);
-			else if (all->map[i][j] == '0')
-				my_mlx_pp_scale(img, point, BLACK);
-			else if (all->map[i][j] == 'N')
-			{
-				all->plr.x = point->x;
-				all->plr.y = point->y;
-				all->plr.angle = DIRECTION;
-				my_mlx_pp_scale(img, point, BLACK);
-			}
-			j++;
-		}
-//				my_mlx_pp_scale(img, point, BLACK);
-		point->y += SCALE;
-//		my_mlx_pp_shift(&point->x, &point->y, 1);
-		i++;
-	}
-//	printf("plr.x=%f, plr.y=%f\n", all->plr.x, all->plr.y);
-//	printf("plr.x=%d, plr.y=%d\n", (int)all->plr.x, (int)all->plr.y);
-}
 
 int		show_map(t_all *all)
 {

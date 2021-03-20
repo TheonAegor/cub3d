@@ -24,78 +24,112 @@ void		pix_put_plr(t_data *img, float x, float y, int color)
 	*(unsigned int*)dst = color;
 }
 
-int		draw_screen_scale(t_all *all, t_point *point, t_data *img)
+int draw_screen_scale(t_all *all, t_point *point, t_data *img)
 {
 	find_plr(all);
-	draw_plr2(img, all->plr.x, all->plr.y, all->plr.angle, all);
-	mlx_put_image_to_window(all->vars.mlx, all->vars.win, all->img.img,0, 0);
+//	printf("here\n");
+	draw_plr2(img, all);
+	mlx_put_image_to_window(all->vars.mlx, all->vars.win, all->img.img, 0, 0);
 }
+
 
 int		parse_map(t_all *all)
 {
 	int err;
+	int i;
+	int full;
 
 	err = 1;
+	i = 0;
+	full =0;
 	/*			parse RESOLUTION		*/
-	all->map[0][0] == 'R' ? (err = parse_r(all->map[0], &all->w, &all->h)) : (err = -1);
-	(all->map[1][0] == 'N' &&  all->map[1][1] == 'O') ? (err = parse_side(all->map[1], &all->no)) : (err = -1);
-	(all->map[2][0] == 'S' &&  all->map[2][1] == 'O') ? (err = parse_side(all->map[2], &all->sou)) : (err = -1);
-	(all->map[3][0] == 'W' &&  all->map[3][1] == 'E') ? (err = parse_side(all->map[3], &all->we)) : (err = -1);
-	(all->map[4][0] == 'E' &&  all->map[4][1] == 'A') ? (err = parse_side(all->map[4], &all->ea)) : (err = -1);
-	printf("w=%d, h=%d, %s, %s, %s, %s\n",all->w, all->h, all->no, all->sou, all->we, all->ea);
+	while (all->map[i])
+	{
+		if (all->map[i][0] == 'R') 
+			err = parse_r(all->map[i], &all->w, &all->h, &full);
+		if (all->map[i][0] == 'N' &&  all->map[i][1] == 'O')
+			err = parse_side(all->map[i], &all->no, &full, 0);
+		if (all->map[i][0] == 'S' &&  all->map[i][1] == 'O')
+			err = parse_side(all->map[i], &all->sou, &full, 0);
+		if (all->map[i][0] == 'W' &&  all->map[i][1] == 'E')
+			err = parse_side(all->map[i], &all->we, &full, 0);
+		if (all->map[i][0] == 'E' &&  all->map[i][1] == 'A')
+			err = parse_side(all->map[i], &all->ea, &full, 0);
+		if (all->map[i][0] == 'S' && all->map[i][1] != 'O')
+			err = parse_side(all->map[i], &all->sp, &full, 0);
+		if (all->map[i][0] == 'F')
+		{
+//			printf("i=%d, fuul=%d\n", i, full);
+			err = parse_side(all->map[i], &all->floor_c, &full,1);
+		}
+		if (all->map[i][0] == 'C')
+		{
+//			printf("i====%d\n, flll=%d", i, full);
+			err = parse_side(all->map[i], &all->ceil_c, &full, 1);
+		}
+		if (err == -1)
+		{
+//			printf("return\n");
+			return (-1);
+		}
+		if (full == 8)
+		{
+//			printf("full\n");
+			all->map_row = i;
+		}
+		i++;
+	}
+//	printf("fulfilment = %d\n", full);	
+	if (full != 8)
+		return (-1);
+//	printf("w=%d, h=%d, %s, %s, %s, %s, %s, %s, %s\n",all->w, all->h, all->no, all->sou, all->we, all->ea, all->sp, all->floor_c, all->ceil_c);
 	return (err);
-
 }
 
-int		parse_r(char *res, int *w, int *h)
+int		parse_r(char *res, int *w, int *h, int *full)
 {
 	int i;	
 	
-	i = 0;
-	while (res[++i])
-	{
-		if (res[i] = ' ')
-			i++;
-		else
-			return (-1);
-		while(res[i] >= '0' && res[i] <= '9')		
-			*w = *w * 10 + (res[i++] - '0');			
-		if (res[i] = ' ')
-			i++;
-		else
-			return (-1);
-		while(res[i] >= '0' && res[i] <= '9' && res[i])		
-			*h = *h * 10 + (res[i++] - '0');			
-	}
+	i = 1;	
+	*w = ft_atoi(&res[i]);
+	while(res[i] == ' ')
+		i++;
+	while(ft_isdigit(res[i]))
+		i++;
+	*h = ft_atoi(&res[i]);
 //	printf("w=%d,h=%d\n", *w, *h);
 	if ((*w <= 0 || *w > 2048) || (*h <= 0 || *h > 2048))
 		return (-1);
 //	printf("w=%d,h=%d\n", *w, *h);
+	*full += 1;
 	return (1);
 }
 
-int parse_side(char *path_no, char **side)
+int parse_side(char *path, char **side, int *full, int flag)
 {
 	int i;
 	int err;
 
 	i = 2;
 	err = 1;
-	if (path_no[i] = ' ')
+//	printf("map[i]=%s\n", path);
+	while (path[i] == ' ')
 		i++;
-	else
-		return (-1);
-	err = open(&path_no[i], O_RDONLY);
-//	printf("%s\n", &path_no[i]);
-	if (err < 0)
-		return (-1);
-	close(err);
-	*side = &path_no[i];
+	if (flag == 0)
+	{
+		err = open(&path[i], O_RDONLY);
+//		printf("%s\n", &path[i]);
+		if (err < 0)
+			return (-1);
+		close(err);
+	}
+	*side = &path[i];
+	*full += 1;
 //	printf("%s\n", &path_no[i]);
 	return (1);
 }
 
-void	draw_plr2(t_data *img, double px, double py, float pa, t_all *all)
+void	draw_plr2(t_data *img, t_all *all)
 {
 	int mx, my, x;
 	int i;
@@ -110,8 +144,8 @@ void	draw_plr2(t_data *img, double px, double py, float pa, t_all *all)
 			double rdx = all->dx + all->planex * camerax; /*Ray dir x*/
 			double rdy = all->dy + all->planey * camerax;
 //			printf("rdy=%f, rdx = %f\n", rdy, rdx);
-			mx = (int)all->plr.x;
-			my = (int)all->plr.y;
+			mx = (int)floor(all->plr.x);
+			my = (int)floor(all->plr.y);
 
 			double sdy;
 			double sdx; //side dist y
@@ -119,8 +153,6 @@ void	draw_plr2(t_data *img, double px, double py, float pa, t_all *all)
 			double ddx = (rdy == 0) ? 0 : ((rdx == 0) ? 1 : fabs(1 / rdx));
 			double ddy = (rdx == 0) ? 0 : ((rdy == 0) ? 1 : fabs(1 / rdy)); //delta dist y
 /*
-			printf("rdy=%f, rdx = %f\n", rdy, rdx);
-			printf("ddx= %f, ddy=%f\n", ddx, ddy);
 */
 			double pwd;
 
@@ -131,7 +163,7 @@ void	draw_plr2(t_data *img, double px, double py, float pa, t_all *all)
 			int side; // if x side was hit = 0
 			if (rdx < 0)
 			{
-				sx =  -1;
+				sx = -1;
 				sdx = (all->plr.x - mx) * ddx;
 			}
 			else
@@ -149,6 +181,14 @@ void	draw_plr2(t_data *img, double px, double py, float pa, t_all *all)
 				sy = 1;
 				sdy = (my + 1.0 - all->plr.y) * ddy;
 			}
+			printf("dx=%f, dy = %f\n", all->dx, all->dy);
+			printf("rdx=%f, rdy = %f\n", rdx, rdy);
+			printf("ddx= %f, ddy=%f\n", ddx, ddy);
+			printf("sdx=%f, sdy = %f\n", sdx, sdy);
+			printf("mx= %d, my =%d\n", mx, my);
+			printf("x=%d\n", x);
+/*
+*/
 			while ( hit == 0)
 			{
 				if(sdx < sdy)
@@ -165,15 +205,27 @@ void	draw_plr2(t_data *img, double px, double py, float pa, t_all *all)
 					side = 1;
 //					printf("here2\n");
 				}
-				printf("mx= %d, my =%d\n", mx, my);
-				if ((all->map[my][mx] >= '1' && all->map[my][mx] <= '9') || all->map[my][mx] == 32)
+/*
+				if (my < 0)
+					my = 0;
+				if (mx < 0)
+					mx = 0;
+*/
+				if (all->map[my][mx] != '0')
 				{
 					hit = 1;
 //					printf("here3\n");
 				}
 //				printf("inside hit\n");
 			}
-//			printf("outside\n");
+/*
+			printf("mx= %d, my =%d\n", mx, my);
+			printf("dx=%f, dy = %f\n", all->dx, all->dy);
+			printf("rdx=%f, rdy = %f\n", rdx, rdy);
+			printf("ddx= %f, ddy=%f\n", ddx, ddy);
+			printf("mx= %d, my =%d\n", mx, my);
+			printf("outside\n");
+*/
 			if (side == 0)
 		/*-------y distance------*/
 				pwd = (mx - all->plr.x + (1 - sx)/ 2) / rdx;
@@ -187,9 +239,10 @@ void	draw_plr2(t_data *img, double px, double py, float pa, t_all *all)
 			int de = lh / 2 + HEIGHT / 2; //draw end
 			if (de >= HEIGHT)
 				de = HEIGHT - 1;
-//			printf("ds=%d, de = %d\n", ds, de);
-//			printf("dx=%f, dx=%f, plx=%f, ply=%f\n", all->dx, all->dy, all->planex, all->planey);
 /*
+			printf ("ds = %d\n", ds);
+			printf("ds=%d, de = %d\n", ds, de);
+			printf("dx=%f, dx=%f, plx=%f, ply=%f\n", all->dx, all->dy, all->planex, all->planey);
 			int color = 0xff0000;
 			if (side == 1)
 				color = 0x660000;
@@ -221,6 +274,12 @@ void	draw_plr2(t_data *img, double px, double py, float pa, t_all *all)
 				y++;
 			}
 			*/
+			y = 0;
+			while (y < ds && ds < de)
+			{
+				all->buffer[y][x] = 0xdbff;
+				y++;
+			}
 			y = ds;
 			while ( y < de)
 			{
@@ -232,12 +291,16 @@ void	draw_plr2(t_data *img, double px, double py, float pa, t_all *all)
 				all->buffer[y][x] = color;
 				y++;
 			}
+			while (y < HEIGHT)
+			{
+				all->buffer[y][x] = 0x8B7355;
+				y++;
+			}
 			all->zbuf[x] = pwd;
 			x += 1;
 		}
 /*----------------------SPRITE casting-----------------------
  *---
-*/
 //		printf("plr(%f:%f)\nsd(%f,%d)\n", all->plr.x, all->plr.y, all->sd[i], all->so[i]);
 		i = 0;
 		while (i < NS)
@@ -276,7 +339,7 @@ void	draw_plr2(t_data *img, double px, double py, float pa, t_all *all)
 			int stripe = drawsx;
 //			printf("stripe=%d, drawex = %d\n",stripe, drawex);
 //			printf("before while stripe\n");
-//				printf("sd[1]%f\n", all->sd[0]);
+				printf("sd[1]%f\n", all->sd[0]);
 			while (stripe < drawex)
 			{
 //				printf("sd[1]%f\n", all->sd[0]);
@@ -302,6 +365,7 @@ void	draw_plr2(t_data *img, double px, double py, float pa, t_all *all)
 			}
 			i++;
 		}
+*/
 /*
 */
 		draw_buffer(&all->img, all);
@@ -320,7 +384,7 @@ void	draw_plr2(t_data *img, double px, double py, float pa, t_all *all)
 
 int		key_press(int key, t_all *all)
 {
-//	printf("%d\n", key);
+	printf("%d\n", key);
 	distributor(key, all);
 	return (key);
 }

@@ -38,56 +38,67 @@ void	distributor(int key, t_all *all)
 	point.y = START;
 	if (key == W)
 	{
+/*
 		if (all->map[(int)(all->plr.x + all->dx*MS)][(int)all->plr.y] == '0')
 			all->plr.x += all->dx * MS;
-		if (all->map[(int)(all->plr.x)][(int)(all->plr.y +all->dy*MS)])
+		if (all->map[(int)(all->plr.x)][(int)(all->plr.y +all->dy*MS)] == '0')
 			all->plr.y += all->dy * MS;
 //		printf("W\n"); this is not the matter
-/*
-		if (all->map[(int)all->plr.y][(int)(all->plr.x + all->dx*MS)] == '0')
-			all->plr.x += all->dx * MS;
-		if (all->map[(int)(all->plr.y +all->dx*MS)][(int)(all->plr.x)])
-			all->plr.y += all->dy * MS;
 */
+		if (all->map[(int)(all->plr.y)][(int)(all->plr.x + all->dx*MS)] == '0')
+			all->plr.x += all->dx * MS;
+		if (all->map[(int)(all->plr.y + all->dy*MS)][(int)(all->plr.x)] == '0')
+			all->plr.y += all->dy * MS;
+//		printf("plr(%f;%f)", all->plr.x, all->plr.y);
 	}
 	if (key == S)
 	{
-		if (all->map[(int)(all->plr.x - all->dx*MS)][(int)all->plr.y]== '0')
-			all->plr.x -= all->dx * MS;
-		if (all->map[(int)(all->plr.x)][(int)(all->plr.y - all->dy*MS)])
-			all->plr.y -= all->dy * MS;
 /*
-		if (all->map[(int)all->plr.y][(int)(all->plr.x - all->dx*MS)] == '0')
+		if (all->map[(int)(all->plr.x - all->dx*MS)][(int)all->plr.y] == '0')
 			all->plr.x -= all->dx * MS;
-		if (all->map[(int)(all->plr.y - all->dx*MS)][(int)(all->plr.x)])
+		if (all->map[(int)(all->plr.x)][(int)(all->plr.y - all->dy*MS)] == '0')
 			all->plr.y -= all->dy * MS;
 */
+		if (all->map[(int)all->plr.y][(int)(all->plr.x - all->dy*MS)] == '0')
+		{
+			if (all->map[(int)(all->plr.y - all->dx*MS*1.2)][(int)(all->plr.x)] == '0')
+				all->plr.x -= all->dx * MS;
+				all->plr.y -= all->dy * MS;
+		}
+//		printf("plr(%f;%f)", all->plr.x, all->plr.y);
 	}
 	if (key == D)
 	{
 		double odx = all->dx;
-		all->dx = all->dx * cos(-MS*0.5) - all->dy * sin(-MS*0.5);
-		all->dy = odx * sin(-MS*0.5) + all->dy * cos(-MS*0.5);
+		all->dx = all->dx * cos(-MS) - all->dy * sin(-MS);
+		all->dy = odx * sin(-MS) + all->dy * cos(-MS);
 		double opx = all->planex;
-		all->planex = all->planex * cos(-MS*0.5) - all->planey * sin(-MS*0.5);
-		all->planey = opx * sin(-MS*0.5) + all->planey * cos(-MS*0.5);
+		all->planex = all->planex * cos(-MS) - all->planey * sin(-MS);
+		all->planey = opx * sin(-MS) + all->planey * cos(-MS);
+//		printf("planeX=%f, planeY=%f; dirX = %f, dirY = %f\n", all->planex, all->planey, all->dx, all->dy);
     }
 	if (key == A)
 	{
 		double odx = all->dx;
-		all->dx = all->dx * cos(MS*0.5) - all->dy * sin(MS*0.5);
-		all->dy = odx * sin(MS*0.5) + all->dy * cos(MS*0.5);
+		all->dx = all->dx * cos(MS) - all->dy * sin(MS);
+		all->dy = odx * sin(MS) + all->dy * cos(MS);
 		double opx = all->planex;
-		all->planex = all->planex * cos(MS*0.5) - all->planey * sin(MS*0.5);
-		all->planey = opx * sin(MS*0.5) + all->planey * cos(MS*0.5);
+		all->planex = all->planex * cos(MS) - all->planey * sin(MS);
+		all->planey = opx * sin(MS) + all->planey * cos(MS);
+//		printf("planeX=%f, planeY=%f; dirX = %f, dirY = %f\n", all->planex, all->planey, all->dx, all->dy);
 //		printf("key = D;dx=%f, dx=%f, plx=%f, ply=%f\n", all->dx, all->dy, all->planex, all->planey);
 	}
 	if (key == 65307)//53)
 		exit(0);
+	if (key == T)
+	{
+		all->plr.x += 1 * all->dx;
+		all->plr.y += 1 * all->dy;
+	}
 	clear_img2(&all->img, WIDTH, HEIGHT);
 //	draw_only_map_scale(all, &point, &all->img);
 //	draw_plr_scale(&all->img, all->plr.x, all->plr.y, PLR);
-	draw_plr2(&all->img, all->plr.x, all->plr.y, all->plr.angle, all);
+	draw_plr2(&all->img, all);
 //	printf("heeeeere\n");
 	mlx_put_image_to_window(all->vars.mlx, all->vars.win, all->img.img,0, 0);
 }

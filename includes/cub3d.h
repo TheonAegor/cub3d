@@ -14,12 +14,13 @@
 # define START 0
 # define VIEW 60
 # define DIRECTION PI 
-# define WIDTH 640
-# define HEIGHT 480
+# define WIDTH 1024
+# define HEIGHT 720
 # define W 119//13
 # define A 97//0 
 # define S 115//1
 # define D 100//2 
+# define T 116//2 
 # define SCALE 64
 # define BLACK 0x000000 
 # define WALL 0xFFFFFF 
@@ -56,7 +57,7 @@ typedef struct	s_point
 {
 	double			x;
 	double			y;
-	float		angle;
+	int			max_x;
 }				t_point;
 
 typedef struct	s_sprite
@@ -90,10 +91,14 @@ typedef struct	s_all
 	t_sprite	sprite[NS];
 	int			w;
 	int			h;
+	int			map_row;
 	char		*no;
 	char		*we;
 	char		*sou;
 	char		*ea;
+	char		*sp;
+	char		*floor_c;
+	char		*ceil_c;
 	double		dx;
 	double		dy;
 	double		planex;
@@ -124,7 +129,7 @@ int     my_mlx_pp_scale(t_data *data, t_point *point, int color);
 int     my_mlx_pp_shift(int *x, int *y, int flag);
 void    draw_plr_scale(t_data *img, float x, float y, int color);
 void    draw_plr(t_data *img, float x, float y, float angle, t_all *all);
-void    draw_plr2(t_data *img, double x, double y, float angle, t_all *all);
+void    draw_plr2(t_data *img, t_all *all);
 int     key_press(int key, t_all *all);
 int     draw_screen_scale(t_all *all, t_point *point, t_data *img);
 int     draw_map_scale(t_all *all, t_point *point, t_data *img);
@@ -142,7 +147,9 @@ void	draw_lines(t_data *img, int ds, int de, int x, int color);
 void draw_buffer(t_data *img,t_all *all);
 void sort_sprites(int *so, double *ds, t_all *all);
 int		parse_map(t_all *all);
-int		parse_r(char *res, int *w, int *l);
-int		parse_side(char *path_no, char **side);
+int		parse_r(char *res, int *w, int *l, int *full);
+int		parse_side(char *path_no, char **side, int *full, int flag);
+int		check_bounds(t_all all);
+int		find_only_plr(t_all *all);
 
 #endif
