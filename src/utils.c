@@ -181,13 +181,13 @@ void	draw_plr2(t_data *img, t_all *all)
 				sy = 1;
 				sdy = (my + 1.0 - all->plr.y) * ddy;
 			}
+/*
 			printf("dx=%f, dy = %f\n", all->dx, all->dy);
 			printf("rdx=%f, rdy = %f\n", rdx, rdy);
 			printf("ddx= %f, ddy=%f\n", ddx, ddy);
 			printf("sdx=%f, sdy = %f\n", sdx, sdy);
 			printf("mx= %d, my =%d\n", mx, my);
 			printf("x=%d\n", x);
-/*
 */
 			while ( hit == 0)
 			{
@@ -218,14 +218,6 @@ void	draw_plr2(t_data *img, t_all *all)
 				}
 //				printf("inside hit\n");
 			}
-/*
-			printf("mx= %d, my =%d\n", mx, my);
-			printf("dx=%f, dy = %f\n", all->dx, all->dy);
-			printf("rdx=%f, rdy = %f\n", rdx, rdy);
-			printf("ddx= %f, ddy=%f\n", ddx, ddy);
-			printf("mx= %d, my =%d\n", mx, my);
-			printf("outside\n");
-*/
 			if (side == 0)
 		/*-------y distance------*/
 				pwd = (mx - all->plr.x + (1 - sx)/ 2) / rdx;
@@ -249,6 +241,34 @@ void	draw_plr2(t_data *img, t_all *all)
 			draw_lines(img, ds, de, x, color);
 */
 			int tn = all->map[my][mx] - 48 - 1;
+			if (rdy > 0)
+			{
+				tn = 0; 
+				if (rdx > 0)
+				{
+					if (side == 0)
+						tn = 2;
+				}
+				else
+				{
+					if (side == 0)
+						tn = 3;
+				}
+			}
+			else
+			{
+				tn = 1;
+				if (rdx > 0)
+				{
+					if (side == 0)
+						tn = 2;
+				}
+				else
+				{
+					if (side == 0)
+						tn = 3;
+				}
+			}
 	//		printf("tn=%d\n", tn);
 
 			double wallX;
@@ -274,6 +294,14 @@ void	draw_plr2(t_data *img, t_all *all)
 				y++;
 			}
 			*/
+			printf("mx= %d, my =%d\n", mx, my);
+			printf("dx=%f, dy = %f\n", all->dx, all->dy);
+			printf("rdx=%f, rdy = %f\n", rdx, rdy);
+			printf("ddx= %f, ddy=%f\n", ddx, ddy);
+			printf("mx= %d, my =%d\n", mx, my);
+			printf("outside\n");
+/*
+*/
 			y = 0;
 			while (y < ds && ds < de)
 			{

@@ -60,8 +60,8 @@ int main(int argc, char *argv[])
 	fd = open(argv[1], O_RDONLY);
 	all.map = ft_calloc(sizeof(char *), 100);
 	read_map(fd, &all); 
-//	find_only_plr(&all);
-//	printf("check_bounds=%d\n",check_bounds(all));
+	find_only_plr(&all);
+	printf("check_bounds=%d\n",check_bounds(all));
 	if(show_map(&all) < 0)
 	{
 		printf("map is invalid\n");

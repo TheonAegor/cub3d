@@ -9,6 +9,29 @@ unsigned int    my_mlx_get_color(t_image_e data, int x, int y)
         return (*(unsigned int *)dst);
 }
 
+void			push_img_to_texture(char *path, int num, t_all *all)
+{
+	int x;
+	int y;
+
+	all->image_e.img = mlx_xpm_file_to_image(all->vars.mlx, path, &all->image_e.img_w, &all->image_e.img_h);
+//	printf("%p\n", all->image_e.img);
+	all->image_e.addr = mlx_get_data_addr(all->image_e.img, &all->image_e.bpp, &all->image_e.llen, &all->image_e.end);
+//	printf("gere22\n");
+	x = 0;
+	while (x < TW)
+	{
+		y = 0;
+		while (y < TH)
+		{
+			all->texture[num][TW * y +x] = my_mlx_get_color(all->image_e, x, y);
+			y++;
+		}
+		x++;
+	}
+}
+
+
 void	find_plr(t_all *all)
 {
 	int i;
@@ -47,6 +70,7 @@ void	find_plr(t_all *all)
 	all->image_e.filename[11] = "pics/sprite_1.xpm";
 	all->image_e.filename[12] = "pics/pillar.xpm";
 	i = 0;
+	push_img_to_texture(all->no, 0, all);
 	while (i < 13)
 	{
 //		printf("%p\n", all->vars.mlx);
@@ -191,34 +215,6 @@ void draw_buffer(t_data *img, t_all *all)
 	}
 }
 
-int     draw_only_map_scale(t_all *all, t_point *point, t_data *img)                                          
-{         
-    int i;
-    int j;
-          
-    i = 0;
-    j = 0;             
-    point->y = START;
-    while (all->map[i])
-    {                  
-        point->x = START;
-//		printf("point->x int draw_only_map=%f\n", point->x);
-        j = 0;
-        while (all->map[i][j])
-        {                                             
-            if (all->map[i][j] == '1')                
-                my_mlx_pp_scale(img, point, 0xFFFFFF);
-            else if (all->map[i][j] == '0')
-                my_mlx_pp_scale(img, point, BLACK);
-            else if (all->map[i][j] == 'N')
-                my_mlx_pp_scale(img, point, BLACK);
-            j++;
-        }        
-		point->y += SCALE;
-//        my_mlx_pp_shift(&point->x, &point->y, 1);
-        i++;
-    }
-}
 
 void	new_pp(char **dst, int color)
 {
@@ -232,33 +228,6 @@ void	new_pp(char **dst, int color)
 	}
 }
 
-int		my_mlx_pp_scale(t_data *data, t_point *point, int color)
-{
-	char	**dst;
-	int		scale_y;
-	int		scale_x;
-	int		i;
-
-	i = 0;
-//	printf("point->x int in my_mlx_pp_scale=%f\n", point->x);
-	dst = (char **)malloc(sizeof(char *) * (WIDTH * HEIGHT));
-	scale_y = (int)point->y + SCALE;
-	scale_x = (int)point->x + SCALE;
-	while ((int)point->y < scale_y)
-	{
-		while ((int)point->x < scale_x)
-		{
-			my_mlx_pixel_put(data, (int)point->x, (int)point->y, color);
-			point->x++;
-		}
-		point->x -= SCALE;
-		point->y++;
-	}
-	point->y -= SCALE;
-	point->x += SCALE;
-}
-
-//рисуем карту в изображении
 
 int		show_map(t_all *all)
 {
