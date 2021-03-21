@@ -64,7 +64,6 @@ typedef struct	s_sprite
 {
 	double			x;
 	double			y;
-	int				texture;
 }				t_sprite;
 
 typedef struct s_image_e
@@ -96,6 +95,11 @@ typedef struct s_brd
 	int			max;
 }				t_brd;
 
+typedef struct s_spr
+{
+	int			num_spr;
+}				t_spr;
+
 typedef struct	s_all
 {
 	char		**map;
@@ -104,7 +108,8 @@ typedef struct	s_all
 	t_data		img;
 	t_point		plr;
 	t_image_e	image_e;
-	t_sprite	sprite[NS];
+	t_spr		spr;
+	t_sprite	*sprite;
 	t_color		color;
 	t_brd		brd;
 	int			w;
@@ -172,5 +177,8 @@ int		parse_side(char *path_no, char **side, int *full, int flag);
 int		check_bounds(t_all all, t_brd *brd, int x);
 int		find_only_plr(t_all *all);
 unsigned	to_hex(char *rgb);
+int		check_bounds2(t_all *all, t_brd *brd);
+void	count_sprites(t_all *all);
+int		create_spr_tabl(t_all *all);
 
 #endif

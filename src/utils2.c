@@ -45,9 +45,9 @@ void	distributor(int key, t_all *all)
 			all->plr.y += all->dy * MS;
 //		printf("W\n"); this is not the matter
 */
-		if (all->map[(int)(all->plr.y)][(int)(all->plr.x + all->dx*MS)] == '0')
+		if (all->map[(int)(all->plr.y)][(int)(all->plr.x + all->dx*MS)] != '1')
 			all->plr.x += all->dx * MS;
-		if (all->map[(int)(all->plr.y + all->dy*MS)][(int)(all->plr.x)] == '0')
+		if (all->map[(int)(all->plr.y + all->dy*MS)][(int)(all->plr.x)] != '1')
 			all->plr.y += all->dy * MS;
 //		printf("plr(%f;%f)", all->plr.x, all->plr.y);
 	}
@@ -59,9 +59,9 @@ void	distributor(int key, t_all *all)
 		if (all->map[(int)(all->plr.x)][(int)(all->plr.y - all->dy*MS)] == '0')
 			all->plr.y -= all->dy * MS;
 */
-		if (all->map[(int)all->plr.y][(int)(all->plr.x - all->dx*MS)] == '0')
+		if (all->map[(int)all->plr.y][(int)(all->plr.x - all->dx*MS)] != '1')
 			all->plr.x -= all->dx * MS;
-		if (all->map[(int)(all->plr.y - all->dy*MS)][(int)(all->plr.x)] == '0')
+		if (all->map[(int)(all->plr.y - all->dy*MS)][(int)(all->plr.x)] != '1')
 			all->plr.y -= all->dy * MS;
 //		printf("plr(%f;%f)", all->plr.x, all->plr.y);
 	}

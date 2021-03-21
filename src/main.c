@@ -16,17 +16,24 @@ void printt(char **strs)
  * создаем односвязный список и вставляем в него каждую строку карты
  * передаем список в функцию make_map
 */
-int		read_map(int fd, t_all *all)
+int		read_map(char *argv, t_all *all)
 {
 	char *line;
+	int fd;
 	t_list *head = NULL;
 
-	while (get_next_line(fd, &line))
+	if((fd = open(argv, O_RDONLY)) < 0)
 	{
+		perror("open");
+		return (-1);	
+	}
+	while (get_next_line(fd, &line))
 		ft_lstadd_back(&head, ft_lstnew(line));	
-	}	
 	ft_lstadd_back(&head, ft_lstnew(line));	
-	make_map(&head, ft_lstsize(head), all);
+	if (make_map(&head, ft_lstsize(head), all) < 0)
+		return (-1);
+	close(fd);
+	return (1);
 }
 
 /*
@@ -42,6 +49,11 @@ int		make_map(t_list **head, size_t size, t_all *all)
 	i = 0;
 	tmp = *head;
 	all->map = ft_calloc(sizeof(char*), size + 1);
+	if (all->map == 0)
+	{
+		perror("ft_calloc");
+		return (-1);
+	}
 	while(tmp)
 	{
 		all->map[i++] = tmp->content;
@@ -57,14 +69,13 @@ int main(int argc, char *argv[])
 	t_all all;
 //	int i;
 
-	fd = open(argv[1], O_RDONLY);
-	all.map = ft_calloc(sizeof(char *), 100);
-	read_map(fd, &all); 
+	if(read_map(argv[1], &all) < 0)
+		return (-1);
 	if (parse_map(&all) < 0)
 		return (-1);
 	find_only_plr(&all);
 	printf("x%f,y%f\n", all.plr.x, all.plr.y);
-	printf("check_bounds=%d\n",check_bounds(all, &all.brd, 0));
+	printf("check_bounds=%d\n",check_bounds2(&all, &all.brd));
 	if(show_map(&all) < 0)
 	{
 		printf("map is invalid\n");

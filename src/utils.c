@@ -123,7 +123,10 @@ int parse_side(char *path, char **side, int *full, int flag)
 		err = open(&path[i], O_RDONLY);
 //		printf("%s\n", &path[i]);
 		if (err < 0)
+		{
+			perror("open");
 			return (-1);
+		}
 		close(err);
 	}
 	*side = &path[i];
@@ -215,7 +218,7 @@ void	draw_plr2(t_data *img, t_all *all)
 				if (mx < 0)
 					mx = 0;
 */
-				if (all->map[my][mx] != '0')
+				if (all->map[my][mx] == '1')
 				{
 					hit = 1;
 //					printf("here3\n");
@@ -333,9 +336,9 @@ void	draw_plr2(t_data *img, t_all *all)
 		}
 /*----------------------SPRITE casting-----------------------
  *---*/
-//		printf("plr(%f:%f)\nsd(%f,%d)\n", all->plr.x, all->plr.y, all->sd[i], all->so[i]);
+		printf("plr(%f:%f)\nsd(%f,%d)\n", all->plr.x, all->plr.y, all->sd[i], all->so[i]);
 		i = 0;
-		while (i < NS)
+		while (i < all->spr.num_spr)
 		{
 			all->so[i] = i;
 			all->sd[i] = ((all->plr.x - all->sprite[i].x) * (all->plr.x - all->sprite[i].x) + (all->plr.y - all->sprite[i].y) * (all->plr.y - all->sprite[i].y));
@@ -345,7 +348,7 @@ void	draw_plr2(t_data *img, t_all *all)
 		sort_sprites(all->so, all->sd, all);
 //		printf("after_sort\n");
 		i = 0;
-		while (i < NS)
+		while (i < all->spr.num_spr)
 		{
 			double sprite_x = all->sprite[all->so[i]].x - all->plr.x;
 			double sprite_y = all->sprite[all->so[i]].y - all->plr.y;
@@ -386,7 +389,7 @@ void	draw_plr2(t_data *img, t_all *all)
 						int d = (y) * 256 - HEIGHT * 128 + spr_h * 128;
 //						printf("spr_h = %d, d = %d\n", spr_h, d);
 						int texY = ((d * TH) / spr_h) / 256;
-						unsigned color = all->texture[all->sprite[all->so[i]].texture][TW * texY + texX];
+						unsigned color = all->texture[4][TW * texY + texX];
 //						printf("stripe=%d\n",stripe);
 						if ((color & 0x00FFFFFF) != 0)
 						   	all->buffer[y][stripe] = color;

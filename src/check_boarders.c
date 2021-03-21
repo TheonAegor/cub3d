@@ -19,30 +19,36 @@ int find_only_plr(t_all *all)
 	int i;
 	int j;
 	int max_x;
+	int flag;
 
-	i = 0;
-	max_x = 0;
-	all->plr.x = -1;
-	all->plr.y = -1;
+	i = all->brd.map_row;
+//	max_x = 0;
+	flag = 0;
+	all->plr.x = 0;
+	all->plr.y = 0;
     while (all->map[i])     
     {                      
         j = 0;     
         while(all->map[i][j])     
         {                        
-			if (j > max_x)
-				max_x = j;
+/*			if (j > max_x)
+				max_x = j; */
             if (ft_strchr("NSWE", all->map[i][j]))     
             {                             
-                all->plr.x = (double)j;     
-                all->plr.y = (double)i;     
+				all->sow = all->map[i][j];
+                all->plr.x = (double)j + 0.5;     
+                all->plr.y = (double)i + 0.5;     
+				flag += 1;
             }                                                
+            if (ft_strchr("NSWE", all->map[i][j]))     
+				all->map[i][j] = '0';
             j++;                              
         }           
         i++;     
     } 
-	if (all->plr.x == 0 && all->plr.y == 0)
+	if (flag != 1)
 		return (-1);
-	all->plr.max_x = max_x;
+//	all->plr.max_x = max_x;
 	return (1);
 }
 
@@ -149,19 +155,20 @@ int check_bounds(t_all all, t_brd *brd, int start_x)
 	{
 //		printf("%c\n", all.map[y][x]);
 //		sleep(1);
-		if ((p[i].x == p[0].x && p[i].y == p[i].y) && (p[i].dirx != p[0].dirx || p[i].diry != p[0].diry) && i != 0)
-		{
-			hole = 1;
-			break;
-		}
 		if (x >= 0 && all.map[y][x] == '1')
 		{
 			p[i].x = x;
 			p[i].y = y;
 			p[i].dirx = dirx;
 			p[i].diry = diry;
-		if ((p[i].x == p[0].x && p[i].y == p[i].y) && (p[i].dirx == p[0].dirx && p[i].diry == p[0].diry) && i != 0)
+			if ((p[i].x == p[0].x && p[i].y == p[i].y) && (p[i].dirx <= 0 && p[i].diry <= 0) && i != 0)
 			{
+				hole = 1;
+				break;
+			}
+			if ((p[i].x == p[0].x && p[i].y == p[i].y) && (p[i].dirx >=0 && p[i].diry >= 0) && i != 0)
+			{
+				hole = 2;
 //				printf("px=%d, py=%d\np[0].x=%d, p[0].y=%d\n", p[i].x, p[i].y, p[0].x, p[0].y);
 				break;
 			}
@@ -215,8 +222,8 @@ int check_bounds(t_all all, t_brd *brd, int start_x)
 			y += diry;
 			x += dirx;
 		}
-//		printf("x=%d, y=%d, dirx=%d, diry=%d\n", x, y, dirx, diry);
-//		sleep(1);
+		printf("x=%d, y=%d, dirx=%d, diry=%d\n", x, y, dirx, diry);
+		sleep(1);
 		
 	}
 //	printf("hihihih%d\n", p[93].x);
@@ -225,4 +232,50 @@ int check_bounds(t_all all, t_brd *brd, int start_x)
 		return (1);
 	find_max_x(p, i, brd);
 	return (-1);
+}
+
+static int check_neighbors(t_all *all, int y, int x)
+{
+	if (all->map[y + 1])
+	{
+		if (all->map[y + 1][x] == ' ' || x - 1 < 0 || ft_strchr(" \0", all->map[y + 1][x + 1]) || ft_strchr(" \0", all->map[y + 1][x - 1]))	
+			return (-1);
+	}
+	else
+		return (-1);
+	if (all->map[y - 1])
+	{
+		if (all->map[y - 1][x] == ' ' || x - 1 < 0 || ft_strchr(" \0", all->map[y - 1][x + 1]) || ft_strchr(" \0", all->map[y - 1][x - 1]) )	
+			return (-1);
+	}
+	else
+		return (-1);
+	return (1);
+}
+
+int check_bounds2(t_all *all, t_brd *brd)
+{
+	int y;
+	int x;
+	int res;
+
+	y = brd->map_row;
+	x = 0;
+	res = 0;
+	while (all->map[y])
+	{
+		x = 0;
+		while (all->map[y][x])
+		{
+			if (ft_strchr("NSWE02", all->map[y][x]))
+			{
+				res = check_neighbors(all, y, x);	
+				if (res < 0)
+					return (res);
+			}
+			x++;
+		}
+		y++;
+	}
+	return (res);
 }

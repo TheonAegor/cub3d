@@ -47,6 +47,7 @@ void	find_plr(t_all *all)
 	push_img_to_texture(all->sou, 1, all);
 	push_img_to_texture(all->we, 2, all);
 	push_img_to_texture(all->ea, 3, all);
+	push_img_to_texture(all->sp, 4, all);
 /*
 	all->image_e.filename = (char**)malloc(sizeof(char*)*8);
 	while (i < 8)
@@ -93,8 +94,8 @@ void	find_plr(t_all *all)
 		}
 		i++;
 	}
-*/
-	i = 0;
+	i = all->brd.map_row;
+//	printf("map_row%d\n", all->brd.map_row);
 //	printf("gotcha\n");
 	while (all->map[i])
 	{
@@ -108,12 +109,13 @@ void	find_plr(t_all *all)
 				all->plr.y = (double)i;
 				printf("%f:%f)\n",all->plr.x,all->plr.y);
 			}
-			if (ft_strchr("NEWS ", all->map[i][j]))
-				all->map[i][j] = '0'; /**/
+			if (ft_strchr("NEWS", all->map[i][j]))
+				all->map[i][j] = '0'; 
 			j++;
 		}
 		i++;
 	}
+*/
 	if (all->sow == 'N')
 	{
 		all->dx = 0;
@@ -121,7 +123,7 @@ void	find_plr(t_all *all)
 		all->planex = -0.66;
 		all->planey = 0;
 	}
-	else if (all->sow = 'S')
+	else if (all->sow == 'S')
 	{
 		all->dx = 0;
 		all->dy = 1;
@@ -129,14 +131,14 @@ void	find_plr(t_all *all)
 		all->planey = 0;
 		
 	}
-	else if (all->sow = 'E')
+	else if (all->sow == 'E')
 	{
 		all->dx = 1;
 		all->dy = 0;
 		all->planex = 0;
 		all->planey = -0.66;
 	}	
-	else
+	else if (all->sow == 'W')
 	{
 		all->dx = -1;
 		all->dy = 0;
@@ -144,6 +146,10 @@ void	find_plr(t_all *all)
 		all->planey = 0.66;
 
 	}
+	printf("inside find_plr, before count spr\n");
+	count_sprites(all);
+	create_spr_tabl(all);
+/*
 t_sprite sprite[NS] = 
 {
   {3.5, 7.5, 10}, //green light in front of playerstart
@@ -177,6 +183,7 @@ while (i < NS)
 	all->sprite[i] = sprite[i];
 	i++;
 }
+*/
 printf("plr: %f,%f\n", all->plr.x, all->plr.y);
 i = 0;
 }
@@ -187,19 +194,19 @@ void sort_sprites(int *so, double *sd, t_all *all)
 	int j = 0;
 	int tmp_order;
 	double tmp_dist;
-	t_sprites sprites[NS];
+	t_sprites sprites[all->spr.num_spr];
 
-	while (i < NS)
+	while (i < all->spr.num_spr)
 	{
 		sprites[i].first = sd[i]; 			
 		sprites[i].second = so[i];
 //		printf("%f::%d\n", sprites[i].first,  sprites[i].second);			
 		i++;
 	}
-	while (j < NS / 2 + 1)
+	while (j < all->spr.num_spr / 2 + 1)
 	{
 		i = 0;
-  		while (i < NS - 1)
+  		while (i < all->spr.num_spr - 1)
   		{
   			if (sprites[i].first < sprites[i + 1].first)
   			{
@@ -216,7 +223,7 @@ void sort_sprites(int *so, double *sd, t_all *all)
 		j++;
 	}
 	i = 0;
-	while (i < NS)
+	while (i < all->spr.num_spr)
 	{
 		all->sd[i] = sprites[i].first;
 		all->so[i] = sprites[i].second;
