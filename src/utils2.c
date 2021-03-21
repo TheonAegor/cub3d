@@ -59,12 +59,10 @@ void	distributor(int key, t_all *all)
 		if (all->map[(int)(all->plr.x)][(int)(all->plr.y - all->dy*MS)] == '0')
 			all->plr.y -= all->dy * MS;
 */
-		if (all->map[(int)all->plr.y][(int)(all->plr.x - all->dy*MS)] == '0')
-		{
-			if (all->map[(int)(all->plr.y - all->dx*MS*1.2)][(int)(all->plr.x)] == '0')
-				all->plr.x -= all->dx * MS;
-				all->plr.y -= all->dy * MS;
-		}
+		if (all->map[(int)all->plr.y][(int)(all->plr.x - all->dx*MS)] == '0')
+			all->plr.x -= all->dx * MS;
+		if (all->map[(int)(all->plr.y - all->dy*MS)][(int)(all->plr.x)] == '0')
+			all->plr.y -= all->dy * MS;
 //		printf("plr(%f;%f)", all->plr.x, all->plr.y);
 	}
 	if (key == D)

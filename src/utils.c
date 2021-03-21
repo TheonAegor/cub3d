@@ -75,12 +75,13 @@ int		parse_map(t_all *all)
 		if (full == 8)
 		{
 //			printf("full\n");
-			all->map_row = i;
+			all->brd.map_row = i + 1;
+			full++;
 		}
 		i++;
 	}
 //	printf("fulfilment = %d\n", full);	
-	if (full != 8)
+	if (full != 9)
 		return (-1);
 	all->color.floor = to_hex(all->floor_c);
 	all->color.ceil = to_hex(all->ceil_c);

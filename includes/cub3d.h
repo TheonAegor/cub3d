@@ -86,6 +86,16 @@ typedef struct s_color
 	unsigned long ceil;
 }				t_color;
 
+typedef struct s_brd
+{
+	int			map_row;
+	int			min_x;
+	int			max_x;
+	int			min_y;
+	int			max_y;
+	int			max;
+}				t_brd;
+
 typedef struct	s_all
 {
 	char		**map;
@@ -96,9 +106,9 @@ typedef struct	s_all
 	t_image_e	image_e;
 	t_sprite	sprite[NS];
 	t_color		color;
+	t_brd		brd;
 	int			w;
 	int			h;
-	int			map_row;
 	int			sow;//side of the world
 	char		*no;
 	char		*we;
@@ -123,6 +133,8 @@ typedef struct s_point_int
 {
 	int x;
 	int y;
+	int dirx;
+	int diry;
 }				t_point_int;
 
 int		key_hook(int keycode, t_vars *vars);
@@ -157,7 +169,7 @@ void sort_sprites(int *so, double *ds, t_all *all);
 int		parse_map(t_all *all);
 int		parse_r(char *res, int *w, int *l, int *full);
 int		parse_side(char *path_no, char **side, int *full, int flag);
-int		check_bounds(t_all all);
+int		check_bounds(t_all all, t_brd *brd, int x);
 int		find_only_plr(t_all *all);
 unsigned	to_hex(char *rgb);
 

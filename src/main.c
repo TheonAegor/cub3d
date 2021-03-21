@@ -63,7 +63,8 @@ int main(int argc, char *argv[])
 	if (parse_map(&all) < 0)
 		return (-1);
 	find_only_plr(&all);
-	printf("check_bounds=%d\n",check_bounds(all));
+	printf("x%f,y%f\n", all.plr.x, all.plr.y);
+	printf("check_bounds=%d\n",check_bounds(all, &all.brd, 0));
 	if(show_map(&all) < 0)
 	{
 		printf("map is invalid\n");
