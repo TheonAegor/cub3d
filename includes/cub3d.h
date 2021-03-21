@@ -80,6 +80,12 @@ typedef struct s_image_e
 	char		*filename[NTEX];
 }				t_image_e;
 
+typedef struct s_color
+{
+	unsigned long floor;
+	unsigned long ceil;
+}				t_color;
+
 typedef struct	s_all
 {
 	char		**map;
@@ -89,9 +95,11 @@ typedef struct	s_all
 	t_point		plr;
 	t_image_e	image_e;
 	t_sprite	sprite[NS];
+	t_color		color;
 	int			w;
 	int			h;
 	int			map_row;
+	int			sow;//side of the world
 	char		*no;
 	char		*we;
 	char		*sou;
@@ -151,5 +159,6 @@ int		parse_r(char *res, int *w, int *l, int *full);
 int		parse_side(char *path_no, char **side, int *full, int flag);
 int		check_bounds(t_all all);
 int		find_only_plr(t_all *all);
+unsigned	to_hex(char *rgb);
 
 #endif

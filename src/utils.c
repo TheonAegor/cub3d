@@ -82,6 +82,8 @@ int		parse_map(t_all *all)
 //	printf("fulfilment = %d\n", full);	
 	if (full != 8)
 		return (-1);
+	all->color.floor = to_hex(all->floor_c);
+	all->color.ceil = to_hex(all->ceil_c);
 //	printf("w=%d, h=%d, %s, %s, %s, %s, %s, %s, %s\n",all->w, all->h, all->no, all->sou, all->we, all->ea, all->sp, all->floor_c, all->ceil_c);
 	return (err);
 }
@@ -140,6 +142,7 @@ void	draw_plr2(t_data *img, t_all *all)
 		y = 0;
 		while (x < WIDTH)
 		{
+//			printf("start:dx=%f, dy = %f\n", all->dx, all->dy);
 			double camerax = 2 * x/(double)WIDTH - 1;/**/
 			double rdx = all->dx + all->planex * camerax; /*Ray dir x*/
 			double rdy = all->dy + all->planey * camerax;
@@ -294,18 +297,18 @@ void	draw_plr2(t_data *img, t_all *all)
 				y++;
 			}
 			*/
+/*
 			printf("mx= %d, my =%d\n", mx, my);
 			printf("dx=%f, dy = %f\n", all->dx, all->dy);
 			printf("rdx=%f, rdy = %f\n", rdx, rdy);
 			printf("ddx= %f, ddy=%f\n", ddx, ddy);
 			printf("mx= %d, my =%d\n", mx, my);
 			printf("outside\n");
-/*
 */
 			y = 0;
 			while (y < ds && ds < de)
 			{
-				all->buffer[y][x] = 0xdbff;
+				all->buffer[y][x] = all->color.floor;
 				y++;
 			}
 			y = ds;
@@ -321,14 +324,14 @@ void	draw_plr2(t_data *img, t_all *all)
 			}
 			while (y < HEIGHT)
 			{
-				all->buffer[y][x] = 0x8B7355;
+				all->buffer[y][x] = all->color.ceil;
 				y++;
 			}
 			all->zbuf[x] = pwd;
 			x += 1;
 		}
 /*----------------------SPRITE casting-----------------------
- *---
+ *---*/
 //		printf("plr(%f:%f)\nsd(%f,%d)\n", all->plr.x, all->plr.y, all->sd[i], all->so[i]);
 		i = 0;
 		while (i < NS)
@@ -367,7 +370,7 @@ void	draw_plr2(t_data *img, t_all *all)
 			int stripe = drawsx;
 //			printf("stripe=%d, drawex = %d\n",stripe, drawex);
 //			printf("before while stripe\n");
-				printf("sd[1]%f\n", all->sd[0]);
+//				printf("sd[1]%f\n", all->sd[0]);
 			while (stripe < drawex)
 			{
 //				printf("sd[1]%f\n", all->sd[0]);
@@ -393,7 +396,6 @@ void	draw_plr2(t_data *img, t_all *all)
 			}
 			i++;
 		}
-*/
 /*
 */
 		draw_buffer(&all->img, all);
@@ -412,7 +414,7 @@ void	draw_plr2(t_data *img, t_all *all)
 
 int		key_press(int key, t_all *all)
 {
-	printf("%d\n", key);
+//	printf("%d\n", key);
 	distributor(key, all);
 	return (key);
 }

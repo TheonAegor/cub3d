@@ -40,13 +40,13 @@ void	find_plr(t_all *all)
 	int y;
 
 	i = 0;
-    all->dx = -1;
-   	all->dy = 0;
-	all->planex = 0;	
-    all->planey = 0.66;
 	all->w = 0;
 	all->h = 0;
 	x = 0;
+	push_img_to_texture(all->no, 0, all);
+	push_img_to_texture(all->sou, 1, all);
+	push_img_to_texture(all->we, 2, all);
+	push_img_to_texture(all->ea, 3, all);
 /*
 	all->image_e.filename = (char**)malloc(sizeof(char*)*8);
 	while (i < 8)
@@ -55,7 +55,6 @@ void	find_plr(t_all *all)
 		i++;
 	}
 	(all->image_e).filename[0][0] = 'g';
-*/
 	all->image_e.filename[0] = "pics/eagle.xpm";
 	all->image_e.filename[1] = "pics/wall_1.xpm";
 	all->image_e.filename[2] = "pics/bluestone.xpm";
@@ -70,7 +69,8 @@ void	find_plr(t_all *all)
 	all->image_e.filename[11] = "pics/sprite_1.xpm";
 	all->image_e.filename[12] = "pics/pillar.xpm";
 	i = 0;
-	push_img_to_texture(all->no, 0, all);
+*/
+/*
 	while (i < 13)
 	{
 //		printf("%p\n", all->vars.mlx);
@@ -86,13 +86,14 @@ void	find_plr(t_all *all)
 			y = 0;
 			while (y < TH)
 			{
-				all->texture[i][TW * y +x] = my_mlx_get_color(all->image_e, x, y);
+			all->texture[i][TW * y +x] = my_mlx_get_color(all->image_e, x, y);
 				y++;
 			}
 			x++;
 		}
 		i++;
 	}
+*/
 	i = 0;
 //	printf("gotcha\n");
 	while (all->map[i])
@@ -100,17 +101,48 @@ void	find_plr(t_all *all)
 		j = 0;
 		while(all->map[i][j])
 		{
-			if (all->map[i][j] == 'N')
+			if (ft_strchr("NWES",all->map[i][j]))
 			{
+				all->sow = all->map[i][j];
 				all->plr.x = (double)j;
 				all->plr.y = (double)i;
 				printf("%f:%f)\n",all->plr.x,all->plr.y);
 			}
-			if ((all->map[i][j] < '0' || all->map[i][j] > '9') || all->map[i][j] == 32)
+			if (ft_strchr("NEWS ", all->map[i][j]))
 				all->map[i][j] = '0'; /**/
 			j++;
 		}
 		i++;
+	}
+	if (all->sow == 'N')
+	{
+		all->dx = 0;
+		all->dy = -1;
+		all->planex = -0.66;
+		all->planey = 0;
+	}
+	else if (all->sow = 'S')
+	{
+		all->dx = 0;
+		all->dy = 1;
+		all->planex = 0.66;
+		all->planey = 0;
+		
+	}
+	else if (all->sow = 'E')
+	{
+		all->dx = 1;
+		all->dy = 0;
+		all->planex = 0;
+		all->planey = -0.66;
+	}	
+	else
+	{
+		all->dx = -1;
+		all->dy = 0;
+		all->planex = 0;
+		all->planey = 0.66;
+
 	}
 t_sprite sprite[NS] = 
 {
@@ -207,8 +239,6 @@ void draw_buffer(t_data *img, t_all *all)
 		while (y < HEIGHT)
 		{
 			my_mlx_pixel_put(img, x, y, all->buffer[y][x]);
-//			printf("x=%u, y = %u\n", x, y);
-//			printf("buf:%u\n", all->buffer[y][x]);
 			y++;
 		}
 		x++;
@@ -234,8 +264,8 @@ int		show_map(t_all *all)
 	t_data		img;
 	t_point		point;
 
-	if (parse_map(all) < 0)
-		return (-1);
+//	if (parse_map(all) < 0)
+//		return (-1);
 	all->point.x = 100;
 	all->point.y = 100;
 	point.x = 100;

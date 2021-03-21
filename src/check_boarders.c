@@ -79,7 +79,7 @@ int check_bounds(t_all all)
 	p = malloc(sizeof(t_point_int) * 10000);
 	x = -1;
 	y = all.map_row;
-	printf("%c\n", all.map[8][6]);
+//	printf("%c\n", all.map[8][6]);
 	while (flag == 0)
 	{
 		x++;
@@ -106,10 +106,10 @@ int check_bounds(t_all all)
 			p[i].y = y;
 			if (p[i].x == p[0].x && p[i].y == p[0].y && i != 0)
 			{
-				printf("px=%d, py=%d\np[0].x=%d, p[0].y=%d\n", p[i].x, p[i].y, p[0].x, p[0].y);
+//				printf("px=%d, py=%d\np[0].x=%d, p[0].y=%d\n", p[i].x, p[i].y, p[0].x, p[0].y);
 				break;
 			}
-			printf("here\n");
+//			printf("here\n");
 			if (dirx == 1)
 			{
 				dirx -= 1;
@@ -159,11 +159,11 @@ int check_bounds(t_all all)
 			y += diry;
 			x += dirx;
 		}
-		printf("x=%d, y=%d, dirx=%d, diry=%d\n", x, y, dirx, diry);
+//		printf("x=%d, y=%d, dirx=%d, diry=%d\n", x, y, dirx, diry);
 //		sleep(1);
 		
 	}
-	printf("hihihih%d\n", p[93].x);
+//	printf("hihihih%d\n", p[93].x);
 	printf("%d\n", i);
 	if (find_range_x(p, all.plr.x, all.plr.y, i) > 0)
 		return (1);
