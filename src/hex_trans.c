@@ -75,12 +75,14 @@ unsigned to_hex(char *rgb)
 		i++;
 	i++;
 	res += ft_atoi(&rgb[i]);
-	printf("res%lu\n", res);
-/*	
-	printf("b=%s\n",tmp = my_itoa(ft_atoi(&rgb[i]), 16));
-	tmp = my_itoa(ft_atoi(&rgb[i]), 16);
-	my_strjoin(&res, &tmp);
-//	printf("reeees=%s\n", res);
-	*/
+	while (rgb[i] != ',' && rgb[i])
+		i++;
+	if (rgb[i])
+		i++;
+	if (ft_atoi(&rgb[i]) > 0)
+	{
+		ft_printf("here\n");
+		return (1);
+	}
 	return (res);
 }

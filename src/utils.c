@@ -40,10 +40,10 @@ int		parse_map(t_all *all)
 	int full;
 
 	err = 1;
-	i = 0;
+	i = -1;
 	full =0;
 	/*			parse RESOLUTION		*/
-	while (all->map[i])
+	while (all->map[++i])
 	{
 		if (all->map[i][0] == 'R') 
 			err = parse_r(all->map[i], &all->w, &all->h, &full);
@@ -58,33 +58,34 @@ int		parse_map(t_all *all)
 		if (all->map[i][0] == 'S' && all->map[i][1] != 'O')
 			err = parse_side(all->map[i], &all->sp, &full, 0);
 		if (all->map[i][0] == 'F')
-		{
-//			printf("i=%d, fuul=%d\n", i, full);
 			err = parse_side(all->map[i], &all->floor_c, &full,1);
-		}
 		if (all->map[i][0] == 'C')
-		{
-//			printf("i====%d\n, flll=%d", i, full);
 			err = parse_side(all->map[i], &all->ceil_c, &full, 1);
-		}
-		if (err == -1)
+		if (err != 1)
 		{
-//			printf("return\n");
+			handle_parse_err(err, all);
 			return (-1);
 		}
 		if (full == 8)
 		{
-//			printf("full\n");
 			all->brd.map_row = i + 1;
 			full++;
 		}
-		i++;
 	}
 //	printf("fulfilment = %d\n", full);	
 	if (full != 9)
+	{
+		handle_parse_err(full + 700, all);
 		return (-1);
+	}
 	all->color.floor = to_hex(all->floor_c);
 	all->color.ceil = to_hex(all->ceil_c);
+	if (all->color.floor == 1 || all->color.ceil == 1)
+	{
+		ft_printf("ololol\n");
+		handle_hex_err(-1, all);
+		return (-1);
+	}
 //	printf("w=%d, h=%d, %s, %s, %s, %s, %s, %s, %s\n",all->w, all->h, all->no, all->sou, all->we, all->ea, all->sp, all->floor_c, all->ceil_c);
 	return (err);
 }
@@ -100,9 +101,13 @@ int		parse_r(char *res, int *w, int *h, int *full)
 	while(ft_isdigit(res[i]))
 		i++;
 	*h = ft_atoi(&res[i]);
+	if (*w <= 0 || *h <= 0)
+		return (-23);
 //	printf("w=%d,h=%d\n", *w, *h);
-	if ((*w <= 0 || *w > 2048) || (*h <= 0 || *h > 2048))
-		return (-1);
+	if (*w > 2048)
+		*w = 2048;	   
+	if (*h > 1024)
+		*h = 1024;
 //	printf("w=%d,h=%d\n", *w, *h);
 	*full += 1;
 	return (1);
@@ -123,10 +128,7 @@ int parse_side(char *path, char **side, int *full, int flag)
 		err = open(&path[i], O_RDONLY);
 //		printf("%s\n", &path[i]);
 		if (err < 0)
-		{
-			perror("open");
-			return (-1);
-		}
+			return (path[0] + path[1]);
 		close(err);
 	}
 	*side = &path[i];

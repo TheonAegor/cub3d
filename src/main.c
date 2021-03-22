@@ -31,7 +31,9 @@ int		read_map(char *argv, t_all *all)
 		ft_lstadd_back(&head, ft_lstnew(line));	
 	ft_lstadd_back(&head, ft_lstnew(line));	
 	if (make_map(&head, ft_lstsize(head), all) < 0)
+	{
 		return (-1);
+	}
 	close(fd);
 	return (1);
 }
@@ -72,13 +74,17 @@ int main(int argc, char *argv[])
 	if(read_map(argv[1], &all) < 0)
 		return (-1);
 	if (parse_map(&all) < 0)
+	{
 		return (-1);
-	find_only_plr(&all);
+	}
+	if (find_only_plr(&all) < 0)
+		return (-1);
 	printf("x%f,y%f\n", all.plr.x, all.plr.y);
-	printf("check_bounds=%d\n",check_bounds2(&all, &all.brd));
+	if (check_bounds2(&all, &all.brd) < 0)
+		return(-1);
 	if(show_map(&all) < 0)
 	{
-		printf("map is invalid\n");
+		perror("show_map");
 		return (-1);
 	}
 	/*

@@ -180,5 +180,10 @@ unsigned	to_hex(char *rgb);
 int		check_bounds2(t_all *all, t_brd *brd);
 void	count_sprites(t_all *all);
 int		create_spr_tabl(t_all *all);
+int		exit_buf(t_all *all);
+void	start_init(t_all *all);
+void	handle_plr_errors(int error);
+void	handle_parse_err(int err, t_all *all);
+void	handle_hex_err(int err, t_all *all);
 
 #endif

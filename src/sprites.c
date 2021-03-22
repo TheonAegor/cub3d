@@ -47,3 +47,44 @@ void    count_sprites(t_all *all)
         y++;    
     }    
 }
+
+void sort_sprites(int *so, double *sd, t_all *all)    
+{                 
+    int i = 0;    
+    int j = 0;        
+    int tmp_order;      
+    double tmp_dist;                        
+    t_sprites sprites[all->spr.num_spr];    
+                                    
+    while (i < all->spr.num_spr)    
+    {                                
+        sprites[i].first = sd[i];     
+        sprites[i].second = so[i];
+		i++;            
+    }                                       
+    while (j < all->spr.num_spr / 2 + 1)    
+    {                                       
+        i = 0;                              
+        while (i < all->spr.num_spr - 1)    
+        {                                                   
+            if (sprites[i].first < sprites[i + 1].first)    
+            {
+				tmp_dist = sprites[i].first;
+				tmp_order = sprites[i].second;
+				sprites[i].first = sprites[i + 1].first;
+				sprites[i].second = sprites[i + 1].second;    
+				sprites[i + 1].first = tmp_dist;
+				sprites[i + 1].second = tmp_order;    
+            }                                         
+            i++;                                    
+        }                                             
+        j++;     
+    }               
+    i = 0;                          
+    while (i < all->spr.num_spr)    
+    {                                     
+        all->sd[i] = sprites[i].first;     
+        all->so[i] = sprites[i].second;
+        i++;
+    }
+}  

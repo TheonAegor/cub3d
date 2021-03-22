@@ -17,7 +17,7 @@ $(name): $(obj)
 	make -C mlx_mac/
 	cp libft/libft.h ./includes/	
 	cp libft/libft.a ./
-	$(cc) -o $(name) $(option) $^ libmlx_Linux.a libft.a -lXext -lX11 -lm -lz 
+	$(cc) -o $(name) $(option) $^ libmlx_Linux.a libftprintf.a libft.a -lXext -lX11 -lm -lz 
 
 #$(cc) $(option) -o $(name) $(src) -L. -lft
 
