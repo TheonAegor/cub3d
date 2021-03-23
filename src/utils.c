@@ -358,53 +358,53 @@ void	draw_plr2(t_data *img, t_all *all)
 		i = 0;
 		while (i < all->spr.num_spr)
 		{
-			double sprite_x = all->sprite[all->so[i]].x - all->plr.x;
-			double sprite_y = all->sprite[all->so[i]].y - all->plr.y;
-			double inv_det = 1.0 / (all->planex * all->dy - all->dx * all->planey);
-			double transform_x = inv_det * (all->dy * sprite_x - all->dx * sprite_y);
-			double transform_y = inv_det * (-all->planey * sprite_x + all->planex * sprite_y);
-			int sprite_screen_x = (int)((all->w/2)*(1 + transform_x / transform_y));
-			int vmove_screen = (int)(VMV / transform_y);
-			int spr_h = abs((int)(all->h / transform_y)) / VDIV;
-			int drawsy = -spr_h / 2 + all->h / 2 + vmove_screen;
-			if (drawsy < 0)
-				drawsy = 0;
-			int drawey = spr_h / 2 + all->h / 2 + vmove_screen;
-			if (drawey >= all->h)
-				drawey = all->h - 1;
-			int spr_w = abs((int)(all->h / (transform_y))) / UDIV;
-			int drawsx = -spr_w / 2 + sprite_screen_x;
-			if (drawsx < 0) 
-				drawsx = 0;
-			int drawex = spr_w / 2 + sprite_screen_x;
-			if (drawex >= all->w)
-				drawex = all->w - 1;
-			int stripe = drawsx;
-//			printf("stripe=%d, drawex = %d\n",stripe, drawex);
+			s.spr_x = all->sprite[all->so[i]].x - all->plr.x;
+			s.spr_y = all->sprite[all->so[i]].y - all->plr.y;
+			s.inv_d = 1.0 / (all->planex * all->dy - all->dx * all->planey);
+			s.tr_x = s.inv_d * (all->dy * s.spr_x - all->dx * s.spr_y);
+			s.tr_y = s.inv_d * (-all->planey * s.spr_x + all->planex * s.spr_y);
+			s.spr_scr_x = (int)((all->w/2)*(1 + s.tr_x / s.tr_y));
+			s.vmv_scr = (int)(VMV / s.tr_y);
+			s.spr_h = abs((int)(all->h / s.tr_y)) / VDIV;
+			s.drawsy = -s.spr_h / 2 + all->h / 2 + s.vmv_scr;
+			if (s.drawsy < 0)
+				s.drawsy = 0;
+			s.drawey = s.spr_h / 2 + all->h / 2 + s.vmv_scr;
+			if (s.drawey >= all->h)
+				s.drawey = all->h - 1;
+			s.spr_w = abs((int)(all->h / (s.tr_y))) / UDIV;
+			s.drawsx = -s.spr_w / 2 + s.spr_scr_x;
+			if (s.drawsx < 0) 
+				s.drawsx = 0;
+			s.drawex = s.spr_w / 2 + s.spr_scr_x;
+			if (s.drawex >= all->w)
+				s.drawex = all->w - 1;
+			s.stripe = s.drawsx;
+//			printf("stripe=%d, drawex = %d\n",s.stripe, s.drawex);
 //			printf("before while stripe\n");
 //				printf("sd[1]%f\n", all->sd[0]);
-			while (stripe < drawex)
+			while (s.stripe < s.drawex)
 			{
 //				printf("sd[1]%f\n", all->sd[0]);
-				int texX = (int)(256 * (stripe - (-spr_w / 2 + sprite_screen_x)) * TW / spr_w) / 256;
-//				printf("transform_y = %f, zbuf[%d] %f, \n",transform_y, stripe, all->zbuf[stripe]);
-				if (transform_y > 0 && stripe > 0 && stripe < all->w && transform_y < all->zbuf[stripe])
+				s.texx = (int)(256 * (s.stripe - (-s.spr_w / 2 + s.spr_scr_x)) * TW / s.spr_w) / 256;
+//				printf("transform_y = %f, zbuf[%d] %f, \n",s.tr_y, stripe, all->zbuf[stripe]);
+				if (s.tr_y > 0 && s.stripe > 0 && s.stripe < all->w && s.tr_y < all->zbuf[s.stripe])
 				{
-					int y = drawsy;
+					s.y = s.drawsy;
 //					printf("y = %d\n", y);
-					while (y < drawey)
+					while (s.y < s.drawey)
 					{
-						int d = (y) * 256 - all->h * 128 + spr_h * 128;
-//						printf("spr_h = %d, d = %d\n", spr_h, d);
-						int texY = ((d * TH) / spr_h) / 256;
-						unsigned color = all->texture[4][TW * texY + texX];
-//						printf("stripe=%d\n",stripe);
-						if ((color & 0x00FFFFFF) != 0)
-						   	all->buffer[y][stripe] = color;
-						y++;
+						s.d = (s.y) * 256 - all->h * 128 + s.spr_h * 128;
+//						printf("spr_h = %s.d, s.d = %d\n", s.spr_h, s.d);
+						s.texy = ((s.d * TH) / s.spr_h) / 256;
+						s.color = all->texture[4][TW * s.texy + s.texx];
+//						printf("s.stripe=%d\n",s.stripe);
+						if ((s.color & 0x00FFFFFF) != 0)
+						   	all->buffer[s.y][s.stripe] = s.color;
+						s.y++;
 					}
 				}
-				stripe++;
+				s.stripe++;
 			}
 			i++;
 		}
