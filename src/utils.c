@@ -30,8 +30,14 @@ int draw_screen_scale(t_all *all, t_point *point, t_data *img)
 	middle_init(all);
 //	printf("here\n");
 	draw_plr2(img, all);
+	if (all->save == 1)
+	{
+		printf("here\n");
+		screen_shot(all);
+		free_all(all);
+		return (-1);
+	}
 	mlx_do_sync(all->vars.mlx);
-	screen_shot(all);
 	mlx_put_image_to_window(all->vars.mlx, all->vars.win, all->img.img, 0, 0);
 }
 
@@ -82,6 +88,8 @@ int		parse_map(t_all *all)
 		handle_parse_err(full + 700, all);
 		return (-1);
 	}
+	if (check_hex(all) == -1)
+		return (-1);
 	all->color.floor = to_hex(all->floor_c);
 	all->color.ceil = to_hex(all->ceil_c);
 	if (all->color.floor == 1 || all->color.ceil == 1)
@@ -112,7 +120,7 @@ int		parse_r(char *res, int *w, int *h, int *full)
 		*w = 2048;	   
 	if (*h > 1024)
 		*h = 1024;
-	printf("w=%d,h=%d\n", *w, *h);
+//	printf("w=%d,h=%d\n", *w, *h);
 	*full += 1;
 	return (1);
 }
@@ -135,6 +143,8 @@ int parse_side(char *path, char **side, int *full, int flag)
 			return (path[0] + path[1]);
 		close(err);
 	}
+	else
+		i = 1;
 	*side = &path[i];
 	*full += 1;
 //	printf("%s\n", &path_no[i]);
@@ -171,7 +181,7 @@ void	draw_plr2(t_data *img, t_all *all)
 
 int		key_press(int key, t_all *all)
 {
-//	printf("%d\n", key);
+	printf("%d\n", key);
 	distributor(key, all);
 	return (key);
 }

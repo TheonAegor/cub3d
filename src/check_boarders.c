@@ -1,5 +1,19 @@
 #include "cub3d.h"
 
+int	if_forbid_chars(int c, char *forbid_chars)
+{
+	int i;
+
+	i = 0;	
+	while (forbid_chars[i])
+	{
+		if (c == forbid_chars[i])
+			return (1);
+		i++;
+	}
+	return (-1);
+}
+
 int find_only_plr(t_all *all)
 {
 	int i;
@@ -8,7 +22,7 @@ int find_only_plr(t_all *all)
 
 	i = all->brd.map_row;
 	flag = 0;
-    while (all->map[i])     
+    while (all->map[i])
     {                      
         j = 0;     
         while(all->map[i][j])     
@@ -18,17 +32,21 @@ int find_only_plr(t_all *all)
 				all->sow = all->map[i][j];
                 all->plr.x = (double)j + 0.5;     
                 all->plr.y = (double)i + 0.5;     
+				all->map[i][j] = '0';
 				flag += 1;
             }
-            if (ft_strchr("NSWE", all->map[i][j]))     
-				all->map[i][j] = '0';
+			if (if_forbid_chars(all->map[i][j], "NSWE 012\n\t\0") == -1)
+			{
+				error_forbid_char(all);
+				return (-1);
+			}
             j++;                              
         }
         i++;     
     } 
 	if (flag != 1)
 	{
-		handle_plr_errors(flag);
+		handle_plr_errors(flag, all);
 		return (-1);
 	}
 	return (1);

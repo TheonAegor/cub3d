@@ -1,61 +1,59 @@
 #include "cub3d.h"
 
-static char *my_itoa(unsigned long nbr, int base)
+int		check_hex(t_all *all)
 {
-	int len;
-	char *p;
-	unsigned long tmp;	
-
-	tmp = nbr;
-	len = 0;
-	if (nbr == 0)
-		len++;
-	while (tmp)
+	if (check_chars(all->floor_c) == -1)
 	{
-		len++;
-		tmp /= base;
+		handle_hex_err2(-1, all);
+		return (-1);
 	}
-	p = ft_calloc(sizeof(char), (len + 1));
-	while (len > 0)
+	if (check_chars(all->ceil_c) == -1)
 	{
-		p[len - 1] = nbr % base;
-		if (nbr % base > 9)
-			p[len - 1] += 'a' - 10;
-		else
-			p[len - 1] += '0';
-		len--;
-		nbr /= base;
+		handle_hex_err2(-2, all);
+		return (-1);
 	}
-	return (p);
+	if (check_commas(all->floor_c, all) < 0 || check_commas(all->ceil_c, all) < 0)
+		return (-1);
+	return (1);
 }
 
-static int my_strjoin(char **str1, char **str2)
+int		check_commas(char *str, t_all *all)
 {
 	int i;
-	int j;
-	char *p;
+	int counter;
 
-	p = ft_calloc(sizeof(char), (ft_strlen(*str1) + ft_strlen(*str2) + 1));
 	i = 0;
-	if (*str1 != 0)
-		while (str1[0][i])
-		{
-			p[i] = str1[0][i];
-			i++;
-		}
-	j = 0;
-	if (*str2 != 0)
-		while (str2[0][j])
-		{
-			p[j + i] = str2[0][j];
-			j++;
-		}
-	p[j+i] = '\0';
-	if (*str1 != 0)
-		free (*str1);
-	if (*str2 != 0)
-		free(*str2);
-	*str1 = p;
+	counter = 0;
+	while (str[i])
+	{
+		if (str[i] == ',')
+			counter++;
+		i++;
+	}
+	if (counter < 2)
+	{
+		handle_hex_err2(-3, all);
+		return (-1);
+	}
+	if (counter > 2)
+	{
+		handle_hex_err2(-4, all);
+		return (-1);
+	}
+	return (1);
+}
+
+int		check_chars(char *str)
+{
+	int i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (!(ft_strchr("0123456789, \0\t", str[i])))
+			return (-1);
+		i++;
+	}
 	return (1);
 }
 
@@ -75,14 +73,5 @@ unsigned to_hex(char *rgb)
 		i++;
 	i++;
 	res += ft_atoi(&rgb[i]);
-	while (rgb[i] != ',' && rgb[i])
-		i++;
-	if (rgb[i])
-		i++;
-	if (ft_atoi(&rgb[i]) > 0)
-	{
-		ft_printf("here\n");
-		return (1);
-	}
 	return (res);
 }

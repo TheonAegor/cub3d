@@ -155,6 +155,19 @@ typedef struct s_spr_cast
 	unsigned	color;
 }				t_spr_cast;
 
+typedef struct s_rc
+{
+	int			row;
+	int			col;
+}				t_rc;
+
+typedef struct s_rgb
+{
+	int			red;
+	int			green;
+	int			blue;
+}				t_rgb;
+
 typedef struct s_shot
 {
 	int				w;
@@ -182,6 +195,7 @@ typedef struct	s_all
 	int			w;
 	int			h;
 	int			sow;//side of the world
+	int			save;
 	char		*no;
 	char		*we;
 	char		*sou;
@@ -249,9 +263,12 @@ void	count_sprites(t_all *all);
 int		create_spr_tabl(t_all *all);
 int		exit_buf(t_all *all);
 void	start_init(t_all *all);
-void	handle_plr_errors(int error);
+void	handle_plr_errors(int error, t_all *all);
+void	error_forbid_char(t_all *all);
+void	handle_arg_errors(int error);
 void	handle_parse_err(int err, t_all *all);
 void	handle_hex_err(int err, t_all *all);
+void	handle_hex_err2(int err, t_all *all);
 void	handle_map_errors(int x, int y, t_all *all);
 void	middle_init(t_all *all);
 void	start_dda(t_dda *dda, t_all *all);
@@ -270,5 +287,13 @@ unsigned char	*ft_bitheader(t_all *all);
 void	screen_shot(t_all *all);
 void	screno(t_all *all);
 unsigned int	my_mlx_get_color2(t_data data, int x, int y);
+int		check_two_str(char *str1, char *str2);
+void	free_map(t_all *all);
+void	free_buf_z(t_all *all);
+void	free_all(t_all *all);
+int		if_forbid_chars(int c, char *forbid_chars);
+int		check_commas(char *str, t_all *all);
+int		check_hex(t_all *all);
+int		check_chars(char *str);
 
 #endif

@@ -70,24 +70,32 @@ int main(int argc, char *argv[])
 {
 	int fd;
 	t_all all;
-//	int i;
 
+	if (argc < 2 || argc > 3)
+	{
+		handle_arg_errors(argc);
+		return (-1);
+	}
+	if (argc == 3)
+	{
+		printf("argv[2]=%s\n", argv[2]);
+		if (check_two_str(argv[2], "--save") == 1)
+			all.save = 1;	
+		else
+		{
+			ft_printf("You have a bad second argument, try '--save' to make a screenshot\n");
+			return (-1);
+		}
+	}
 	if(read_map(argv[1], &all) < 0)
 		return (-1);
 	if (parse_map(&all) < 0)
 		return (-1);
 	if (find_only_plr(&all) < 0)
 		return (-1);
-//	printf("x%f,y%f\n", all.plr.x, all.plr.y);
 	if (check_bounds2(&all, &all.brd) < 0)
 		return(-1);
-	if(show_map(&all) < 0)
-	{
-		perror("show_map");
+	if (show_map(&all) < 0)
 		return (-1);
-	}
-	/*
-	*/
-
 	return (1);
 }

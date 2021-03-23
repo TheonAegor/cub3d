@@ -1,7 +1,17 @@
 #include "cub3d.h"
 
-void	handle_plr_errors(int error)
+void	handle_arg_errors(int error)
 {
+	ft_printf("Error!\n");
+	if (error < 2)
+		ft_printf("Please, add a map, user\n");
+	if (error > 3)
+		ft_printf("You added to much arguments\n");
+}
+
+void	handle_plr_errors(int error, t_all *all)
+{
+	free_map(all);
 	ft_printf("Error!\n");
 	if (error == 0)
 		ft_printf("You don't have a player position\n");
@@ -11,18 +21,20 @@ void	handle_plr_errors(int error)
 
 void	handle_map_errors(int x, int y, t_all *all)
 {
+	free_map(all);
 	ft_printf("Error!\n");
 	ft_printf("You'r map is not closed. Check point (%d,%d)\n", x, y);
 }
 
 void	handle_parse_err(int err, t_all *all)
 {
+	free_map(all);
 	ft_printf("Error!\n");
 //	ft_printf("%d\n", err);
 	if (err == 157)	
 		ft_printf("Texture for North side exist's no\n");
 	else if (err == -23)
-		ft_printf("You forget to initialize resolutin of the screen\n");
+		ft_printf("You forget to initialize resolutin of the screen, or it could be incorrect\n");
 	else if (err == 162)	
 		ft_printf("Texture for South side exist's no\n");
 	else if (err == 156)	

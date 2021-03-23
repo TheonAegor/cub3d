@@ -1,2 +1,2 @@
 rm -rf ./res
-make && ./res map.cub
+make && ./res map.cub 
