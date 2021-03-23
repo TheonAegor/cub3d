@@ -31,9 +31,7 @@ int		read_map(char *argv, t_all *all)
 		ft_lstadd_back(&head, ft_lstnew(line));	
 	ft_lstadd_back(&head, ft_lstnew(line));	
 	if (make_map(&head, ft_lstsize(head), all) < 0)
-	{
 		return (-1);
-	}
 	close(fd);
 	return (1);
 }
@@ -47,6 +45,7 @@ int		make_map(t_list **head, size_t size, t_all *all)
 	char **map;
 	int i;
 	t_list *tmp;
+	t_list *tmp2;
 
 	i = 0;
 	tmp = *head;
@@ -59,7 +58,9 @@ int		make_map(t_list **head, size_t size, t_all *all)
 	while(tmp)
 	{
 		all->map[i++] = tmp->content;
+		tmp2 = tmp;
 		tmp = tmp->next;
+		free(tmp2);
 	}
 	all->map[i] = NULL;
 	return (1);
@@ -74,12 +75,10 @@ int main(int argc, char *argv[])
 	if(read_map(argv[1], &all) < 0)
 		return (-1);
 	if (parse_map(&all) < 0)
-	{
 		return (-1);
-	}
 	if (find_only_plr(&all) < 0)
 		return (-1);
-	printf("x%f,y%f\n", all.plr.x, all.plr.y);
+//	printf("x%f,y%f\n", all.plr.x, all.plr.y);
 	if (check_bounds2(&all, &all.brd) < 0)
 		return(-1);
 	if(show_map(&all) < 0)

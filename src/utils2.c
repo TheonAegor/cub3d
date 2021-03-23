@@ -65,7 +65,7 @@ void	distributor(int key, t_all *all)
 			all->plr.y -= all->dy * MS;
 //		printf("plr(%f;%f)", all->plr.x, all->plr.y);
 	}
-	if (key == D)
+	if (key == A)
 	{
 		double odx = all->dx;
 		all->dx = all->dx * cos(-MS) - all->dy * sin(-MS);
@@ -75,7 +75,7 @@ void	distributor(int key, t_all *all)
 		all->planey = opx * sin(-MS) + all->planey * cos(-MS);
 //		printf("planeX=%f, planeY=%f; dirX = %f, dirY = %f\n", all->planex, all->planey, all->dx, all->dy);
     }
-	if (key == A)
+	if (key == D)
 	{
 		double odx = all->dx;
 		all->dx = all->dx * cos(MS) - all->dy * sin(MS);
@@ -93,10 +93,11 @@ void	distributor(int key, t_all *all)
 		all->plr.x += 1 * all->dx;
 		all->plr.y += 1 * all->dy;
 	}
-	clear_img2(&all->img, WIDTH, HEIGHT);
+	clear_img2(&all->img, all->w, all->h);
 //	draw_only_map_scale(all, &point, &all->img);
 //	draw_plr_scale(&all->img, all->plr.x, all->plr.y, PLR);
 	draw_plr2(&all->img, all);
 //	printf("heeeeere\n");
+	mlx_do_sync(all->vars.mlx);
 	mlx_put_image_to_window(all->vars.mlx, all->vars.win, all->img.img,0, 0);
 }

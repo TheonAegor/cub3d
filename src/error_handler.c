@@ -9,7 +9,7 @@ void	handle_plr_errors(int error)
 		ft_printf("You have several player positions\n");
 }
 
-void	handle_map_errors(int x, int y)
+void	handle_map_errors(int x, int y, t_all *all)
 {
 	ft_printf("Error!\n");
 	ft_printf("You'r map is not closed. Check point (%d,%d)\n", x, y);
@@ -44,5 +44,4 @@ void handle_hex_err(int err, t_all *all)
 	ft_printf("Error!\n");
 	if (err == -1)
 		ft_printf("You have more the 3 digits to you F or C color\n");
-
 }	

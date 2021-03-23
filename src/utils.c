@@ -27,8 +27,10 @@ void		pix_put_plr(t_data *img, float x, float y, int color)
 int draw_screen_scale(t_all *all, t_point *point, t_data *img)
 {
 	find_plr(all);
+	middle_init(all);
 //	printf("here\n");
 	draw_plr2(img, all);
+	mlx_do_sync(all->vars.mlx);
 	mlx_put_image_to_window(all->vars.mlx, all->vars.win, all->img.img, 0, 0);
 }
 
@@ -42,6 +44,7 @@ int		parse_map(t_all *all)
 	err = 1;
 	i = -1;
 	full =0;
+	start_init(all);
 	/*			parse RESOLUTION		*/
 	while (all->map[++i])
 	{
@@ -82,11 +85,11 @@ int		parse_map(t_all *all)
 	all->color.ceil = to_hex(all->ceil_c);
 	if (all->color.floor == 1 || all->color.ceil == 1)
 	{
-		ft_printf("ololol\n");
+//		ft_printf("ololol\n");
 		handle_hex_err(-1, all);
 		return (-1);
 	}
-//	printf("w=%d, h=%d, %s, %s, %s, %s, %s, %s, %s\n",all->w, all->h, all->no, all->sou, all->we, all->ea, all->sp, all->floor_c, all->ceil_c);
+	printf("w=%d, h=%d, %s, %s, %s, %s, %s, %s, %s\n",all->w, all->h, all->no, all->sou, all->we, all->ea, all->sp, all->floor_c, all->ceil_c);
 	return (err);
 }
 
@@ -108,7 +111,7 @@ int		parse_r(char *res, int *w, int *h, int *full)
 		*w = 2048;	   
 	if (*h > 1024)
 		*h = 1024;
-//	printf("w=%d,h=%d\n", *w, *h);
+	printf("w=%d,h=%d\n", *w, *h);
 	*full += 1;
 	return (1);
 }
@@ -146,10 +149,11 @@ void	draw_plr2(t_data *img, t_all *all)
 	i = 0;
 		x = 0;
 		y = 0;
-		while (x < WIDTH)
+//		printf("all-w=%d, all-h=%d\n", all->w, all->h);
+		while (x < all->w)
 		{
 //			printf("start:dx=%f, dy = %f\n", all->dx, all->dy);
-			double camerax = 2 * x/(double)WIDTH - 1;/**/
+			double camerax = 2 * x/(double)all->w - 1;/**/
 			double rdx = all->dx + all->planex * camerax; /*Ray dir x*/
 			double rdy = all->dy + all->planey * camerax;
 //			printf("rdy=%f, rdx = %f\n", rdy, rdx);
@@ -233,13 +237,13 @@ void	draw_plr2(t_data *img, t_all *all)
 			else 
 				pwd = (my - all->plr.y + (1 - sy) / 2)/ rdy;
 
-			int lh = (int)(HEIGHT / pwd);
-			int ds = -lh / 2 + HEIGHT /2; //draw start
+			int lh = (int)(all->h / pwd);
+			int ds = -lh / 2 + all->h /2; //draw start
 			if (ds < 0)
 				ds = 0;
-			int de = lh / 2 + HEIGHT / 2; //draw end
-			if (de >= HEIGHT)
-				de = HEIGHT - 1;
+			int de = lh / 2 + all->h / 2; //draw end
+			if (de >= all->h)
+				de = all->h - 1;
 /*
 			printf ("ds = %d\n", ds);
 			printf("ds=%d, de = %d\n", ds, de);
@@ -293,7 +297,7 @@ void	draw_plr2(t_data *img, t_all *all)
 			if(side == 1 && rdy < 0) 
 				texX = TW - texX - 1;	
 			double step = 1.0 * TH/lh;
-			double texPos = (ds - HEIGHT/2 + lh /2) * step;
+			double texPos = (ds - all->h/2 + lh /2) * step;
 			/*
 			y = 1;
 			while (y < ds)
@@ -328,7 +332,7 @@ void	draw_plr2(t_data *img, t_all *all)
 				all->buffer[y][x] = color;
 				y++;
 			}
-			while (y < HEIGHT)
+			while (y < all->h)
 			{
 				all->buffer[y][x] = all->color.ceil;
 				y++;
@@ -338,7 +342,7 @@ void	draw_plr2(t_data *img, t_all *all)
 		}
 /*----------------------SPRITE casting-----------------------
  *---*/
-		printf("plr(%f:%f)\nsd(%f,%d)\n", all->plr.x, all->plr.y, all->sd[i], all->so[i]);
+//		printf("plr(%f:%f)\nsd(%f,%d)\n", all->plr.x, all->plr.y, all->sd[i], all->so[i]);
 		i = 0;
 		while (i < all->spr.num_spr)
 		{
@@ -357,22 +361,22 @@ void	draw_plr2(t_data *img, t_all *all)
 			double inv_det = 1.0 / (all->planex * all->dy - all->dx * all->planey);
 			double transform_x = inv_det * (all->dy * sprite_x - all->dx * sprite_y);
 			double transform_y = inv_det * (-all->planey * sprite_x + all->planex * sprite_y);
-			int sprite_screen_x = (int)((WIDTH/2)*(1 + transform_x / transform_y));
+			int sprite_screen_x = (int)((all->w/2)*(1 + transform_x / transform_y));
 			int vmove_screen = (int)(VMV / transform_y);
-			int spr_h = abs((int)(HEIGHT / transform_y)) / VDIV;
-			int drawsy = -spr_h / 2 + HEIGHT / 2 + vmove_screen;
+			int spr_h = abs((int)(all->h / transform_y)) / VDIV;
+			int drawsy = -spr_h / 2 + all->h / 2 + vmove_screen;
 			if (drawsy < 0)
 				drawsy = 0;
-			int drawey = spr_h / 2 + HEIGHT / 2 + vmove_screen;
-			if (drawey >= HEIGHT)
-				drawey = HEIGHT - 1;
-			int spr_w = abs((int)(HEIGHT / (transform_y))) / UDIV;
+			int drawey = spr_h / 2 + all->h / 2 + vmove_screen;
+			if (drawey >= all->h)
+				drawey = all->h - 1;
+			int spr_w = abs((int)(all->h / (transform_y))) / UDIV;
 			int drawsx = -spr_w / 2 + sprite_screen_x;
 			if (drawsx < 0) 
 				drawsx = 0;
 			int drawex = spr_w / 2 + sprite_screen_x;
-			if (drawex >= WIDTH)
-				drawex = WIDTH - 1;
+			if (drawex >= all->w)
+				drawex = all->w - 1;
 			int stripe = drawsx;
 //			printf("stripe=%d, drawex = %d\n",stripe, drawex);
 //			printf("before while stripe\n");
@@ -382,13 +386,13 @@ void	draw_plr2(t_data *img, t_all *all)
 //				printf("sd[1]%f\n", all->sd[0]);
 				int texX = (int)(256 * (stripe - (-spr_w / 2 + sprite_screen_x)) * TW / spr_w) / 256;
 //				printf("transform_y = %f, zbuf[%d] %f, \n",transform_y, stripe, all->zbuf[stripe]);
-				if (transform_y > 0 && stripe > 0 && stripe < WIDTH && transform_y < all->zbuf[stripe])
+				if (transform_y > 0 && stripe > 0 && stripe < all->w && transform_y < all->zbuf[stripe])
 				{
 					int y = drawsy;
 //					printf("y = %d\n", y);
 					while (y < drawey)
 					{
-						int d = (y) * 256 - HEIGHT * 128 + spr_h * 128;
+						int d = (y) * 256 - all->h * 128 + spr_h * 128;
 //						printf("spr_h = %d, d = %d\n", spr_h, d);
 						int texY = ((d * TH) / spr_h) / 256;
 						unsigned color = all->texture[4][TW * texY + texX];
@@ -406,10 +410,10 @@ void	draw_plr2(t_data *img, t_all *all)
 */
 		draw_buffer(&all->img, all);
 		y = 0;
-		while (y < HEIGHT)
+		while (y < all->h)
 		{
 			x = 0;
-			while(x < WIDTH)
+			while(x < all->w)
 			{
 				all->buffer[y][x] = 0;
 				x++;

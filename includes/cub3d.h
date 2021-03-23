@@ -2,6 +2,7 @@
 # define CUB3D_H
 
 # include "libft.h"
+# include "ft_printf.h"
 # include <mlx.h>
 # include <math.h>
 # define PI 3.14159265359
@@ -126,11 +127,11 @@ typedef struct	s_all
 	double		dy;
 	double		planex;
 	double		planey;
-	double		zbuf[WIDTH];
+	double		*zbuf;
 	int			so[NS];//sprite Order
 	double		sd[NS];//sprite Distanse
 	unsigned	texture[NTEX][TW*TH];
-	unsigned	buffer[HEIGHT][WIDTH];	
+	unsigned	**buffer;	
 	float 		lint_h;
 }				t_all;
 
@@ -185,5 +186,7 @@ void	start_init(t_all *all);
 void	handle_plr_errors(int error);
 void	handle_parse_err(int err, t_all *all);
 void	handle_hex_err(int err, t_all *all);
+void	handle_map_errors(int x, int y, t_all *all);
+void	middle_init(t_all *all);
 
 #endif

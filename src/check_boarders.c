@@ -72,7 +72,7 @@ int check_bounds2(t_all *all, t_brd *brd)
 				res = check_neighbors(all, y, x);	
 				if (res < 0)
 				{
-					handle_map_errors(x, y);
+					handle_map_errors(x, y, all);
 					return (res);
 				}
 			}

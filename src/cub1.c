@@ -32,7 +32,6 @@ void			push_img_to_texture(char *path, int num, t_all *all)
 void	find_plr(t_all *all)
 {
 
-	start_init(all);
 	push_img_to_texture(all->no, 0, all);
 	push_img_to_texture(all->sou, 1, all);
 	push_img_to_texture(all->we, 2, all);
@@ -42,14 +41,14 @@ void	find_plr(t_all *all)
 	{
 		all->dx = 0;
 		all->dy = -1;
-		all->planex = -0.66;
+		all->planex = 0.66;
 		all->planey = 0;
 	}
 	else if (all->sow == 'S')
 	{
 		all->dx = 0;
 		all->dy = 1;
-		all->planex = 0.66;
+		all->planex = -0.66;
 		all->planey = 0;
 		
 	}
@@ -58,14 +57,14 @@ void	find_plr(t_all *all)
 		all->dx = 1;
 		all->dy = 0;
 		all->planex = 0;
-		all->planey = -0.66;
+		all->planey = 0.66;
 	}	
 	else if (all->sow == 'W')
 	{
 		all->dx = -1;
 		all->dy = 0;
 		all->planex = 0;
-		all->planey = 0.66;
+		all->planey = -0.66;
 
 	}
 	count_sprites(all);
@@ -78,10 +77,10 @@ void draw_buffer(t_data *img, t_all *all)
 	int y;
 
 	x = 0;
-	while (x < WIDTH)
+	while (x < all->w)
 	{
 		y = 0;
-		while (y < HEIGHT)
+		while (y < all->h)
 		{
 			my_mlx_pixel_put(img, x, y, all->buffer[y][x]);
 			y++;
@@ -122,8 +121,8 @@ int		show_map(t_all *all)
 	point.y = 100;
 //	printf("%d,%d\n", all->plr.x, all->plr.y);	
 	all->vars.mlx = mlx_init();
-	all->vars.win = mlx_new_window(all->vars.mlx, WIDTH, HEIGHT, "test");
-	all->img.img = mlx_new_image(all->vars.mlx, WIDTH, HEIGHT);
+	all->vars.win = mlx_new_window(all->vars.mlx, all->w, all->h, "test");
+	all->img.img = mlx_new_image(all->vars.mlx, all->w, all->h);
 	all->img.addr = mlx_get_data_addr(all->img.img, &all->img.bpp, &all->img.llen, &all->img.en);
 //	draw3D(all);
 	if(!(draw_screen_scale(all, &point, &all->img)))
