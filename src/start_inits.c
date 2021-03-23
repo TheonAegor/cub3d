@@ -14,6 +14,8 @@ void middle_init(t_all *all)
 	int i;
 
 	all->buffer = ft_calloc(sizeof(unsigned *), all->h);
+	/*
+	*/
 	i = 0;
 	while (i < all->h)
 	{

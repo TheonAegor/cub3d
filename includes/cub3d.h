@@ -77,7 +77,6 @@ typedef struct s_image_e
 	int			bpp;
 	int			llen;
 	int			end;
-	char		*filename[NTEX];
 }				t_image_e;
 
 typedef struct s_color
@@ -111,6 +110,10 @@ typedef struct s_dda
 	double		ddx;
 	double		ddy;
 	double		pwd;
+	int	  		x;
+	int	  		y;
+	int	  		mx;
+	int	  		my;
 	int	  		sy;
 	int	  		sx;
 	int	  		hit;
@@ -145,6 +148,7 @@ typedef struct s_spr_cast
 	int			drawex;
 	int			stripe;
 	int			texx;
+	int			i;
 	int			y;
 	int			d;
 	int			texy;
@@ -238,5 +242,16 @@ void	handle_parse_err(int err, t_all *all);
 void	handle_hex_err(int err, t_all *all);
 void	handle_map_errors(int x, int y, t_all *all);
 void	middle_init(t_all *all);
+void	start_dda(t_dda *dda, t_all *all);
+void	find_side(t_dda *dda, t_all *all);
+void	find_hit(t_dda *dda, t_all *all);
+void	find_start_end(t_dda *dda, t_all *all);
+void	determine_num_texture(t_dda *dda, t_all *all);
+void	wall_and_text(t_dda *dda, t_all *all);
+void	fill_buf(t_dda *dda, t_all *all);
+void	precasting(t_spr_cast *s, t_all *all);
+void	spr_cast1(t_spr_cast *s, t_all *all);
+void	spr_cast2(t_spr_cast *s, t_all *all);
+void	clear_buffer(t_all *all);
 
 #endif
