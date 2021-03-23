@@ -31,6 +31,7 @@ int draw_screen_scale(t_all *all, t_point *point, t_data *img)
 //	printf("here\n");
 	draw_plr2(img, all);
 	mlx_do_sync(all->vars.mlx);
+	screen_shot(all);
 	mlx_put_image_to_window(all->vars.mlx, all->vars.win, all->img.img, 0, 0);
 }
 

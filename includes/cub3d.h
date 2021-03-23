@@ -155,6 +155,17 @@ typedef struct s_spr_cast
 	unsigned	color;
 }				t_spr_cast;
 
+typedef struct s_shot
+{
+	int				w;
+	int				h;
+	unsigned		bitcount;
+	unsigned		width_in_bytes;
+	unsigned		imagesize;
+	unsigned		filesize;
+	unsigned char	*header;
+}				t_shot;
+
 typedef struct	s_all
 {
 	char		**map;
@@ -167,6 +178,7 @@ typedef struct	s_all
 	t_sprite	*sprite;
 	t_color		color;
 	t_brd		brd;
+	t_shot		*shot;
 	int			w;
 	int			h;
 	int			sow;//side of the world
@@ -253,5 +265,10 @@ void	precasting(t_spr_cast *s, t_all *all);
 void	spr_cast1(t_spr_cast *s, t_all *all);
 void	spr_cast2(t_spr_cast *s, t_all *all);
 void	clear_buffer(t_all *all);
+t_shot	*ft_init_shot(t_all *all);
+unsigned char	*ft_bitheader(t_all *all);
+void	screen_shot(t_all *all);
+void	screno(t_all *all);
+unsigned int	my_mlx_get_color2(t_data data, int x, int y);
 
 #endif

@@ -1,5 +1,13 @@
 #include "cub3d.h"
 
+unsigned int    my_mlx_get_color2(t_data data, int x, int y)
+{
+        char    *dst;
+
+        dst = data.addr + (y * data.llen + x * (data.bpp / 8));
+        return (*(unsigned int *)dst);
+}
+
 unsigned int    my_mlx_get_color(t_image_e data, int x, int y)
 {
         char    *dst;
@@ -31,7 +39,6 @@ void			push_img_to_texture(char *path, int num, t_all *all)
 
 void	find_plr(t_all *all)
 {
-
 	push_img_to_texture(all->no, 0, all);
 	push_img_to_texture(all->sou, 1, all);
 	push_img_to_texture(all->we, 2, all);
