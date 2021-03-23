@@ -145,6 +145,7 @@ void	draw_plr2(t_data *img, t_all *all)
 	int mx, my, x;
 	int i;
 	int y;
+	t_dda	dda;
 
 	i = 0;
 		x = 0;
@@ -153,69 +154,69 @@ void	draw_plr2(t_data *img, t_all *all)
 		while (x < all->w)
 		{
 //			printf("start:dx=%f, dy = %f\n", all->dx, all->dy);
-			double camerax = 2 * x/(double)all->w - 1;/**/
-			double rdx = all->dx + all->planex * camerax; /*Ray dir x*/
-			double rdy = all->dy + all->planey * camerax;
-//			printf("rdy=%f, rdx = %f\n", rdy, rdx);
+			dda.camerax = 2 * x/(double)all->w - 1;/**/
+			dda.rdx = all->dx + all->planex * dda.camerax; /*Ray dir x*/
+			dda.rdy = all->dy + all->planey * dda.camerax;
+//			printf("rdy=%f, rdx = %f\n", dda.rdy, rdx);
 			mx = (int)floor(all->plr.x);
 			my = (int)floor(all->plr.y);
 
-			double sdy;
-			double sdx; //side dist y
+			dda.sdy;
+			dda.sdx; //side dist y
 
-			double ddx = (rdy == 0) ? 0 : ((rdx == 0) ? 1 : fabs(1 / rdx));
-			double ddy = (rdx == 0) ? 0 : ((rdy == 0) ? 1 : fabs(1 / rdy)); //delta dist y
+			dda.ddx = (dda.rdy == 0) ? 0 : ((dda.rdx == 0) ? 1 : fabs(1 / dda.rdx));
+			dda.ddy = (dda.rdx == 0) ? 0 : ((dda.rdy == 0) ? 1 : fabs(1 / dda.rdy)); //delta dist y
 /*
 */
-			double pwd;
+			dda.pwd;
 
-			int sx; //step x
-			int sy;
+			dda.sx; //step x
+			dda.sy;
 
-			int hit = 0;
-			int side; // if x side was hit = 0
-			if (rdx < 0)
+			dda.hit = 0;
+			dda.side; // if x side was hit = 0
+			if (dda.rdx < 0)
 			{
-				sx = -1;
-				sdx = (all->plr.x - mx) * ddx;
+				dda.sx = -1;
+				dda.sdx = (all->plr.x - mx) * dda.ddx;
 			}
 			else
 			{
-				sx = 1;
-				sdx = (mx + 1.0 - all->plr.x) * ddx;
+				dda.sx = 1;
+				dda.sdx = (mx + 1.0 - all->plr.x) * dda.ddx;
 			}
-			if (rdy < 0)
+			if (dda.rdy < 0)
 			{
-				sy = -1;
-				sdy = (all->plr.y - my) * ddy;
+				dda.sy = -1;
+				dda.sdy = (all->plr.y - my) * dda.ddy;
 			}	
 			else 
 			{
-				sy = 1;
-				sdy = (my + 1.0 - all->plr.y) * ddy;
+				dda.sy = 1;
+				dda.sdy = (my + 1.0 - all->plr.y) * dda.ddy;
 			}
 /*
 			printf("dx=%f, dy = %f\n", all->dx, all->dy);
-			printf("rdx=%f, rdy = %f\n", rdx, rdy);
-			printf("ddx= %f, ddy=%f\n", ddx, ddy);
-			printf("sdx=%f, sdy = %f\n", sdx, sdy);
+			printf("rdx=%f, rdy = %f\n", dda.rdx, dda.rdy);
+			printf("ddx= %f, ddy=%f\n", dda.ddx, dda.ddy);
+			printf("sdx=%f, sdy = %f\n", dda.sdx, dda.sdy);
 			printf("mx= %d, my =%d\n", mx, my);
 			printf("x=%d\n", x);
 */
-			while ( hit == 0)
+			while ( dda.hit == 0)
 			{
-				if(sdx < sdy)
+				if(dda.sdx < dda.sdy)
 				{
-					sdx += ddx;
-					mx += sx;
-					side = 0;
+					dda.sdx += dda.ddx;
+					mx += dda.sx;
+					dda.side = 0;
 //					printf("here1\n");
 				}
 				else 
 				{
-					sdy += ddy;
-					my += sy;
-					side = 1;
+					dda.sdy += dda.ddy;
+					my += dda.sy;
+					dda.side = 1;
 //					printf("here2\n");
 				}
 /*
@@ -226,78 +227,78 @@ void	draw_plr2(t_data *img, t_all *all)
 */
 				if (all->map[my][mx] == '1')
 				{
-					hit = 1;
+					dda.hit = 1;
 //					printf("here3\n");
 				}
 //				printf("inside hit\n");
 			}
-			if (side == 0)
+			if (dda.side == 0)
 		/*-------y distance------*/
-				pwd = (mx - all->plr.x + (1 - sx)/ 2) / rdx;
+				dda.pwd = (mx - all->plr.x + (1 - dda.sx)/ 2) / dda.rdx;
 			else 
-				pwd = (my - all->plr.y + (1 - sy) / 2)/ rdy;
+				dda.pwd = (my - all->plr.y + (1 - dda.sy) / 2)/ dda.rdy;
 
-			int lh = (int)(all->h / pwd);
-			int ds = -lh / 2 + all->h /2; //draw start
-			if (ds < 0)
-				ds = 0;
-			int de = lh / 2 + all->h / 2; //draw end
-			if (de >= all->h)
-				de = all->h - 1;
+			dda.lh = (int)(all->h / dda.pwd);
+			dda.ds = -dda.lh / 2 + all->h /2; //draw start
+			if (dda.ds < 0)
+				dda.ds = 0;
+			dda.de = dda.lh / 2 + all->h / 2; //draw end
+			if (dda.de >= all->h)
+				dda.de = all->h - 1;
 /*
-			printf ("ds = %d\n", ds);
-			printf("ds=%d, de = %d\n", ds, de);
+			printf ("ds = %d\n", dda.ds);
+			printf("ds=%d, de = %d\n", dda.ds, dda.de);
 			printf("dx=%f, dx=%f, plx=%f, ply=%f\n", all->dx, all->dy, all->planex, all->planey);
 			int color = 0xff0000;
 			if (side == 1)
 				color = 0x660000;
 			draw_lines(img, ds, de, x, color);
 */
-			int tn = all->map[my][mx] - 48 - 1;
-			if (rdy > 0)
+			dda.tn = all->map[my][mx] - 48 - 1;
+			if (dda.rdy > 0)
 			{
-				tn = 0; 
-				if (rdx > 0)
+				dda.tn = 0; 
+				if (dda.rdx > 0)
 				{
-					if (side == 0)
-						tn = 2;
+					if (dda.side == 0)
+						dda.tn = 2;
 				}
 				else
 				{
-					if (side == 0)
-						tn = 3;
+					if (dda.side == 0)
+						dda.tn = 3;
 				}
 			}
 			else
 			{
-				tn = 1;
-				if (rdx > 0)
+				dda.tn = 1;
+				if (dda.rdx > 0)
 				{
-					if (side == 0)
-						tn = 2;
+					if (dda.side == 0)
+						dda.tn = 2;
 				}
 				else
 				{
-					if (side == 0)
-						tn = 3;
+					if (dda.side == 0)
+						dda.tn = 3;
 				}
 			}
-	//		printf("tn=%d\n", tn);
+	//		printf("tn=%d\n", dda.tn);
 
-			double wallX;
-			if (side == 0)
-				wallX = all->plr.y + pwd * rdy;
+			dda.wallx;
+			if (dda.side == 0)
+				dda.wallx = all->plr.y + dda.pwd * dda.rdy;
 			else
-				wallX = all->plr.x + pwd * rdx;
-			wallX -= floor((wallX));
+				dda.wallx = all->plr.x + dda.pwd * dda.rdx;
+			dda.wallx -= floor((dda.wallx));
 
-			int texX = (int)(wallX * (double)(TW));
-			if(side == 0 && rdx > 0) 
-				texX = TW - texX - 1;
-			if(side == 1 && rdy < 0) 
-				texX = TW - texX - 1;	
-			double step = 1.0 * TH/lh;
-			double texPos = (ds - all->h/2 + lh /2) * step;
+			dda.texx = (int)(dda.wallx * (double)(TW));
+			if(dda.side == 0 && dda.rdx > 0) 
+				dda.texx = TW - dda.texx - 1;
+			if(dda.side == 1 && dda.rdy < 0) 
+				dda.texx = TW - dda.texx - 1;	
+			dda.step = 1.0 * TH/dda.lh;
+			dda.texpos = (dda.ds - all->h/2 + dda.lh /2) * dda.step;
 			/*
 			y = 1;
 			while (y < ds)
@@ -310,26 +311,26 @@ void	draw_plr2(t_data *img, t_all *all)
 /*
 			printf("mx= %d, my =%d\n", mx, my);
 			printf("dx=%f, dy = %f\n", all->dx, all->dy);
-			printf("rdx=%f, rdy = %f\n", rdx, rdy);
-			printf("ddx= %f, ddy=%f\n", ddx, ddy);
+			printf("rdx=%f, rdy = %f\n", rdx, dda.rdy);
+			printf("ddx= %f, ddy=%f\n", dda.ddx, dda.ddy);
 			printf("mx= %d, my =%d\n", mx, my);
 			printf("outside\n");
 */
 			y = 0;
-			while (y < ds && ds < de)
+			while (y < dda.ds && dda.ds < dda.de)
 			{
 				all->buffer[y][x] = all->color.floor;
 				y++;
 			}
-			y = ds;
-			while ( y < de)
+			y = dda.ds;
+			while ( y < dda.de)
 			{
-				int texY = (int)texPos & (TH - 1);
-				texPos += step;
-				unsigned color = all->texture[tn][TH * texY + texX];
-				if (side == 1) 
-					color = (color >> 1) & 8355711;
-				all->buffer[y][x] = color;
+				dda.texy = (int)dda.texpos & (TH - 1);
+				dda.texpos += dda.step;
+				dda.color = all->texture[dda.tn][TH * dda.texy + dda.texx];
+				if (dda.side == 1) 
+					dda.color = (dda.color >> 1) & 8355711;
+				all->buffer[y][x] = dda.color;
 				y++;
 			}
 			while (y < all->h)
@@ -337,13 +338,14 @@ void	draw_plr2(t_data *img, t_all *all)
 				all->buffer[y][x] = all->color.ceil;
 				y++;
 			}
-			all->zbuf[x] = pwd;
+			all->zbuf[x] = dda.pwd;
 			x += 1;
 		}
 /*----------------------SPRITE casting-----------------------
  *---*/
 //		printf("plr(%f:%f)\nsd(%f,%d)\n", all->plr.x, all->plr.y, all->sd[i], all->so[i]);
 		i = 0;
+		t_spr_cast	s;
 		while (i < all->spr.num_spr)
 		{
 			all->so[i] = i;

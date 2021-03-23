@@ -101,6 +101,56 @@ typedef struct s_spr
 	int			num_spr;
 }				t_spr;
 
+typedef struct s_dda
+{
+	double		camerax;
+	double		rdx;
+	double		rdy;
+	double		sdy;
+	double		sdx;
+	double		ddx;
+	double		ddy;
+	double		pwd;
+	int	  		sy;
+	int	  		sx;
+	int	  		hit;
+	int	  		side;
+	int	  		lh;
+	int	  		ds;
+	int	  		de;
+	int	  		tn;
+	double		wallx;
+	int	  		texx;
+	double		step;
+	double		texpos;
+	int			texy;
+	unsigned	color;
+
+}				t_dda;
+
+typedef struct s_spr_cast
+{
+	double		spr_x;
+	double		spr_y;
+	double		inv_d;
+	double		tr_x;
+	double		tr_y;
+	int			spr_scr_x;
+	int			vmv_scr;
+	int			spr_h;
+	int			drawsy;
+	int			drawey;
+	int			spr_w;
+	int			drawsx;
+	int			drawex;
+	int			stripe;
+	int			texx;
+	int			y;
+	int			d;
+	int			texy;
+	unsigned	color;
+}				t_spr_cast;
+
 typedef struct	s_all
 {
 	char		**map;
