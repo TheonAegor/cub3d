@@ -173,7 +173,7 @@ typedef struct s_shot
 	int				w;
 	int				h;
 	unsigned		bitcount;
-	unsigned		width_in_bytes;
+	unsigned		wibs;
 	unsigned		imagesize;
 	unsigned		filesize;
 	unsigned char	*header;
@@ -265,6 +265,7 @@ int		exit_buf(t_all *all);
 void	start_init(t_all *all);
 void	handle_plr_errors(int error, t_all *all);
 void	error_forbid_char(t_all *all);
+void	error_filename(int err, t_all *all);
 void	handle_arg_errors(int error);
 void	handle_parse_err(int err, t_all *all);
 void	handle_hex_err(int err, t_all *all);
@@ -295,5 +296,13 @@ int		if_forbid_chars(int c, char *forbid_chars);
 int		check_commas(char *str, t_all *all);
 int		check_hex(t_all *all);
 int		check_chars(char *str);
+int		parse_elems(t_all *all, int *full, int i);
+int		help_with_hex(t_all *all, int full);
+int		if_nswe(t_all *all, int i, int j, int *flag);
+void	define_direction(t_all *all);
+int		exit_but(t_all *all);
+void	push_img_to_texture(char *path, int num, t_all *all);
+void	push_img_to_texture(char *path, int num, t_all *all);
+int     make_map(t_list **head, size_t size, t_all *all);
 
 #endif

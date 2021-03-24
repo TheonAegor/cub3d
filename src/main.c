@@ -6,11 +6,29 @@
 /*   By: taegor <taegor@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 22:40:41 by taegor            #+#    #+#             */
-/*   Updated: 2021/03/24 09:02:33 by taegor           ###   ########.fr       */
+/*   Updated: 2021/03/24 11:18:00 by taegor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+static int	check_extension(char *file_name, t_all *all)
+{
+	int	len;
+
+	len = ft_strlen(file_name);
+	if (len < 4)
+	{
+		error_filename(-1, all);
+		return (-1);
+	}
+	if (file_name[len - 1] != 'b' || file_name[len - 2] != 'u' || file_name[len - 3] != 'c' || file_name[len - 4] != '.')
+	{
+		error_filename(-2, all);
+		return (-1);
+	}
+	return (1);
+}
 
 int		read_map(char *argv, t_all *all)
 {
@@ -19,6 +37,8 @@ int		read_map(char *argv, t_all *all)
 	t_list	*head;
 
 	head = NULL;
+	if (check_extension(argv, all) == -1)
+		return (-1);
 	if ((fd = open(argv, O_RDONLY)) < 0)
 	{
 		perror("open");
@@ -58,6 +78,7 @@ int		make_map(t_list **head, size_t size, t_all *all)
 	all->map[i] = NULL;
 	return (1);
 }
+
 
 int		main(int argc, char *argv[])
 {
