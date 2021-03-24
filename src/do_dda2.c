@@ -6,7 +6,7 @@
 /*   By: taegor <taegor@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/24 08:29:23 by taegor            #+#    #+#             */
-/*   Updated: 2021/03/24 10:07:28 by taegor           ###   ########.fr       */
+/*   Updated: 2021/03/24 11:56:44 by taegor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void		fill_buf(t_dda *dda, t_all *all)
 	dda->x += 1;
 }
 
-void	find_side(t_dda *dda, t_all *all)
+void		find_side(t_dda *dda, t_all *all)
 {
 	dda->hit = 0;
 	if (dda->rdx < 0)

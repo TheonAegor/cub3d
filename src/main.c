@@ -6,13 +6,13 @@
 /*   By: taegor <taegor@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 22:40:41 by taegor            #+#    #+#             */
-/*   Updated: 2021/03/24 11:18:00 by taegor           ###   ########.fr       */
+/*   Updated: 2021/03/24 11:55:21 by taegor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-static int	check_extension(char *file_name, t_all *all)
+static int		check_extension(char *file_name, t_all *all)
 {
 	int	len;
 
@@ -22,7 +22,10 @@ static int	check_extension(char *file_name, t_all *all)
 		error_filename(-1, all);
 		return (-1);
 	}
-	if (file_name[len - 1] != 'b' || file_name[len - 2] != 'u' || file_name[len - 3] != 'c' || file_name[len - 4] != '.')
+	if (file_name[len - 1] != 'b' ||
+			file_name[len - 2] != 'u' ||
+			file_name[len - 3] != 'c' ||
+			file_name[len - 4] != '.')
 	{
 		error_filename(-2, all);
 		return (-1);
@@ -30,7 +33,7 @@ static int	check_extension(char *file_name, t_all *all)
 	return (1);
 }
 
-int		read_map(char *argv, t_all *all)
+int				read_map(char *argv, t_all *all)
 {
 	char	*line;
 	int		fd;
@@ -41,7 +44,7 @@ int		read_map(char *argv, t_all *all)
 		return (-1);
 	if ((fd = open(argv, O_RDONLY)) < 0)
 	{
-		perror("open");
+		perror("Open");
 		return (-1);
 	}
 	while (get_next_line(fd, &line))
@@ -53,7 +56,7 @@ int		read_map(char *argv, t_all *all)
 	return (1);
 }
 
-int		make_map(t_list **head, size_t size, t_all *all)
+int				make_map(t_list **head, size_t size, t_all *all)
 {
 	char		**map;
 	int			i;
@@ -79,8 +82,7 @@ int		make_map(t_list **head, size_t size, t_all *all)
 	return (1);
 }
 
-
-int		main(int argc, char *argv[])
+int				main(int argc, char *argv[])
 {
 	int		fd;
 	t_all	all;

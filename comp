@@ -1,2 +1,0 @@
-rm -rf ./res
-make && ./cub3D map.cub 
