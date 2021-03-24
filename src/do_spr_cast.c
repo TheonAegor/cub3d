@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   do_spr_cast.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: taegor <taegor@student.21-school.ru>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/03/24 08:53:13 by taegor            #+#    #+#             */
+/*   Updated: 2021/03/24 08:53:14 by taegor           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3d.h"
 
 void	precasting(t_spr_cast *s, t_all *all)
@@ -8,7 +20,10 @@ void	precasting(t_spr_cast *s, t_all *all)
 	while (i < all->spr.num_spr)
 	{
 		all->so[i] = i;
-		all->sd[i] = ((all->plr.x - all->sprite[i].x) * (all->plr.x - all->sprite[i].x) + (all->plr.y - all->sprite[i].y) * (all->plr.y - all->sprite[i].y));
+		all->sd[i] = ((all->plr.x - all->sprite[i].x) *
+				(all->plr.x - all->sprite[i].x) +
+				(all->plr.y - all->sprite[i].y) *
+				(all->plr.y - all->sprite[i].y));
 		i++;
 	}
 	sort_sprites(all->so, all->sd, all);
@@ -21,7 +36,7 @@ void	spr_cast1(t_spr_cast *s, t_all *all)
 	s->inv_d = 1.0 / (all->planex * all->dy - all->dx * all->planey);
 	s->tr_x = s->inv_d * (all->dy * s->spr_x - all->dx * s->spr_y);
 	s->tr_y = s->inv_d * (-all->planey * s->spr_x + all->planex * s->spr_y);
-	s->spr_scr_x = (int)((all->w/2)*(1 + s->tr_x / s->tr_y));
+	s->spr_scr_x = (int)((all->w / 2) * (1 + s->tr_x / s->tr_y));
 	s->vmv_scr = (int)(VMV / s->tr_y);
 	s->spr_h = abs((int)(all->h / s->tr_y)) / VDIV;
 	s->drawsy = -s->spr_h / 2 + all->h / 2 + s->vmv_scr;
@@ -32,7 +47,7 @@ void	spr_cast1(t_spr_cast *s, t_all *all)
 		s->drawey = all->h - 1;
 	s->spr_w = abs((int)(all->h / (s->tr_y))) / UDIV;
 	s->drawsx = -s->spr_w / 2 + s->spr_scr_x;
-	if (s->drawsx < 0) 
+	if (s->drawsx < 0)
 		s->drawsx = 0;
 	s->drawex = s->spr_w / 2 + s->spr_scr_x;
 	if (s->drawex >= all->w)
@@ -44,8 +59,10 @@ void	spr_cast2(t_spr_cast *s, t_all *all)
 {
 	while (s->stripe < s->drawex)
 	{
-		s->texx = (int)(256 * (s->stripe - (-s->spr_w / 2 + s->spr_scr_x)) * TW / s->spr_w) / 256;
-		if (s->tr_y > 0 && s->stripe > 0 && s->stripe < all->w && s->tr_y < all->zbuf[s->stripe])
+		s->texx = (int)(256 * (s->stripe - (-s->spr_w / 2 +
+				s->spr_scr_x)) * TW / s->spr_w) / 256;
+		if (s->tr_y > 0 && s->stripe > 0 && s->stripe < all->w &&
+				s->tr_y < all->zbuf[s->stripe])
 		{
 			s->y = s->drawsy;
 			while (s->y < s->drawey)
@@ -54,7 +71,7 @@ void	spr_cast2(t_spr_cast *s, t_all *all)
 				s->texy = ((s->d * TH) / s->spr_h) / 256;
 				s->color = all->texture[4][TW * s->texy + s->texx];
 				if ((s->color & 0x00FFFFFF) != 0)
-				   	all->buffer[s->y][s->stripe] = s->color;
+					all->buffer[s->y][s->stripe] = s->color;
 				s->y++;
 			}
 		}
@@ -71,7 +88,7 @@ void	clear_buffer(t_all *all)
 	while (y < all->h)
 	{
 		x = 0;
-		while(x < all->w)
+		while (x < all->w)
 		{
 			all->buffer[y][x] = 0;
 			x++;
@@ -79,4 +96,3 @@ void	clear_buffer(t_all *all)
 		y++;
 	}
 }
-
