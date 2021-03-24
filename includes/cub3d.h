@@ -6,7 +6,7 @@
 /*   By: taegor <taegor@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/24 12:23:33 by taegor            #+#    #+#             */
-/*   Updated: 2021/03/24 12:52:36 by taegor           ###   ########.fr       */
+/*   Updated: 2021/03/24 17:27:16 by taegor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -223,7 +223,7 @@ void				draw_plr_scale(t_data *img, float x, float y, int color);
 void				draw_plr2(t_all *all);
 void				my_mlx_pixel_put(t_data *img, int x, int y, int color);
 void				pix_put_plr(t_data *img, float x, float y, int color);
-void				find_plr(t_all *all);
+int					find_plr(t_all *all);
 void				clear_img2(t_data *img, int w, int h);
 void				distributor(int key, t_all *all);
 void				draw_buffer(t_data *img, t_all *all);
@@ -235,8 +235,11 @@ void				count_sprites(t_all *all);
 void				start_init(t_all *all);
 void				handle_plr_errors(int error, t_all *all);
 void				error_forbid_char(t_all *all);
+void				error_big_color(t_all *all);
+void				error_double_elem(t_all *all);
 void				error_filename(int err);
 void				handle_arg_errors(int error);
+void				error_image(int err, t_all *all);
 void				handle_parse_err(int err, t_all *all);
 void				handle_hex_err(int err, t_all *all);
 void				handle_hex_err2(int err, t_all *all);
@@ -255,8 +258,7 @@ void				spr_cast2(t_spr_cast *s, t_all *all);
 void				clear_buffer(t_all *all);
 void				screen_shot(t_all *all);
 int					screno(t_all *all);
-void				push_img_to_texture(char *path, int num, t_all *all);
-void				push_img_to_texture(char *path, int num, t_all *all);
+int					push_img_to_texture(char *path, int num, t_all *all);
 void				define_direction(t_all *all);
 float				angle_to_rad(float degree);
 float				dist(float x, float y, float xx, float yy);
@@ -275,9 +277,10 @@ int					clear_win(t_all *all, int w, int l);
 int					my_mlx_pp_scale(t_data *data, t_point *point, int color);
 int					my_mlx_pp_shift(int *x, int *y, int flag);
 int					parse_map(t_all *all);
-int					parse_r(char *res, int *w, int *l, int *full);
+int					parse_r(char *res, int *full, t_all *all);
 int					parse_side(char *path_no, char **side, int *full, int flag);
 int					check_bounds(t_all all, t_brd *brd, int x);
+int					check_edges(t_all *all, char *rgb);
 int					find_only_plr(t_all *all);
 int					check_bounds2(t_all *all, t_brd *brd);
 int					create_spr_tabl(t_all *all);

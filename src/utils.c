@@ -6,7 +6,7 @@
 /*   By: taegor <taegor@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 23:15:27 by taegor            #+#    #+#             */
-/*   Updated: 2021/03/24 12:41:50 by taegor           ###   ########.fr       */
+/*   Updated: 2021/03/24 16:29:38 by taegor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@ void		my_mlx_pixel_put(t_data *img, int x, int y, int color)
 
 int			draw_screen_scale(t_all *all)
 {
-	find_plr(all);
+	if (find_plr(all) == -1)
+		return (-1);
 	middle_init(all);
 	draw_plr2(all);
 	if (all->save == 1)

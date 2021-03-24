@@ -6,7 +6,7 @@
 /*   By: taegor <taegor@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/24 08:19:11 by taegor            #+#    #+#             */
-/*   Updated: 2021/03/24 08:19:12 by taegor           ###   ########.fr       */
+/*   Updated: 2021/03/24 15:37:04 by taegor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,15 +28,19 @@ unsigned int	my_mlx_get_color(t_image_e data, int x, int y)
 	return (*(unsigned int *)dst);
 }
 
-void			push_img_to_texture(char *path, int num, t_all *all)
+int				push_img_to_texture(char *path, int num, t_all *all)
 {
 	int x;
 	int y;
 
-	all->image_e.img = mlx_xpm_file_to_image(all->vars.mlx, path,
-			&all->image_e.img_w, &all->image_e.img_h);
+	if ((all->image_e.img = mlx_xpm_file_to_image(all->vars.mlx,
+		path, &all->image_e.img_w, &all->image_e.img_h)) == 0)
+	{
+		error_image(-1, all);
+		return (-1);
+	}
 	all->image_e.addr = mlx_get_data_addr(all->image_e.img,
-			&all->image_e.bpp, &all->image_e.llen, &all->image_e.end);
+		&all->image_e.bpp, &all->image_e.llen, &all->image_e.end);
 	x = 0;
 	while (x < TW)
 	{
@@ -49,6 +53,7 @@ void			push_img_to_texture(char *path, int num, t_all *all)
 		}
 		x++;
 	}
+	return (1);
 }
 
 void			draw_buffer(t_data *img, t_all *all)

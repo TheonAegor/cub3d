@@ -6,7 +6,7 @@
 /*   By: taegor <taegor@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/24 08:13:55 by taegor            #+#    #+#             */
-/*   Updated: 2021/03/24 12:57:39 by taegor           ###   ########.fr       */
+/*   Updated: 2021/03/24 17:11:08 by taegor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,16 +40,25 @@ void		define_directions(t_all *all)
 	}
 }
 
-void		find_plr(t_all *all)
+int			find_plr(t_all *all)
 {
-	push_img_to_texture(all->no, 0, all);
-	push_img_to_texture(all->sou, 1, all);
-	push_img_to_texture(all->we, 2, all);
-	push_img_to_texture(all->ea, 3, all);
-	push_img_to_texture(all->sp, 4, all);
+	int err;
+
+	err = 1;
+	if ((err = push_img_to_texture(all->no, 0, all)) == -1)
+		return (-1);
+	if ((err = push_img_to_texture(all->sou, 1, all)) == -1)
+		return (-1);
+	if ((err = push_img_to_texture(all->we, 2, all)) == -1)
+		return (-1);
+	if ((err = push_img_to_texture(all->ea, 3, all)) == -1)
+		return (-1);
+	if ((err = push_img_to_texture(all->sp, 4, all)) == -1)
+		return (-1);
 	define_directions(all);
 	count_sprites(all);
 	create_spr_tabl(all);
+	return (1);
 }
 
 void		new_pp(char **dst, int color)

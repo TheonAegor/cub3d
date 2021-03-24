@@ -6,7 +6,7 @@
 /*   By: taegor <taegor@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 23:10:39 by taegor            #+#    #+#             */
-/*   Updated: 2021/03/23 23:17:55 by taegor           ###   ########.fr       */
+/*   Updated: 2021/03/24 17:27:35 by taegor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int		parse_elems(t_all *all, int *full, int i)
 
 	err = 1;
 	if (all->map[i][0] == 'R')
-		err = parse_r(all->map[i], &all->w, &all->h, full);
+		err = parse_r(all->map[i], full, all);
 	if (all->map[i][0] == 'N' && all->map[i][1] == 'O')
 		err = parse_side(all->map[i], &all->no, full, 0);
 	if (all->map[i][0] == 'S' && all->map[i][1] == 'O')
@@ -60,23 +60,28 @@ int		help_with_hex(t_all *all, int full)
 	return (1);
 }
 
-int		parse_r(char *res, int *w, int *h, int *full)
+int		parse_r(char *res, int *full, t_all *all)
 {
 	int i;
+	int ww;
+	int hh;
 
 	i = 1;
-	*w = ft_atoi(&res[i]);
+	if (all->w != -1 || all->h != -1)
+		return (-1);
+	all->w = ft_atoi(&res[i]);
 	while (res[i] == ' ')
 		i++;
 	while (ft_isdigit(res[i]))
 		i++;
-	*h = ft_atoi(&res[i]);
-	if (*w <= 0 || *h <= 0)
+	all->h = ft_atoi(&res[i]);
+	if (all->w <= 0 || all->h <= 0)
 		return (-23);
-	if (*w > 2048)
-		*w = 2048;
-	if (*h > 1024)
-		*h = 1024;
+	all->w = all->w;
+	all->vars.mlx = mlx_init();
+	mlx_get_screen_size(all->vars.mlx, &ww, &hh);
+	if (all->w > ww || all->h > hh)
+		mlx_get_screen_size(all->vars.mlx, &all->w, &all->h);
 	*full += 1;
 	return (1);
 }
@@ -88,6 +93,8 @@ int		parse_side(char *path, char **side, int *full, int flag)
 
 	i = 2;
 	err = 1;
+	if (*side != NULL)
+		return (-1);
 	while (path[i] == ' ')
 		i++;
 	if (flag == 0)

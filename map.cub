@@ -1,6 +1,6 @@
-R 1024 780 
+R 1024 7803 
 
-NO ./pics/eagle.xpm
+NO ./pics/bluestone.xpm
 
 SO ./pics/wall_1.xpm
 
@@ -10,7 +10,7 @@ EA ./pics/wall_2.xpm
 
 S  ./pics/pillar.xpm
 
-F 150,      255,   255
+F 150,      251,   254
 C 88,58,20
 
    1111111111111111111111

@@ -6,11 +6,40 @@
 /*   By: taegor <taegor@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/24 09:00:22 by taegor            #+#    #+#             */
-/*   Updated: 2021/03/24 09:00:23 by taegor           ###   ########.fr       */
+/*   Updated: 2021/03/24 15:57:36 by taegor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+int				check_edges(t_all *all, char *rgb)
+{
+	int				i;
+
+	i = 0;
+	if ((ft_atoi(&rgb[i])) < 0 || ft_atoi(&rgb[i]) > 255)
+	{
+		error_big_color(all);
+		return (-1);
+	}
+	while (rgb[i] != ',' && rgb[i])
+		i++;
+	i++;
+	if ((ft_atoi(&rgb[i])) < 0 || ft_atoi(&rgb[i]) > 255)
+	{
+		error_big_color(all);
+		return (-1);
+	}
+	while (rgb[i] != ',' && rgb[i])
+		i++;
+	i++;
+	if ((ft_atoi(&rgb[i])) < 0 || ft_atoi(&rgb[i]) > 255)
+	{
+		error_big_color(all);
+		return (-1);
+	}
+	return (1);
+}
 
 int				check_hex(t_all *all)
 {
@@ -26,6 +55,9 @@ int				check_hex(t_all *all)
 	}
 	if (check_commas(all->floor_c, all) < 0 ||
 			check_commas(all->ceil_c, all) < 0)
+		return (-1);
+	if (check_edges(all, all->floor_c) < 0 ||
+			check_edges(all, all->ceil_c) < 0)
 		return (-1);
 	return (1);
 }

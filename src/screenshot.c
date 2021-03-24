@@ -6,7 +6,7 @@
 /*   By: taegor <taegor@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 17:58:09 by taegor            #+#    #+#             */
-/*   Updated: 2021/03/24 12:52:55 by taegor           ###   ########.fr       */
+/*   Updated: 2021/03/24 15:18:10 by taegor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,14 +57,14 @@ void				screen_shot(t_all *all)
 	screno(all);
 }
 
-void				screno2(t_all *all, unsigned char **buf)
+void				screno2(t_all *all, unsigned char *buf)
 {
 	t_point			xy;
 	t_rc			rc;
 	t_rgb			rgb;
 
 	xy.y = 0;
-	rc.row = all->shot->h;
+	rc.row = all->shot->h - 1;
 	while (rc.row >= 0)
 	{
 		xy.x = 0;
@@ -74,9 +74,9 @@ void				screno2(t_all *all, unsigned char **buf)
 			rgb.red = (my_mlx_get_color2(all->img, xy.x, xy.y) >> 16) & 0xFF;
 			rgb.green = (my_mlx_get_color2(all->img, xy.x, xy.y) >> 8) & 0xFF;
 			rgb.blue = my_mlx_get_color2(all->img, xy.x, xy.y) & 0xFF;
-			*buf[rc.row * all->shot->wibs + rc.col * 3 + 0] = rgb.blue;
-			*buf[rc.row * all->shot->wibs + rc.col * 3 + 1] = rgb.green;
-			*buf[rc.row * all->shot->wibs + rc.col * 3 + 2] = rgb.red;
+			buf[rc.row * all->shot->wibs + rc.col * 3 + 0] = rgb.blue;
+			buf[rc.row * all->shot->wibs + rc.col * 3 + 1] = rgb.green;
+			buf[rc.row * all->shot->wibs + rc.col * 3 + 2] = rgb.red;
 			rc.col++;
 			xy.x++;
 		}
@@ -91,7 +91,7 @@ int					screno(t_all *all)
 	int				fd;
 
 	buf = malloc(all->shot->imagesize);
-	screno2(all, &buf);
+	screno2(all, buf);
 	ft_printf("Taking ScreenShoot....\n");
 	ft_printf("ScreenShot Has been saved under The name 'screenshot.bmp'\n");
 	fd = open("screenshot.bmp", O_CREAT | O_TRUNC | O_WRONLY, S_IRWXU);
