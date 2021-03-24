@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils2.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: taegor <taegor@student.21-school.ru>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/03/24 10:05:23 by taegor            #+#    #+#             */
+/*   Updated: 2021/03/24 10:05:24 by taegor           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3d.h"
 
-void	clear_img2(t_data *img, int w, int l)
+void		clear_img2(t_data *img, int w, int l)
 {
 	int x;
 	int y;
@@ -19,56 +31,58 @@ void	clear_img2(t_data *img, int w, int l)
 	}
 }
 
-float		angle_to_rad(float degree)
+static void	proces_ad(t_all *all, int key)
 {
-	float res;
-	while (degree > 360)
-		degree -= 360;
+	double	odx;
+	double	opx;
 
-	res = degree * (PI / 180);
-	return (res);
+	if (key == A || key == 65361)
+	{
+		odx = all->dx;
+		all->dx = all->dx * cos(-MS) - all->dy * sin(-MS);
+		all->dy = odx * sin(-MS) + all->dy * cos(-MS);
+		opx = all->planex;
+		all->planex = all->planex * cos(-MS) - all->planey * sin(-MS);
+		all->planey = opx * sin(-MS) + all->planey * cos(-MS);
+	}
+	if (key == D || key == 65363)
+	{
+		odx = all->dx;
+		all->dx = all->dx * cos(MS) - all->dy * sin(MS);
+		all->dy = odx * sin(MS) + all->dy * cos(MS);
+		opx = all->planex;
+		all->planex = all->planex * cos(MS) - all->planey * sin(MS);
+		all->planey = opx * sin(MS) + all->planey * cos(MS);
+	}
 }
 
-void	distributor(int key, t_all *all)
+static void	proces_ws(t_all *all, int key)
 {
-	t_point point;
-	int		time_s;
-
-	point.x = START;
-	point.y = START;
 	if (key == W)
 	{
-		if (all->map[(int)(all->plr.y)][(int)(all->plr.x + all->dx*MS)] != '1')
+		if (all->map[(int)(all->plr.y)][(int)(all->plr.x +
+					all->dx * MS)] != '1')
 			all->plr.x += all->dx * MS;
-		if (all->map[(int)(all->plr.y + all->dy*MS)][(int)(all->plr.x)] != '1')
+		if (all->map[(int)(all->plr.y + all->dy * MS)]
+				[(int)(all->plr.x)] != '1')
 			all->plr.y += all->dy * MS;
 	}
 	if (key == S)
 	{
-		if (all->map[(int)all->plr.y][(int)(all->plr.x - all->dx*MS)] != '1')
+		if (all->map[(int)all->plr.y][(int)(all->plr.x -
+					all->dx * MS)] != '1')
 			all->plr.x -= all->dx * MS;
-		if (all->map[(int)(all->plr.y - all->dy*MS)][(int)(all->plr.x)] != '1')
+		if (all->map[(int)(all->plr.y - all->dy * MS)]
+				[(int)(all->plr.x)] != '1')
 			all->plr.y -= all->dy * MS;
 	}
-	if (key == A || key == 65361)
-	{
-		double odx = all->dx;
-		all->dx = all->dx * cos(-MS) - all->dy * sin(-MS);
-		all->dy = odx * sin(-MS) + all->dy * cos(-MS);
-		double opx = all->planex;
-		all->planex = all->planex * cos(-MS) - all->planey * sin(-MS);
-		all->planey = opx * sin(-MS) + all->planey * cos(-MS);
-    }
-	if (key == D || key == 65363)
-	{
-		double odx = all->dx;
-		all->dx = all->dx * cos(MS) - all->dy * sin(MS);
-		all->dy = odx * sin(MS) + all->dy * cos(MS);
-		double opx = all->planex;
-		all->planex = all->planex * cos(MS) - all->planey * sin(MS);
-		all->planey = opx * sin(MS) + all->planey * cos(MS);
-	}
-	if (key == 65307)//53)
+}
+
+void		distributor(int key, t_all *all)
+{
+	proces_ws(all, key);
+	proces_ad(all, key);
+	if (key == 65307)
 	{
 		free_all(all);
 		exit(0);
@@ -80,6 +94,6 @@ void	distributor(int key, t_all *all)
 	}
 	clear_img2(&all->img, all->w, all->h);
 	draw_plr2(&all->img, all);
-	mlx_put_image_to_window(all->vars.mlx, all->vars.win, all->img.img,0, 0);
+	mlx_put_image_to_window(all->vars.mlx, all->vars.win, all->img.img, 0, 0);
 	mlx_do_sync(all->vars.mlx);
 }
