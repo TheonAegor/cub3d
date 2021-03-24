@@ -6,7 +6,7 @@
 /*   By: taegor <taegor@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/24 08:29:23 by taegor            #+#    #+#             */
-/*   Updated: 2021/03/24 08:29:24 by taegor           ###   ########.fr       */
+/*   Updated: 2021/03/24 10:07:28 by taegor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,8 @@ void	find_side(t_dda *dda, t_all *all)
 	{
 		dda->sy = -1;
 		dda->sdy = (all->plr.y - dda->my) * dda->ddy;
-	}	
-	else 
+	}
+	else
 	{
 		dda->sy = 1;
 		dda->sdy = (dda->my + 1.0 - all->plr.y) * dda->ddy;

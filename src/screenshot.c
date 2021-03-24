@@ -6,7 +6,7 @@
 /*   By: taegor <taegor@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 17:58:09 by taegor            #+#    #+#             */
-/*   Updated: 2021/03/23 22:35:08 by taegor           ###   ########.fr       */
+/*   Updated: 2021/03/24 10:07:02 by taegor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ void				screno(t_all *all)
 		xy.y++;
 	}
 	ft_printf("Taking ScreenShoot....\n");
-	fd = open("screenshot1.bmp", O_CREAT, O_WRONLY|O_TRUNC);
+	fd = open("screenshot1.bmp", O_CREAT, O_WRONLY | O_TRUNC);
 	image = fopen("screenshot.bmp", "wb");
 	ft_printf("ScreenShot Has been saved under The name 'screenshot.bmp']\n");
 	fwrite(all->shot->header, 1, 54, image);
