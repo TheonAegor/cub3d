@@ -6,7 +6,7 @@
 /*   By: taegor <taegor@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 23:15:27 by taegor            #+#    #+#             */
-/*   Updated: 2021/03/23 23:17:35 by taegor           ###   ########.fr       */
+/*   Updated: 2021/03/24 12:41:50 by taegor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,11 @@ void		my_mlx_pixel_put(t_data *img, int x, int y, int color)
 	*(unsigned int*)dst = color;
 }
 
-int			draw_screen_scale(t_all *all, t_point *point, t_data *img)
+int			draw_screen_scale(t_all *all)
 {
 	find_plr(all);
 	middle_init(all);
-	draw_plr2(img, all);
+	draw_plr2(all);
 	if (all->save == 1)
 	{
 		screen_shot(all);
@@ -33,6 +33,7 @@ int			draw_screen_scale(t_all *all, t_point *point, t_data *img)
 	}
 	mlx_do_sync(all->vars.mlx);
 	mlx_put_image_to_window(all->vars.mlx, all->vars.win, all->img.img, 0, 0);
+	return (1);
 }
 
 int			parse_map(t_all *all)
@@ -58,7 +59,7 @@ int			parse_map(t_all *all)
 	return (err);
 }
 
-void		draw_plr2(t_data *img, t_all *all)
+void		draw_plr2(t_all *all)
 {
 	t_dda		dda;
 	t_spr_cast	s;
@@ -74,7 +75,7 @@ void		draw_plr2(t_data *img, t_all *all)
 		wall_and_text(&dda, all);
 		fill_buf(&dda, all);
 	}
-	precasting(&s, all);
+	precasting(all);
 	s.i = 0;
 	while (s.i < all->spr.num_spr)
 	{

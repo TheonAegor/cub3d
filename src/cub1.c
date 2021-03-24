@@ -6,7 +6,7 @@
 /*   By: taegor <taegor@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/24 08:13:55 by taegor            #+#    #+#             */
-/*   Updated: 2021/03/24 08:24:58 by taegor           ###   ########.fr       */
+/*   Updated: 2021/03/24 12:39:16 by taegor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,7 @@ void		new_pp(char **dst, int color)
 
 int			show_map(t_all *all)
 {
-	t_data		img;
-	t_point		point;
+	t_point point;
 
 	all->vars.mlx = mlx_init();
 	all->vars.win = mlx_new_window(all->vars.mlx, all->w, all->h, "test");
@@ -79,4 +78,5 @@ int			show_map(t_all *all)
 	mlx_hook(all->vars.win, 2, (1L << 0), &key_press, all);
 	mlx_hook(all->vars.win, 33, (0L << 0), &exit_but, all);
 	mlx_loop(all->vars.mlx);
+	return (1);
 }

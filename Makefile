@@ -2,7 +2,7 @@ name = cub3D
 
 option = -Iincludes
 
-cc = gcc
+cc = gcc -Wall -Werror -Wextra
 
 files = src/*.c
 

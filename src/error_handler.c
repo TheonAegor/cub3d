@@ -6,7 +6,7 @@
 /*   By: taegor <taegor@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/24 08:57:39 by taegor            #+#    #+#             */
-/*   Updated: 2021/03/24 08:57:40 by taegor           ###   ########.fr       */
+/*   Updated: 2021/03/24 12:43:54 by taegor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ void		handle_parse_err(int err, t_all *all)
 
 void		handle_hex_err(int err, t_all *all)
 {
+	free_map(all);
 	ft_printf("Error!\n");
 	if (err == -1)
 		ft_printf("You have more the 3 digits to you F or C color\n");

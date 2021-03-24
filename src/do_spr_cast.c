@@ -6,13 +6,13 @@
 /*   By: taegor <taegor@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/24 08:53:13 by taegor            #+#    #+#             */
-/*   Updated: 2021/03/24 08:53:14 by taegor           ###   ########.fr       */
+/*   Updated: 2021/03/24 12:37:56 by taegor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	precasting(t_spr_cast *s, t_all *all)
+void	precasting(t_all *all)
 {
 	int i;
 

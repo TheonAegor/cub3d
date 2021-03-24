@@ -6,7 +6,7 @@
 /*   By: taegor <taegor@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/24 12:23:33 by taegor            #+#    #+#             */
-/*   Updated: 2021/03/24 12:27:15 by taegor           ###   ########.fr       */
+/*   Updated: 2021/03/24 12:52:36 by taegor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -220,7 +220,7 @@ unsigned char		*ft_bitheader(t_all *all);
 unsigned			to_hex(char *rgb);
 unsigned int		my_mlx_get_color2(t_data data, int x, int y);
 void				draw_plr_scale(t_data *img, float x, float y, int color);
-void				draw_plr2(t_data *img, t_all *all);
+void				draw_plr2(t_all *all);
 void				my_mlx_pixel_put(t_data *img, int x, int y, int color);
 void				pix_put_plr(t_data *img, float x, float y, int color);
 void				find_plr(t_all *all);
@@ -235,7 +235,7 @@ void				count_sprites(t_all *all);
 void				start_init(t_all *all);
 void				handle_plr_errors(int error, t_all *all);
 void				error_forbid_char(t_all *all);
-void				error_filename(int err, t_all *all);
+void				error_filename(int err);
 void				handle_arg_errors(int error);
 void				handle_parse_err(int err, t_all *all);
 void				handle_hex_err(int err, t_all *all);
@@ -249,19 +249,19 @@ void				find_start_end(t_dda *dda, t_all *all);
 void				determine_num_texture(t_dda *dda, t_all *all);
 void				wall_and_text(t_dda *dda, t_all *all);
 void				fill_buf(t_dda *dda, t_all *all);
-void				precasting(t_spr_cast *s, t_all *all);
+void				precasting(t_all *all);
 void				spr_cast1(t_spr_cast *s, t_all *all);
 void				spr_cast2(t_spr_cast *s, t_all *all);
 void				clear_buffer(t_all *all);
 void				screen_shot(t_all *all);
-void				screno(t_all *all);
+int					screno(t_all *all);
 void				push_img_to_texture(char *path, int num, t_all *all);
 void				push_img_to_texture(char *path, int num, t_all *all);
 void				define_direction(t_all *all);
 float				angle_to_rad(float degree);
 float				dist(float x, float y, float xx, float yy);
 int					key_press(int key, t_all *all);
-int					draw_screen_scale(t_all *all, t_point *point, t_data *img);
+int					draw_screen_scale(t_all *all);
 int					draw_map_scale(t_all *all, t_point *point, t_data *img);
 int					draw_only_map_scale(t_all *all, t_point *point,
 		t_data *img);

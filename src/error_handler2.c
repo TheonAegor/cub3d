@@ -6,7 +6,7 @@
 /*   By: taegor <taegor@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/24 08:54:41 by taegor            #+#    #+#             */
-/*   Updated: 2021/03/24 11:10:22 by taegor           ###   ########.fr       */
+/*   Updated: 2021/03/24 12:36:45 by taegor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	error_forbid_char(t_all *all)
 	ft_printf("You have used forbidden char in your map\n");
 }
 
-void	error_filename(int err, t_all *all)
+void	error_filename(int err)
 {
 	ft_printf("Error!\n");
 	if (err == -1)

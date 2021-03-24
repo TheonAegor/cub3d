@@ -6,7 +6,7 @@
 /*   By: taegor <taegor@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 17:58:09 by taegor            #+#    #+#             */
-/*   Updated: 2021/03/24 11:49:15 by taegor           ###   ########.fr       */
+/*   Updated: 2021/03/24 12:52:55 by taegor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ void				screno2(t_all *all, unsigned char **buf)
 	}
 }
 
-void				screno(t_all *all)
+int					screno(t_all *all)
 {
 	unsigned char	*buf;
 	int				fd;
@@ -95,10 +95,19 @@ void				screno(t_all *all)
 	ft_printf("Taking ScreenShoot....\n");
 	ft_printf("ScreenShot Has been saved under The name 'screenshot.bmp'\n");
 	fd = open("screenshot.bmp", O_CREAT | O_TRUNC | O_WRONLY, S_IRWXU);
-	write(fd, all->shot->header, 54);
-	write(fd, (char *)buf, all->shot->imagesize);
+	if (write(fd, all->shot->header, 54) < 0)
+	{
+		perror("write\n");
+		return (-1);
+	}
+	if (write(fd, (char *)buf, all->shot->imagesize) < 0)
+	{
+		perror("write\n");
+		return (-1);
+	}
 	close(fd);
 	free(all->shot->header);
 	free(all->shot);
 	free(buf);
+	return (1);
 }
