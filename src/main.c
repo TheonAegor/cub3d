@@ -6,13 +6,11 @@
 /*   By: taegor <taegor@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 22:40:41 by taegor            #+#    #+#             */
-/*   Updated: 2021/03/23 22:44:39 by taegor           ###   ########.fr       */
+/*   Updated: 2021/03/24 09:02:33 by taegor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
-int		make_map(t_list **head, size_t size, t_all *all);
 
 int		read_map(char *argv, t_all *all)
 {
@@ -77,7 +75,7 @@ int		main(int argc, char *argv[])
 			all.save = 1;
 		else
 		{
-			ft_printf("You have a bad second argument,try '--save' to make a screenshot\n");
+			ft_printf("You have a bad second argument\n");
 			return (-1);
 		}
 	}

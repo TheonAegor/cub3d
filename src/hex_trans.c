@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   hex_trans.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: taegor <taegor@student.21-school.ru>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/03/24 09:00:22 by taegor            #+#    #+#             */
+/*   Updated: 2021/03/24 09:00:23 by taegor           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3d.h"
 
-int		check_hex(t_all *all)
+int				check_hex(t_all *all)
 {
 	if (check_chars(all->floor_c) == -1)
 	{
@@ -12,12 +24,13 @@ int		check_hex(t_all *all)
 		handle_hex_err2(-2, all);
 		return (-1);
 	}
-	if (check_commas(all->floor_c, all) < 0 || check_commas(all->ceil_c, all) < 0)
+	if (check_commas(all->floor_c, all) < 0 ||
+			check_commas(all->ceil_c, all) < 0)
 		return (-1);
 	return (1);
 }
 
-int		check_commas(char *str, t_all *all)
+int				check_commas(char *str, t_all *all)
 {
 	int i;
 	int counter;
@@ -43,7 +56,7 @@ int		check_commas(char *str, t_all *all)
 	return (1);
 }
 
-int		check_chars(char *str)
+int				check_chars(char *str)
 {
 	int i;
 
@@ -57,18 +70,17 @@ int		check_chars(char *str)
 	return (1);
 }
 
-unsigned to_hex(char *rgb)
+unsigned		to_hex(char *rgb)
 {
-	int i;
-	unsigned long res;
+	int				i;
+	unsigned long	res;
 
 	i = 0;
-//	printf("r=%d\n", r);
-	res = ft_atoi(&rgb[i])<<16;
+	res = ft_atoi(&rgb[i]) << 16;
 	while (rgb[i] != ',' && rgb[i])
 		i++;
 	i++;
-	res += ft_atoi(&rgb[i])<<8;
+	res += ft_atoi(&rgb[i]) << 8;
 	while (rgb[i] != ',' && rgb[i])
 		i++;
 	i++;
