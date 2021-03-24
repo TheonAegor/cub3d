@@ -6,7 +6,7 @@
 /*   By: taegor <taegor@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/24 10:05:23 by taegor            #+#    #+#             */
-/*   Updated: 2021/03/24 10:05:24 by taegor           ###   ########.fr       */
+/*   Updated: 2021/03/24 12:56:32 by taegor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ void		distributor(int key, t_all *all)
 		all->plr.y += 1 * all->dy;
 	}
 	clear_img2(&all->img, all->w, all->h);
-	draw_plr2(&all->img, all);
+	draw_plr2(all);
 	mlx_put_image_to_window(all->vars.mlx, all->vars.win, all->img.img, 0, 0);
 	mlx_do_sync(all->vars.mlx);
 }
